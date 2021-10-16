@@ -1,0 +1,11 @@
+game.ReplicatedStorage.Viewmodels["v_USP"].HumanoidRootPart.Transparency = 1
+game.ReplicatedStorage.Viewmodels["v_Tec9"].HumanoidRootPart.Transparency = 1
+game.ReplicatedStorage.Viewmodels["v_Smoke Grenade"].HumanoidRootPart.Transparency = 1
+game.ReplicatedStorage.Viewmodels["v_Scout"].HumanoidRootPart.Transparency = 1
+game.ReplicatedStorage.Viewmodels["v_SawedOff"].HumanoidRootPart.Transparency = 1
+game.ReplicatedStorage.Viewmodels["v_SCAR-20"].HumanoidRootPart.Transparency = 1
+game.ReplicatedStorage.Viewmodels["v_Negev"].HumanoidRootPart.Transparency = 1
+game.ReplicatedStorage.Viewmodels["v_Incendiary Grenade"].HumanoidRootPart.Transparency = 1
+game.ReplicatedStorage.Viewmodels["v_Flashbang"].HumanoidRootPart.Transparency = 1
+game.ReplicatedStorage.Viewmodels["v_Decoy Grenade"].HumanoidRootPart.Transparency = 1
+game.ReplicatedStorage.Viewmodels["v_C4Halloween"].HumanoidRootPart.Transparency = 1
