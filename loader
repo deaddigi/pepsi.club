@@ -55,13 +55,16 @@ end)
 
 local function PRLATDT_fake_script() -- name.LocalScript 
 	local script = Instance.new('LocalScript', name)
-
 	wait(3)
 	script.Parent.Text = "p epsi.club"
 	wait(1)
 	script.Parent.Text = "p e psi.club"
 	wait(1)
+	script.Parent.Text = "p e p si.club"
+	wait(1)
 	script.Parent.Text = "p e p s i.club"
+	wait(1)
+	script.Parent.Text = "p e p s i .club"
 	wait(1)
 	script.Parent.Text = "p e p s i . club"
 	wait(1)
