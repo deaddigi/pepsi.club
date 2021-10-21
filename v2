@@ -1,3 +1,17 @@
+------------------------------------ FIX VIEWMODELS ------------------------------------
+game.ReplicatedStorage.Viewmodels["v_USP"].HumanoidRootPart.Transparency = 1
+game.ReplicatedStorage.Viewmodels["v_Tec9"].HumanoidRootPart.Transparency = 1
+game.ReplicatedStorage.Viewmodels["v_Smoke Grenade"].HumanoidRootPart.Transparency = 1
+game.ReplicatedStorage.Viewmodels["v_Scout"].HumanoidRootPart.Transparency = 1
+game.ReplicatedStorage.Viewmodels["v_SawedOff"].HumanoidRootPart.Transparency = 1
+game.ReplicatedStorage.Viewmodels["v_SCAR-20"].HumanoidRootPart.Transparency = 1
+game.ReplicatedStorage.Viewmodels["v_Negev"].HumanoidRootPart.Transparency = 1
+game.ReplicatedStorage.Viewmodels["v_Incendiary Grenade"].HumanoidRootPart.Transparency = 1
+game.ReplicatedStorage.Viewmodels["v_Flashbang"].HumanoidRootPart.Transparency = 1
+game.ReplicatedStorage.Viewmodels["v_Decoy Grenade"].HumanoidRootPart.Transparency = 1
+game.ReplicatedStorage.Viewmodels["v_C4Halloween"].HumanoidRootPart.Transparency = 1
+----------------------------------------------------------------------------------------
+
 if game.CoreGui:FindFirstChild("pepsi") then
     game.CoreGui.pepsi:Destroy()
 end
@@ -602,6 +616,22 @@ aimbotFOV = aB:CreateSlider("Aimbot FOV", 200, function(W)
     k["Aimbot FOV"] = W
 end)
 
+noSpread = aB:CreateToggle("No Spread", function(K)
+    k["NoSpread"] = K
+end)
+
+noRecoil = aB:CreateToggle("No Recoil", function(K)
+    if K == true then
+        game:GetService("RunService"):BindToRenderStep("NoRecoil", 100, function()
+            cbClient.resetaccuracy()
+            cbClient.RecoilX = 0
+            cbClient.RecoilY = 0
+        end)
+    elseif K == false then
+        game:GetService("RunService"):UnbindFromRenderStep("NoRecoil")
+    end
+end)
+
 ------------------------------------ MOVEMENT ------------------------------------
 
 local aJ = h.speedupdate
@@ -991,6 +1021,174 @@ d.Stepped:connect(
     end
 )
 
+infStamina = aD:CreateToggle("Inf Stamina", function(K)
+    if K == true then
+		game:GetService("RunService"):BindToRenderStep("Stamina", 100, function()
+			if cbClient.crouchcooldown ~= 0 then
+				cbClient.crouchcooldown = 0
+			end
+		end)
+	elseif K == false then
+		game:GetService("RunService"):UnbindFromRenderStep("Stamina")
+	end
+end)
+
+keystrokesButton = aD:CreateToggle("Keystrokes", function(K)
+    if K == true then
+        local ScreenGui = Instance.new("ScreenGui")
+        local W = Instance.new("TextLabel")
+        local A = Instance.new("TextLabel")
+        local S = Instance.new("TextLabel")
+        local D = Instance.new("TextLabel")
+        local E = Instance.new("TextLabel")
+        local R = Instance.new("TextLabel")
+        local Space = Instance.new("TextLabel")
+
+        ScreenGui.Parent = game.CoreGui
+        ScreenGui.Name = "keystrokess"
+
+        W.Name = "W"
+        W.Parent = ScreenGui
+        W.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        W.BackgroundTransparency = 1.000
+        W.Position = UDim2.new(0.488053292, 0, 0.728395104, 0)
+        W.Size = UDim2.new(0, 29, 0, 28)
+        W.Visible = false
+        W.Font = Enum.Font.Code
+        W.Text = "W"
+        W.TextColor3 = Color3.fromRGB(255, 255, 255)
+        W.TextSize = 14.000
+        W.TextStrokeTransparency = 0.000
+
+        A.Name = "A"
+        A.Parent = ScreenGui
+        A.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        A.BackgroundTransparency = 1.000
+        A.Position = UDim2.new(0.453584045, 0, 0.777777791, 0)
+        A.Size = UDim2.new(0, 29, 0, 28)
+        A.Visible = false
+        A.Font = Enum.Font.Code
+        A.Text = "A"
+        A.TextColor3 = Color3.fromRGB(255, 255, 255)
+        A.TextSize = 14.000
+        A.TextStrokeTransparency = 0.000
+
+        S.Name = "S"
+        S.Parent = ScreenGui
+        S.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        S.BackgroundTransparency = 1.000
+        S.Position = UDim2.new(0.488053292, 0, 0.777777791, 0)
+        S.Size = UDim2.new(0, 29, 0, 28)
+        S.Visible = false
+        S.Font = Enum.Font.Code
+        S.Text = "S"
+        S.TextColor3 = Color3.fromRGB(255, 255, 255)
+        S.TextSize = 14.000
+        S.TextStrokeTransparency = 0.000
+
+        D.Name = "D"
+        D.Parent = ScreenGui
+        D.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        D.BackgroundTransparency = 1.000
+        D.Position = UDim2.new(0.522522688, 0, 0.777777791, 0)
+        D.Size = UDim2.new(0, 29, 0, 28)
+        D.Visible = false
+        D.Font = Enum.Font.Code
+        D.Text = "D"
+        D.TextColor3 = Color3.fromRGB(255, 255, 255)
+        D.TextSize = 14.000
+        D.TextStrokeTransparency = 0.000
+
+        E.Name = "E"
+        E.Parent = ScreenGui
+        E.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        E.BackgroundTransparency = 1.000
+        E.Position = UDim2.new(0.453584045, 0, 0.728395045, 0)
+        E.Size = UDim2.new(0, 29, 0, 28)
+        E.Visible = false
+        E.Font = Enum.Font.Code
+        E.Text = "E"
+        E.TextColor3 = Color3.fromRGB(255, 255, 255)
+        E.TextSize = 14.000
+        E.TextStrokeTransparency = 0.000
+
+        R.Name = "R"
+        R.Parent = ScreenGui
+        R.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        R.BackgroundTransparency = 1.000
+        R.Position = UDim2.new(0.522522688, 0, 0.728395045, 0)
+        R.Size = UDim2.new(0, 29, 0, 28)
+        R.Visible = false
+        R.Font = Enum.Font.Code
+        R.Text = "R"
+        R.TextColor3 = Color3.fromRGB(255, 255, 255)
+        R.TextSize = 14.000
+        R.TextStrokeTransparency = 0.000
+
+        Space.Name = "Space"
+        Space.Parent = ScreenGui
+        Space.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        Space.BackgroundTransparency = 1.000
+        Space.Position = UDim2.new(0.470035285, 0, 0.825396895, 0)
+        Space.Size = UDim2.new(0, 87, 0, 28)
+        Space.Visible = false
+        Space.Font = Enum.Font.Code
+        Space.Text = "Space"
+        Space.TextColor3 = Color3.fromRGB(255, 255, 255)
+        Space.TextSize = 14.000
+        Space.TextStrokeTransparency = 0.000
+
+        local UserInputService = game:GetService("UserInputService")
+
+        local W1Key = Enum.KeyCode.W
+        local A1Key = Enum.KeyCode.A
+        local S1Key = Enum.KeyCode.S
+        local D1Key = Enum.KeyCode.D
+        local E1Key = Enum.KeyCode.E
+        local R1Key = Enum.KeyCode.R
+        local SpaceKey = Enum.KeyCode.Space
+
+        UserInputService.InputBegan:Connect(function(input)
+            if (input.KeyCode == W1Key) then
+                W.Visible = true
+            elseif (input.KeyCode == A1Key) then
+                A.Visible = true
+            elseif (input.KeyCode == S1Key) then
+                S.Visible = true
+            elseif (input.KeyCode == D1Key) then
+                D.Visible = true
+            elseif (input.KeyCode == E1Key) then
+                E.Visible = true
+            elseif (input.KeyCode == R1Key) then
+                R.Visible = true
+            elseif (input.KeyCode == SpaceKey) then
+                Space.Visible = true
+            end
+        end)
+
+        UserInputService.InputEnded:Connect(function(input)
+            if (input.KeyCode == W1Key) then
+                W.Visible = false
+            elseif (input.KeyCode == A1Key) then
+                A.Visible = false
+            elseif (input.KeyCode == S1Key) then
+                S.Visible = false
+            elseif (input.KeyCode == D1Key) then
+                D.Visible = false
+            elseif (input.KeyCode == E1Key) then
+                E.Visible = false
+            elseif (input.KeyCode == R1Key) then
+                R.Visible = false
+            elseif (input.KeyCode == SpaceKey) then
+                Space.Visible = false
+            end
+        end)
+    
+    elseif K == false then
+        game.CoreGui.keystrokess:Destroy()
+    end
+end)
+
 PlrTrailToggle = aD:CreateToggle("Player Trail", function(K)
     if K == true then
         PlrTrail = game:GetService("RunService").RenderStepped:Connect(function()
@@ -1089,8 +1287,12 @@ depthOfField = aC:CreateToggle("Depth of field", function(b4)
     depth.Enabled = b4
 end)
 
-noFlash = aC:CreateButton("No Flash", function(K)
-    game.Players.LocalPlayer.PlayerGui.Blnd.Enabled = false
+noFlash = aC:CreateToggle("No Flash", function(K)
+    if K == true then
+        game.Players.LocalPlayer.PlayerGui.Blnd.Enabled = false
+    elseif K == false then
+        game.Players.LocalPlayer.PlayerGui.Blnd.Enabled = true
+    end
 end)
 
 Skyboxes = {
@@ -1418,6 +1620,269 @@ refreshConfigs = aF:CreateButton("Refresh configs", function()
 end)
 
 ------------------------------------ MISC ------------------------------------
+aE:CreateToggle("Watermark", function(K)
+    if K == true then
+        local watermark = Instance.new("ScreenGui")
+        local ScreenLabel = Instance.new("Frame")
+        local Color = Instance.new("Frame")
+        local UIGradient = Instance.new("UIGradient")
+        local Container = Instance.new("Frame")
+        local UIPadding = Instance.new("UIPadding")
+        local Text = Instance.new("TextLabel")
+        local Time = Instance.new("TextLabel")
+        local Background = Instance.new("Frame")
+        local UIGradient_2 = Instance.new("UIGradient")
+
+        watermark.Name = "watermark"
+        watermark.Parent = game.CoreGui
+
+        ScreenLabel.Name = "ScreenLabel"
+        ScreenLabel.Parent = watermark
+        ScreenLabel.BackgroundColor3 = Color3.fromRGB(28, 28, 28)
+        ScreenLabel.BackgroundTransparency = 1.000
+        ScreenLabel.BorderColor3 = Color3.fromRGB(20, 20, 20)
+        ScreenLabel.Position = UDim2.new(0, 12, 0, 7)
+        ScreenLabel.Size = UDim2.new(0, 260, 0, 20)
+
+        Color.Name = "Color"
+        Color.Parent = ScreenLabel
+        Color.BackgroundColor3 = Color3.fromRGB(0, 89, 149)
+        Color.BorderSizePixel = 0
+        Color.Position = UDim2.new(0.0192307699, 0, 0, 0)
+        Color.Size = UDim2.new(0.642307699, 0, 0, 2)
+        Color.ZIndex = 2
+
+        UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(60, 60, 60))}
+        UIGradient.Rotation = 90
+        UIGradient.Parent = Color
+
+        Container.Name = "Container"
+        Container.Parent = ScreenLabel
+        Container.BackgroundTransparency = 1.000
+        Container.BorderSizePixel = 0
+        Container.Position = UDim2.new(0, 0, 0, 4)
+        Container.Size = UDim2.new(1, 0, 0, 14)
+        Container.ZIndex = 3
+
+        UIPadding.Parent = Container
+        UIPadding.PaddingLeft = UDim.new(0, 4)
+
+        Text.Name = "Text"
+        Text.Parent = Container
+        Text.BackgroundTransparency = 1.000
+        Text.Position = UDim2.new(0.0381064788, 0, 0, 0)
+        Text.Size = UDim2.new(0.373076916, 0, 1, 0)
+        Text.ZIndex = 4
+        Text.Font = Enum.Font.Code
+        Text.Text = "pepsi.club!"
+        Text.TextColor3 = Color3.fromRGB(65025, 65025, 65025)
+        Text.TextSize = 14.000
+        Text.TextStrokeTransparency = 0.000
+        Text.TextXAlignment = Enum.TextXAlignment.Left
+
+        Time.Name = "Time"
+        Time.Parent = Container
+        Time.BackgroundTransparency = 1.000
+        Time.Position = UDim2.new(0.374206603, 0, 0, 0)
+        Time.Size = UDim2.new(0.278875738, 0, 1, 0)
+        Time.ZIndex = 4
+        Time.Font = Enum.Font.Code
+        Time.Text = "00:00:00"
+        Time.TextColor3 = Color3.fromRGB(65025, 65025, 65025)
+        Time.TextSize = 14.000
+        Time.TextStrokeTransparency = 0.000
+        Time.TextXAlignment = Enum.TextXAlignment.Left
+
+        Background.Name = "Background"
+        Background.Parent = ScreenLabel
+        Background.BackgroundColor3 = Color3.fromRGB(23, 23, 23)
+        Background.BorderColor3 = Color3.fromRGB(20, 20, 20)
+        Background.Position = UDim2.new(0.0192307699, 0, 0, 0)
+        Background.Size = UDim2.new(0.642307699, 0, 1, 0)
+
+        UIGradient_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(90, 90, 90))}
+        UIGradient_2.Rotation = 90
+        UIGradient_2.Parent = Background
+
+        local function ZBZX_fake_script() -- Time.LocalScript 
+            local script = Instance.new('LocalScript', Time)
+            
+            local mo = "A.M."
+            local mont = nil
+            while wait() do
+                local l = math.fmod(tick(),86400)
+                local h = math.floor(l/3600)
+                local m = math.floor(l/60-h*60)
+                local s = math.floor(math.fmod(l,60))
+                local y = math.floor(1970+tick()/31579200)
+                local mon = {{"January",31,31},{"February",59,28},{"March",90,31},{"April",120,30},{"May",151,31},{"June",181,30},{"July",212,31},{"August",243,31},{"September",273,30},{"October",304,31},{"November",334,30},{"December",365,31}}
+                if y%4 == 0 then
+                    mon[2][3] = 29
+                    for i,v in pairs(mon) do
+                        if i ~= 1 then
+                            v[2] = v[2] + 1
+                        end
+                    end
+                end
+                local d = math.floor(tick()/86400%365.25+1)
+                for i,v in pairs(mon) do
+                    if v[2]-v[3]<=d then
+                        mont = i
+                    end
+                end
+                d = d + mon[mont][3]-mon[mont][2]
+                if m <= 9 then
+                    m = "0" ..m
+                end
+                if s <= 9 then
+                    s = "0" ..s
+                end
+                if h >= 12 then
+                    mo = "P.M."
+                else
+                    mo = "A.M."
+                end
+                if h > 12 then
+                    h = h - 12
+                end
+                script.Parent.Text = "" ..h.. ":" ..m.. ":" ..s.. " "
+            end
+        end
+        coroutine.wrap(ZBZX_fake_script)()
+        local function POWDOGC_fake_script() -- ScreenLabel.LocalScript 
+            local script = Instance.new('LocalScript', ScreenLabel)
+
+            local gui = script.Parent
+            gui.Draggable = true
+            gui.Active = true
+        end
+        coroutine.wrap(POWDOGC_fake_script)()
+    elseif K == false then
+        game.CoreGui.watermark:Destroy()
+    end
+end)
+
+aE:CreateToggle("Spectator List", function(K)
+    if K ==  true then
+        local SpectatorsList = Instance.new("ScreenGui")
+        local Spectators = Instance.new("Frame")
+        local Container = Instance.new("Frame")
+        local UIPadding = Instance.new("UIPadding")
+        local Text = Instance.new("TextLabel")
+        local Players = Instance.new("TextLabel")
+        local Background = Instance.new("Frame")
+        local UIGradient = Instance.new("UIGradient")
+        local Color = Instance.new("Frame")
+        local UIGradient_2 = Instance.new("UIGradient")
+
+        SpectatorsList.Parent = game.CoreGui
+        SpectatorsList.Name = "SpectatorsList"
+        SpectatorsList.Enabled = true
+
+        Spectators.Name = "Spectators"
+        Spectators.Parent = SpectatorsList
+        Spectators.BackgroundColor3 = Color3.fromRGB(23, 23, 23)
+        Spectators.BackgroundTransparency = 1.000
+        Spectators.BorderColor3 = Color3.fromRGB(20, 20, 20)
+        Spectators.Position = UDim2.new(0.00800000038, 0, 0.400000006, 49)
+        Spectators.Size = UDim2.new(0, 200, 0, 20)
+
+        Container.Name = "Container"
+        Container.Parent = Spectators
+        Container.BackgroundTransparency = 1.000
+        Container.BorderSizePixel = 0
+        Container.Position = UDim2.new(0, 0, 0, 4)
+        Container.Size = UDim2.new(1, 0, 0, 14)
+        Container.ZIndex = 3
+
+        UIPadding.Parent = Container
+        UIPadding.PaddingLeft = UDim.new(0, 4)
+
+        Text.Name = "Text"
+        Text.Parent = Container
+        Text.BackgroundTransparency = 1.000
+        Text.Size = UDim2.new(1, 0, 1, 0)
+        Text.ZIndex = 4
+        Text.Font = Enum.Font.Code
+        Text.Text = "Spectators"
+        Text.TextColor3 = Color3.fromRGB(65025, 65025, 65025)
+        Text.TextSize = 14.000
+        Text.TextStrokeTransparency = 0.000
+
+        Players.Name = "Players"
+        Players.Parent = Container
+        Players.BackgroundTransparency = 1.000
+        Players.Position = UDim2.new(0.0196080022, 0, 1.14285719, 0)
+        Players.Size = UDim2.new(0.980391979, 0, 1.14285719, 0)
+        Players.ZIndex = 4
+        Players.Font = Enum.Font.Code
+        Players.Text = "loading..."
+        Players.TextColor3 = Color3.fromRGB(65025, 65025, 65025)
+        Players.TextSize = 14.000
+        Players.TextStrokeTransparency = 0.000
+        Players.TextYAlignment = Enum.TextYAlignment.Top
+
+        Background.Name = "Background"
+        Background.Parent = Spectators
+        Background.BackgroundColor3 = Color3.fromRGB(23, 23, 23)
+        Background.BorderColor3 = Color3.fromRGB(20, 20, 20)
+        Background.Size = UDim2.new(1, 0, 1, 0)
+
+        UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(90, 90, 90))}
+        UIGradient.Rotation = 90
+        UIGradient.Parent = Background
+
+        Color.Name = "Color"
+        Color.Parent = Spectators
+        Color.BackgroundColor3 = Color3.fromRGB(0, 89, 149)
+        Color.BorderSizePixel = 0
+        Color.Size = UDim2.new(1, 0, 0, 2)
+        Color.ZIndex = 2
+
+        UIGradient_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(60, 60, 60))}
+        UIGradient_2.Rotation = 90
+        UIGradient_2.Parent = Color
+
+        function GetSpectators()
+            local CurrentSpectators = ""
+            for i,v in pairs(game.Players:GetChildren()) do 
+                pcall(function()
+                    if v ~= game.Players.LocalPlayer then
+                        if not v.Character then 
+                            if (v.CameraCF.Value.p - game.Workspace.CurrentCamera.CFrame.p).Magnitude < 10 then 
+                                if CurrentSpectators == "" then
+                                        CurrentSpectators = v.Name
+                                    else
+                                        CurrentSpectators = CurrentSpectators.. "\n" ..v.Name
+                                    end
+                                end
+                            end
+                        end
+                    end)
+                end
+            return CurrentSpectators
+        end
+
+        spawn(function()
+            while wait(0.1) do
+                if SpectatorsList.Enabled then
+                    Players.Text = GetSpectators()
+                end
+            end
+        end)
+    
+        local function SCUAM_fake_script() -- Spectators.LocalScript 
+            local script = Instance.new('LocalScript', Spectators)
+            local gui = script.Parent
+            gui.Draggable = true
+            gui.Active = true
+        end
+        coroutine.wrap(SCUAM_fake_script)()
+    
+    elseif K ==  false then
+        game.CoreGui.SpectatorsList:Destroy()
+    end
+end)
 
 oldSounds = {}
 for B, C in next, game.Players.LocalPlayer.PlayerGui.Music:GetDescendants() do
@@ -1487,155 +1952,12 @@ aE:CreateToggle("Remove Killers", function(K)
     end)
 end)
 
-keystrokesButton = aE:CreateButton("Keystrokes", function()
-    -- thx 4 the help bad <3
-    local ScreenGui = Instance.new("ScreenGui")
-    local W = Instance.new("TextLabel")
-    local A = Instance.new("TextLabel")
-    local S = Instance.new("TextLabel")
-    local D = Instance.new("TextLabel")
-    local E = Instance.new("TextLabel")
-    local R = Instance.new("TextLabel")
-    local Space = Instance.new("TextLabel")
+aE:CreateToggle("No Fall Damage", function(K)
+    k["NoFall"] = K
+end)
 
-    ScreenGui.Parent = game.CoreGui
-
-    W.Name = "W"
-    W.Parent = ScreenGui
-    W.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    W.BackgroundTransparency = 1.000
-    W.Position = UDim2.new(0.488053292, 0, 0.728395104, 0)
-    W.Size = UDim2.new(0, 29, 0, 28)
-    W.Visible = false
-    W.Font = Enum.Font.Code
-    W.Text = "W"
-    W.TextColor3 = Color3.fromRGB(255, 255, 255)
-    W.TextSize = 14.000
-    W.TextStrokeTransparency = 0.000
-
-    A.Name = "A"
-    A.Parent = ScreenGui
-    A.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    A.BackgroundTransparency = 1.000
-    A.Position = UDim2.new(0.453584045, 0, 0.777777791, 0)
-    A.Size = UDim2.new(0, 29, 0, 28)
-    A.Visible = false
-    A.Font = Enum.Font.Code
-    A.Text = "A"
-    A.TextColor3 = Color3.fromRGB(255, 255, 255)
-    A.TextSize = 14.000
-    A.TextStrokeTransparency = 0.000
-
-    S.Name = "S"
-    S.Parent = ScreenGui
-    S.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    S.BackgroundTransparency = 1.000
-    S.Position = UDim2.new(0.488053292, 0, 0.777777791, 0)
-    S.Size = UDim2.new(0, 29, 0, 28)
-    S.Visible = false
-    S.Font = Enum.Font.Code
-    S.Text = "S"
-    S.TextColor3 = Color3.fromRGB(255, 255, 255)
-    S.TextSize = 14.000
-    S.TextStrokeTransparency = 0.000
-
-    D.Name = "D"
-    D.Parent = ScreenGui
-    D.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    D.BackgroundTransparency = 1.000
-    D.Position = UDim2.new(0.522522688, 0, 0.777777791, 0)
-    D.Size = UDim2.new(0, 29, 0, 28)
-    D.Visible = false
-    D.Font = Enum.Font.Code
-    D.Text = "D"
-    D.TextColor3 = Color3.fromRGB(255, 255, 255)
-    D.TextSize = 14.000
-    D.TextStrokeTransparency = 0.000
-
-    E.Name = "E"
-    E.Parent = ScreenGui
-    E.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    E.BackgroundTransparency = 1.000
-    E.Position = UDim2.new(0.453584045, 0, 0.728395045, 0)
-    E.Size = UDim2.new(0, 29, 0, 28)
-    E.Visible = false
-    E.Font = Enum.Font.Code
-    E.Text = "E"
-    E.TextColor3 = Color3.fromRGB(255, 255, 255)
-    E.TextSize = 14.000
-    E.TextStrokeTransparency = 0.000
-
-    R.Name = "R"
-    R.Parent = ScreenGui
-    R.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    R.BackgroundTransparency = 1.000
-    R.Position = UDim2.new(0.522522688, 0, 0.728395045, 0)
-    R.Size = UDim2.new(0, 29, 0, 28)
-    R.Visible = false
-    R.Font = Enum.Font.Code
-    R.Text = "R"
-    R.TextColor3 = Color3.fromRGB(255, 255, 255)
-    R.TextSize = 14.000
-    R.TextStrokeTransparency = 0.000
-
-    Space.Name = "Space"
-    Space.Parent = ScreenGui
-    Space.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    Space.BackgroundTransparency = 1.000
-    Space.Position = UDim2.new(0.470035285, 0, 0.825396895, 0)
-    Space.Size = UDim2.new(0, 87, 0, 28)
-    Space.Visible = false
-    Space.Font = Enum.Font.Code
-    Space.Text = "Space"
-    Space.TextColor3 = Color3.fromRGB(255, 255, 255)
-    Space.TextSize = 14.000
-    Space.TextStrokeTransparency = 0.000
-
-    local UserInputService = game:GetService("UserInputService")
-
-    local W1Key = Enum.KeyCode.W
-    local A1Key = Enum.KeyCode.A
-    local S1Key = Enum.KeyCode.S
-    local D1Key = Enum.KeyCode.D
-    local E1Key = Enum.KeyCode.E
-    local R1Key = Enum.KeyCode.R
-    local SpaceKey = Enum.KeyCode.Space
-
-    UserInputService.InputBegan:Connect(function(input)
-        if (input.KeyCode == W1Key) then
-            W.Visible = true
-        elseif (input.KeyCode == A1Key) then
-            A.Visible = true
-        elseif (input.KeyCode == S1Key) then
-            S.Visible = true
-        elseif (input.KeyCode == D1Key) then
-            D.Visible = true
-        elseif (input.KeyCode == E1Key) then
-            E.Visible = true
-        elseif (input.KeyCode == R1Key) then
-            R.Visible = true
-        elseif (input.KeyCode == SpaceKey) then
-            Space.Visible = true
-        end
-    end)
-
-    UserInputService.InputEnded:Connect(function(input)
-        if (input.KeyCode == W1Key) then
-            W.Visible = false
-        elseif (input.KeyCode == A1Key) then
-            A.Visible = false
-        elseif (input.KeyCode == S1Key) then
-            S.Visible = false
-        elseif (input.KeyCode == D1Key) then
-            D.Visible = false
-        elseif (input.KeyCode == E1Key) then
-            E.Visible = false
-        elseif (input.KeyCode == R1Key) then
-            R.Visible = false
-        elseif (input.KeyCode == SpaceKey) then
-            Space.Visible = false
-        end
-    end)
+aE:CreateToggle("No Fire Damage", function(K)
+    k["NoFire"] = K
 end)
 
 bulletTracers = aE:CreateToggle("Bullet Tracers", function(K)
@@ -1646,26 +1968,11 @@ bulletTracers = aE:CreateToggle("Bullet Tracers", function(K)
     end
 end)
 
--- aE:CreateButton("Fix Viewmodels", function()
-game.ReplicatedStorage.Viewmodels["v_USP"].HumanoidRootPart.Transparency = 1
-game.ReplicatedStorage.Viewmodels["v_Tec9"].HumanoidRootPart.Transparency = 1
-game.ReplicatedStorage.Viewmodels["v_Smoke Grenade"].HumanoidRootPart.Transparency = 1
-game.ReplicatedStorage.Viewmodels["v_Scout"].HumanoidRootPart.Transparency = 1
-game.ReplicatedStorage.Viewmodels["v_SawedOff"].HumanoidRootPart.Transparency = 1
-game.ReplicatedStorage.Viewmodels["v_SCAR-20"].HumanoidRootPart.Transparency = 1
-game.ReplicatedStorage.Viewmodels["v_Negev"].HumanoidRootPart.Transparency = 1
-game.ReplicatedStorage.Viewmodels["v_Incendiary Grenade"].HumanoidRootPart.Transparency = 1
-game.ReplicatedStorage.Viewmodels["v_Flashbang"].HumanoidRootPart.Transparency = 1
-game.ReplicatedStorage.Viewmodels["v_Decoy Grenade"].HumanoidRootPart.Transparency = 1
-game.ReplicatedStorage.Viewmodels["v_C4Halloween"].HumanoidRootPart.Transparency = 1
--- end)
-
-
 aE:CreateToggle("Kill All", function(K)
     if K then
         KillAllLoop = game:GetService("RunService").RenderStepped:Connect(function()
-		    pcall(function()
-			    for i,v in pairs(game.Players:GetChildren()) do
+            pcall(function()
+                for i,v in pairs(game.Players:GetChildren()) do
 					if v.Character and v.Character.Humanoid.Health > 0 and game.Players.LocalPlayer.Character.EquippedTool and v.Team ~= game.Players.LocalPlayer.Team then
 						local Arguments = {
 							[1] = v.Character.Head,
@@ -1692,124 +1999,6 @@ end)
 
 aE:CreateButton("Rejoin", function()
     game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, LocalPlayer)
-end)
-
-aE:CreateButton("Spectator List", function()
-    local SpectatorsList = Instance.new("ScreenGui")
-    local Spectators = Instance.new("Frame")
-    local Container = Instance.new("Frame")
-    local UIPadding = Instance.new("UIPadding")
-    local Text = Instance.new("TextLabel")
-    local Players = Instance.new("TextLabel")
-    local Background = Instance.new("Frame")
-    local UIGradient = Instance.new("UIGradient")
-    local Color = Instance.new("Frame")
-    local UIGradient_2 = Instance.new("UIGradient")
-
-    --Properties:
-
-    SpectatorsList.Parent = game.CoreGui
-    SpectatorsList.Enabled = true
-
-    Spectators.Name = "Spectators"
-    Spectators.Parent = SpectatorsList
-    Spectators.BackgroundColor3 = Color3.fromRGB(23, 23, 23)
-    Spectators.BackgroundTransparency = 1.000
-    Spectators.BorderColor3 = Color3.fromRGB(20, 20, 20)
-    Spectators.Position = UDim2.new(0.00800000038, 0, 0.400000006, 49)
-    Spectators.Size = UDim2.new(0, 200, 0, 20)
-
-    Container.Name = "Container"
-    Container.Parent = Spectators
-    Container.BackgroundTransparency = 1.000
-    Container.BorderSizePixel = 0
-    Container.Position = UDim2.new(0, 0, 0, 4)
-    Container.Size = UDim2.new(1, 0, 0, 14)
-    Container.ZIndex = 3
-
-    UIPadding.Parent = Container
-    UIPadding.PaddingLeft = UDim.new(0, 4)
-
-    Text.Name = "Text"
-    Text.Parent = Container
-    Text.BackgroundTransparency = 1.000
-    Text.Size = UDim2.new(1, 0, 1, 0)
-    Text.ZIndex = 4
-    Text.Font = Enum.Font.Code
-    Text.Text = "Spectators"
-    Text.TextColor3 = Color3.fromRGB(65025, 65025, 65025)
-    Text.TextSize = 14.000
-    Text.TextStrokeTransparency = 0.000
-
-    Players.Name = "Players"
-    Players.Parent = Container
-    Players.BackgroundTransparency = 1.000
-    Players.Position = UDim2.new(0.0196080022, 0, 1.14285719, 0)
-    Players.Size = UDim2.new(0.980391979, 0, 1.14285719, 0)
-    Players.ZIndex = 4
-    Players.Font = Enum.Font.Code
-    Players.Text = "loading..."
-    Players.TextColor3 = Color3.fromRGB(65025, 65025, 65025)
-    Players.TextSize = 14.000
-    Players.TextStrokeTransparency = 0.000
-    Players.TextYAlignment = Enum.TextYAlignment.Top
-
-    Background.Name = "Background"
-    Background.Parent = Spectators
-    Background.BackgroundColor3 = Color3.fromRGB(23, 23, 23)
-    Background.BorderColor3 = Color3.fromRGB(20, 20, 20)
-    Background.Size = UDim2.new(1, 0, 1, 0)
-
-    UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(90, 90, 90))}
-    UIGradient.Rotation = 90
-    UIGradient.Parent = Background
-
-    Color.Name = "Color"
-    Color.Parent = Spectators
-    Color.BackgroundColor3 = Color3.fromRGB(0, 89, 149)
-    Color.BorderSizePixel = 0
-    Color.Size = UDim2.new(1, 0, 0, 2)
-    Color.ZIndex = 2
-
-    UIGradient_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(60, 60, 60))}
-    UIGradient_2.Rotation = 90
-    UIGradient_2.Parent = Color
-
-    function GetSpectators()
-        local CurrentSpectators = ""
-        for i,v in pairs(game.Players:GetChildren()) do 
-            pcall(function()
-                if v ~= game.Players.LocalPlayer then
-                    if not v.Character then 
-                        if (v.CameraCF.Value.p - game.Workspace.CurrentCamera.CFrame.p).Magnitude < 10 then 
-                            if CurrentSpectators == "" then
-                                CurrentSpectators = v.Name
-                                else
-                                    CurrentSpectators = CurrentSpectators.. "\n" ..v.Name
-                                end
-                            end
-                        end
-                    end
-                end)
-            end
-        return CurrentSpectators
-    end
-
-    spawn(function()
-        while wait(0.1) do
-            if SpectatorsList.Enabled then
-                Players.Text = GetSpectators()
-            end
-        end
-    end)
-    
-    local function SCUAM_fake_script() -- Spectators.LocalScript 
-        local script = Instance.new('LocalScript', Spectators)
-        local gui = script.Parent
-        gui.Draggable = true
-        gui.Active = true
-    end
-    coroutine.wrap(SCUAM_fake_script)()
 end)
 
 aE:CreateToggle("Hit Sound", function(K)
@@ -1875,6 +2064,17 @@ aE:CreateToggle("Hit Marker", function(K)
     end
 end)
 
+aE:CreateToggle("Anti Kick", function(K)
+    if K == true then
+        game.ReplicatedStorage.Events.SendMsg.OnClientEvent:Connect(function(message)
+            local msg = string.split(message, " ")
+            if game.Players:FindFirstChild(msg[1]) and msg[7] == "1" and msg[12] == game.Players.LocalPlayer.Name then
+                game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, LocalPlayer)
+            end
+        end)
+    end
+end)
+------------------------------------ SKINS ------------------------------------
 Daggers = aG:CreateButton("Shadow Daggers", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/deaddigi/pepsi.club/main/skins/shadowdaggers", true))()
 end)
@@ -2135,6 +2335,10 @@ mt.__namecall = newcclosure(function(self, ...)
 			return wait(99e99)
 		elseif method == "Kick" then
 			return
+		elseif self.Name == "BURNME" and k["NoFire"] == true then
+            return
+		elseif self.Name == "FallDamage" and k["NoFall"] == true then
+            return
 		elseif method == "FireServer" and self.Name == "ControlTurn" and SECHS == true then
 			return
 		end
@@ -2143,141 +2347,13 @@ mt.__namecall = newcclosure(function(self, ...)
     return oldNamecall(self, unpack(args))
 end)
 
-local watermark = Instance.new("ScreenGui")
-local ScreenLabel = Instance.new("Frame")
-local Color = Instance.new("Frame")
-local UIGradient = Instance.new("UIGradient")
-local Container = Instance.new("Frame")
-local UIPadding = Instance.new("UIPadding")
-local Text = Instance.new("TextLabel")
-local Time = Instance.new("TextLabel")
-local Background = Instance.new("Frame")
-local UIGradient_2 = Instance.new("UIGradient")
-
-watermark.Name = "watermark"
-watermark.Parent = game.CoreGui
-
-ScreenLabel.Name = "ScreenLabel"
-ScreenLabel.Parent = watermark
-ScreenLabel.BackgroundColor3 = Color3.fromRGB(28, 28, 28)
-ScreenLabel.BackgroundTransparency = 1.000
-ScreenLabel.BorderColor3 = Color3.fromRGB(20, 20, 20)
-ScreenLabel.Position = UDim2.new(0, 12, 0, 7)
-ScreenLabel.Size = UDim2.new(0, 260, 0, 20)
-
-Color.Name = "Color"
-Color.Parent = ScreenLabel
-Color.BackgroundColor3 = Color3.fromRGB(0, 89, 149)
-Color.BorderSizePixel = 0
-Color.Position = UDim2.new(0.0192307699, 0, 0, 0)
-Color.Size = UDim2.new(0.642307699, 0, 0, 2)
-Color.ZIndex = 2
-
-UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(60, 60, 60))}
-UIGradient.Rotation = 90
-UIGradient.Parent = Color
-
-Container.Name = "Container"
-Container.Parent = ScreenLabel
-Container.BackgroundTransparency = 1.000
-Container.BorderSizePixel = 0
-Container.Position = UDim2.new(0, 0, 0, 4)
-Container.Size = UDim2.new(1, 0, 0, 14)
-Container.ZIndex = 3
-
-UIPadding.Parent = Container
-UIPadding.PaddingLeft = UDim.new(0, 4)
-
-Text.Name = "Text"
-Text.Parent = Container
-Text.BackgroundTransparency = 1.000
-Text.Position = UDim2.new(0.0381064788, 0, 0, 0)
-Text.Size = UDim2.new(0.373076916, 0, 1, 0)
-Text.ZIndex = 4
-Text.Font = Enum.Font.Code
-Text.Text = "pepsi.club!"
-Text.TextColor3 = Color3.fromRGB(65025, 65025, 65025)
-Text.TextSize = 14.000
-Text.TextStrokeTransparency = 0.000
-Text.TextXAlignment = Enum.TextXAlignment.Left
-
-Time.Name = "Time"
-Time.Parent = Container
-Time.BackgroundTransparency = 1.000
-Time.Position = UDim2.new(0.374206603, 0, 0, 0)
-Time.Size = UDim2.new(0.278875738, 0, 1, 0)
-Time.ZIndex = 4
-Time.Font = Enum.Font.Code
-Time.Text = "00:00:00"
-Time.TextColor3 = Color3.fromRGB(65025, 65025, 65025)
-Time.TextSize = 14.000
-Time.TextStrokeTransparency = 0.000
-Time.TextXAlignment = Enum.TextXAlignment.Left
-
-Background.Name = "Background"
-Background.Parent = ScreenLabel
-Background.BackgroundColor3 = Color3.fromRGB(23, 23, 23)
-Background.BorderColor3 = Color3.fromRGB(20, 20, 20)
-Background.Position = UDim2.new(0.0192307699, 0, 0, 0)
-Background.Size = UDim2.new(0.642307699, 0, 1, 0)
-
-UIGradient_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(90, 90, 90))}
-UIGradient_2.Rotation = 90
-UIGradient_2.Parent = Background
-
--- Scripts:
-
-local function ZBZX_fake_script() -- Time.LocalScript 
-	local script = Instance.new('LocalScript', Time)
-
-	local mo = "A.M."
-	local mont = nil
-	while wait() do
-		local l = math.fmod(tick(),86400)
-		local h = math.floor(l/3600)
-		local m = math.floor(l/60-h*60)
-		local s = math.floor(math.fmod(l,60))
-		local y = math.floor(1970+tick()/31579200)
-		local mon = {{"January",31,31},{"February",59,28},{"March",90,31},{"April",120,30},{"May",151,31},{"June",181,30},{"July",212,31},{"August",243,31},{"September",273,30},{"October",304,31},{"November",334,30},{"December",365,31}}
-		if y%4 == 0 then
-			mon[2][3] = 29
-			for i,v in pairs(mon) do
-				if i ~= 1 then
-					v[2] = v[2] + 1
-				end
-			end
+oldIndex = hookfunc(getrawmetatable(game.Players.LocalPlayer.PlayerGui.Client).__index, newcclosure(function(self, idx, val)
+	if idx == "Value" then
+		if (self.Name == "Spread" or self.Parent.Name == "Spread") and k["NoSpread"] == true then
+			return 0
+		elseif (self.Name == "AccuracyDivisor" or self.Name == "AccuracyOffset") and k["NoSpread"] == true then
+			return 0.001
 		end
-		local d = math.floor(tick()/86400%365.25+1)
-		for i,v in pairs(mon) do
-			if v[2]-v[3]<=d then
-				mont = i
-			end
-		end
-		d = d + mon[mont][3]-mon[mont][2]
-		if m <= 9 then
-			m = "0" ..m
-		end
-		if s <= 9 then
-			s = "0" ..s
-		end
-		if h >= 12 then
-			mo = "P.M."
-		else
-			mo = "A.M."
-		end
-		if h > 12 then
-			h = h - 12
-		end
-		script.Parent.Text = "" ..h.. ":" ..m.. ":" ..s.. " "
 	end
-end
-coroutine.wrap(ZBZX_fake_script)()
-local function POWDOGC_fake_script() -- ScreenLabel.LocalScript 
-	local script = Instance.new('LocalScript', ScreenLabel)
-
-	local gui = script.Parent
-	
-	gui.Draggable = true
-	gui.Active = true
-end
-coroutine.wrap(POWDOGC_fake_script)()
+    return oldIndex(self, idx)
+end))
