@@ -2225,25 +2225,6 @@ game:GetService("RunService").Stepped:connect(
                 game.Players.LocalPlayer.PlayerGui.GUI.SuitZoom.BackgroundTransparency = 1
             end)
         end)
-            if k["KillAll"] and LocalPlayer.Character:FindFirstChild("UpperTorso") and LocalPlayer.Character:FindFirstChild("Gun") then
-                for _,Player in pairs(Players:GetPlayers()) do
-                    for _,Player in pairs(Players:GetPlayers()) do
-                        local oh1 = Player.Character.Head
-                        local oh2 = Player.Character.Head.CFrame.p
-                        local oh3 = LocalPlayer.gun.Name
-                        local oh4 = 4096
-                        local oh5 = LocalPlayer.Character.Gun
-                        local oh6 = ""
-                        local oh7 = ""
-                        local oh8 = 15
-                        local oh9 = false
-                        local oh10 = false
-                        local oh11 = Vector3.new(0,0,0)
-                        local oh12 = 16868
-                        local oh13 = Vector3.new(0, 0, 0)
-                        game:GetService("ReplicatedStorage").Events.HitPart:FireServer(oh1, oh2, oh3, oh4, oh5, oh6, oh7, oh8, oh9, oh10, oh11, oh12, oh13)
-                end
-        end
 end
 
 -- btracers Settings
