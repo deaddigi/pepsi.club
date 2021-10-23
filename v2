@@ -12,10 +12,10 @@ game.ReplicatedStorage.Viewmodels["v_Decoy Grenade"].HumanoidRootPart.Transparen
 game.ReplicatedStorage.Viewmodels["v_C4Halloween"].HumanoidRootPart.Transparency = 1
 ----------------------------------------------------------------------------------------
 
------------------------------------- LIBRARY -------------------------------------------
 if game.CoreGui:FindFirstChild("pepsi") then
     game.CoreGui.pepsi:Destroy()
 end
+local cbClient = getsenv(game.Players.LocalPlayer.PlayerGui.Client)
 local a = game:GetService("UserInputService")
 local b = game:GetService("TweenService")
 local c = game:GetService("HttpService")
@@ -472,9 +472,6 @@ function l:CreateUI()
     m.Parent = game.CoreGui
     return x
 end
-----------------------------------------------------------------------------------------
-
------------------------------------- FUNCTIONS -----------------------------------------
 function getNearest()
     local ak = math.huge
     local al = nil
@@ -562,19 +559,18 @@ au.__namecall =
     end
 )
 
-local cbClient = getsenv(game.Players.LocalPlayer.PlayerGui.Client)
-----------------------------------------------------------------------------------------
-
------------------------------------- UI ------------------------------------------------
+------------------------------------ UI   ------------------------------------
 local aA = l:CreateUI()
------------------------------------- TABS ----------------------------------------------
+------------------------------------ TABS ------------------------------------
 local aB = aA:CreateTab("aimbot")
 local aC = aA:CreateTab("visuals")
 local aD = aA:CreateTab("movement")
 local aE = aA:CreateTab("other")
 local aG = aA:CreateTab("skins")
 local aF = aA:CreateTab("config")
------------------------------------- AIMBOT --------------------------------------------
+
+------------------------------------ AIMBOT ------------------------------------
+
 silentAim = aB:CreateToggle("Silent aim", function(K)
     k["Silent aim"] = K
     if K then
@@ -635,349 +631,9 @@ noRecoil = aB:CreateToggle("No Recoil", function(K)
         game:GetService("RunService"):UnbindFromRenderStep("NoRecoil")
     end
 end)
------------------------------------- VISUALS ------------------------------------
-chamsToggle = aC:CreateToggle("Chams", function(K)
-    if K ~= k["Chams"] then
-        k["Chams"] = K
-        if k["Chams"] then
-            for B, C in next, e:GetPlayers() do
-                if C ~= g and C.Team ~= g.Team and C.Character and C.Character.PrimaryPart then
-                    chams(C)
-                end
-            end
-        else
-            ap:ClearAllChildren()
-        end
-    end
-end)
 
-M9Toggle = aC:CreateToggle("M9 Bayonet", function(K)
-    k["M9 Bayonet"] = K
-    aS.M9.Enabled = K
-    spawn(
-        function()
-            while aS.M9.Enabled do
-                d.RenderStepped:Wait()
-                pcall(
-                    function()
-                        if
-                            g.Character and g.Character:FindFirstChild("EquippedTool") and
-                                game.ReplicatedStorage.Weapons:FindFirstChild(g.Character.EquippedTool.Value):FindFirstChild(
-                                    "Melee"
-                                ) and
-                                workspace.Camera:FindFirstChild("Arms") and
-                                workspace.Camera.Arms:FindFirstChild("Handle2")
-                        then
-                            workspace.Camera.Arms.Handle.MeshId = "rbxassetid://5524010796"
-                            workspace.Camera.Arms.Handle.TextureID = "rbxassetid://5521767392"
-                        end
-                    end)
-                end
-        end)
-end)
-
-local b3 = Instance.new("ColorCorrectionEffect", game.Lighting)
-Nightmode = aC:CreateToggle("Nightmode", function(K)
-    k["Nightmode"] = K
-    if K then
-        b3.Brightness = -0.15
-        game.Lighting.Brightness = 0
-    else
-        b3.Brightness = 0
-        game.Lighting.Brightness = 1
-    end
-end)
-
-local zuhnmode = Instance.new("ColorCorrectionEffect", workspace.CurrentCamera)
-Zuhnmode = aC:CreateToggle("Zuhn Mode", function(K)
-    if K == true then
-        zuhnmode.Saturation = 1.2
-    elseif K == false then
-        zuhnmode.Saturation = 0
-    end
-end)
-
-bettershadows = aC:CreateToggle("Better Shadows", function(K)
-    k["Shadows"] = K
-end)
-
-Fog = aC:CreateToggle("Fog", function(K)
-    k["Fog"] = K
-end)
-
-noFlash = aC:CreateToggle("No Flash", function(K)
-    if K == true then
-        game.Players.LocalPlayer.PlayerGui.Blnd.Enabled = false
-    elseif K == false then
-        game.Players.LocalPlayer.PlayerGui.Blnd.Enabled = true
-    end
-end)
-
-Skyboxes = {
-    ["Purple Nebula"] = {
-        ["SkyboxBk"] = "rbxassetid://159454299",
-        ["SkyboxDn"] = "rbxassetid://159454296",
-        ["SkyboxFt"] = "rbxassetid://159454293",
-        ["SkyboxLf"] = "rbxassetid://159454286",
-        ["SkyboxRt"] = "rbxassetid://159454300",
-        ["SkyboxUp"] = "rbxassetid://159454288"
-    },
-    ["Dusty Clouds"] = {
-        ["SkyboxBk"] = "rbxassetid://252760981",
-        ["SkyboxDn"] = "rbxassetid://252763035",
-        ["SkyboxFt"] = "rbxassetid://252761439",
-        ["SkyboxLf"] = "rbxassetid://252760980",
-        ["SkyboxRt"] = "rbxassetid://252760986",
-        ["SkyboxUp"] = "rbxassetid://252762652"
-    },
-    ["Night Sky"] = {
-        ["SkyboxBk"] = "rbxassetid://12064107",
-        ["SkyboxDn"] = "rbxassetid://12064152",
-        ["SkyboxFt"] = "rbxassetid://12064121",
-        ["SkyboxLf"] = "rbxassetid://12063984",
-        ["SkyboxRt"] = "rbxassetid://12064115",
-        ["SkyboxUp"] = "rbxassetid://12064131"
-    },
-    ["Pink Daylight"] = {
-        ["SkyboxBk"] = "rbxassetid://271042516",
-        ["SkyboxDn"] = "rbxassetid://271077243",
-        ["SkyboxFt"] = "rbxassetid://271042556",
-        ["SkyboxLf"] = "rbxassetid://271042310",
-        ["SkyboxRt"] = "rbxassetid://271042467",
-        ["SkyboxUp"] = "rbxassetid://271077958"
-    }
-}
-
-local b5 = workspace.CurrentCamera
-local b6 = Instance.new("SurfaceGui")
-b6.CanvasSize = Vector2.new(200, 200)
-b6.Name = "DropSurface"
-
-local b7 = Instance.new("ImageLabel")
-b7.BackgroundTransparency = 1
-b7.ImageColor3 = Color3.new(121 / 255, 121 / 255, 121 / 255)
-b7.Size = UDim2.new(0, 5, 0, 100)
-b7.ImageTransparency = 0.75
-b7.Image = "rbxassetid://221405600"
-
-local b8 = Instance.new("Part")
-b8.Transparency = 1
-b8.Anchored = true
-b8.CanCollide = false
-b8.FormFactor = "Custom"
-
-local b9 = Instance.new("SurfaceGui")
-b9.CanvasSize = Vector2.new(200, 200)
-b9.Face = "Top"
-b9.Parent = b8
-b9.Name = "DropleSurface"
-
-local ba = Instance.new("ImageLabel", b9)
-ba.Position = UDim2.new(0, 0, 0, 0)
-ba.Size = UDim2.new(1, 0, 1, 0)
-ba.BackgroundTransparency = 1
-ba.Image = "rbxassetid://221657524"
-ba.ImageColor3 = Color3.new(121 / 255, 121 / 255, 121 / 255)
-ba.ImageTransparency = 0.75
-ba.Name = "SplashImage"
-local bb = 300
-local bc = 900
-local bd = {}
-local be = {}
-
-function randring(bf, bg)
-    local bh = math.random() * math.pi * 2
-    local bi = math.random() * (bg - bf) + bf
-    return math.cos(bh) * bi, 0, math.sin(bh) * bi
-end
-
-function drople(b0)
-    local bj = b8:Clone()
-    bj.Parent = workspace.Debris
-    local bk = math.random() * math.pi * 2
-    table.insert(be, {part = bj, start = tick(), position = b0, label = bj.DropleSurface.SplashImage, angle = bk})
-end
-
-rainEnabled = aC:CreateToggle("Rain", function(K)
-    k["Rain"] = K
-    bd = {}
-    be = {}
-    if not k["Rain"] then
-        workspace.Debris:ClearAllChildren()
-    end
-    spawn(
-        function()
-            while k["Rain"] do
-                game["Run Service"].RenderStepped:wait()
-                if #bd < 150 then
-                    local bl = Instance.new("Part", workspace.Debris)
-                    local bm = math.random(1, 3) == 1 and 24 or 8
-                    local bn, bo, bp, bq = 0, 75, 3, 8
-                    if math.random(1, 3) == 1 then
-                        bn, bo, bp, bq = 75, 200, 9, 24
-                    end
-                    bl.CanCollide = false
-                    bl.Transparency = 0.5
-                    bl.Anchored = true
-                    bl.FormFactor = "Custom"
-                    bl.Size = Vector3.new(bq, bq, 0.2)
-                    bl.Transparency = 1
-                    local br = b6:Clone()
-                    br.Parent = bl
-                    br.CanvasSize = Vector2.new(200, 200)
-                    for B = 1, bp do
-                        local bs = b7:Clone()
-                        bs.Position = UDim2.new(0, math.random() * 195, 0, math.random() * 100)
-                        bs.Parent = br
-                    end
-                    bl.Position =
-                        Vector3.new(
-                        b5.CFrame.p.X + math.random(-100, 0),
-                        b5.CFrame.p.Y + 100,
-                        b5.CFrame.p.Z + math.random(-100, 100)
-                    )
-                    table.insert(
-                        bd,
-                        {
-                            part = bl,
-                            x = 0,
-                            y = math.random(),
-                            z = 0,
-                            stop = -1,
-                            close = bn,
-                            far = bo,
-                            labels = bl.DropSurface:GetChildren()
-                        }
-                    )
-                end
-                local b5 = workspace.CurrentCamera.CoordinateFrame
-                local bt = b5.lookVector
-                local bu = workspace.CurrentCamera.CoordinateFrame.p
-                for bv, bw in pairs(bd) do
-                    local bl, bx, by, bz = bw.part, bw.x, bw.y, bw.z
-                    local C = Vector3.new(bx, by, bz)
-                    local bA = b5:pointToObjectSpace(C)
-                    local bB = bA.z < 0
-                if by < bw.stop - 5 then
-                        if bB and (Vector3.new(bx, bw.stop, bz) - workspace.CurrentCamera.CFrame.p).Magnitude >= 5 then
-                            drople(Vector3.new(bx, bw.stop, bz))
-                        end
-                        bw.x, bv, bw.z = randring(bw.close, bw.far)
-                        bw.x, bw.z = bw.x + bu.x, bw.z + bu.z
-                        bw.y = bc
-                        local b0 = Vector3.new(bw.x, bw.y, bw.z)
-                        bl.CFrame = CFrame.new(b0, Vector3.new(bu.x, by, bu.z))
-                        local aZ = Ray.new(b0, Vector3.new(0, -bc - bb, 0))
-                        local bC, a_ = workspace.FindPartOnRay(workspace, aZ, home, true)
-                        if bC then
-                            bw.stop = a_.y
-                        else
-                            bw.stop = bb
-                        end
-                    else
-                        bw.y = by - 2
-                        if bB then
-                            local bD = (by - bc + 50) * .25 / 50 + .75
-                            if by < bw.stop - 1 then
-                                bD = .75 + .25 / 5 * (bw.stop - 1 - by)
-                            end
-                            if by > bc - 50 or by < bw.stop then
-                                for bv, bE in pairs(bw.labels) do
-                                    bE.ImageTransparency = bD
-                                end
-                            end
-                        end
-                        bl.CFrame = CFrame.new(C, Vector3.new(bu.x, by, bu.z))
-                    end
-                end
-                for bF = #be, 1, -1 do
-                    local bG = be[bF]
-                    local bh = (tick() - bG.start) * 3
-                    if bh > 1 then
-                        bG.part:Destroy()
-                        table.remove(be, bF)
-                    else
-                        bG.label.ImageTransparency = bh
-                        local bH = bh - bh * bh
-                        bG.part.Size = Vector3.new(2 / 3 + bh, 0.2, 2 / 3 + bh)
-                        bG.part.CFrame =
-                            CFrame.new(bG.position + Vector3.new(0, bH * 2, 0)) * CFrame.Angles(0, bG.angle, 0)
-                    end
-                end
-            end
-        end)
-end)
-
-skyboxEnabled = aC:CreateToggle("Custom skybox", function(K)
-    k["Custom skybox"] = K
-end)
-
-skyboxSelected = aC:CreateDropdown("Selected skybox", {"Night Sky", "Purple Nebula", "Pink Daylight", "Dusty Clouds"}, function(bI)
-    k["Selected skybox"] = bI
-    spawn(
-        function()
-            if not game.Lighting:FindFirstChild("customsky") then
-                if k["Custom skybox"] then
-                    local bJ = Instance.new("Sky", game.Lighting)
-                    bJ.Name = "customsky"
-                    if Skyboxes[bI] then
-                        for B, C in next, Skyboxes[bI] do
-                            game.Lighting.customsky[B] = C
-                        end
-                    end
-                end
-            end
-            if Skyboxes[bI] and game.Lighting:FindFirstChild("customsky") then
-                for B, C in next, Skyboxes[bI] do
-                    game.Lighting.customsky[B] = C
-                end
-            end
-            if not k["Custom skybox"] and game.Lighting:FindFirstChild("customsky") then
-                game.Lighting.customsky:Destroy()
-        end
-    end)
-end)
-
-chamsTransparency = aC:CreateSlider("Chams Transparency", 100, function(W)
-    k["Chams Transparency"] = W
-    for B, C in next, ap:GetChildren() do
-        C.Transparency = 0 + k["Chams Transparency"] / 100
-    end
-end)
-
-unlockInv = aC:CreateButton("Bayonet", function()
-    local bK = "v_Bayonet"
-    for bv, C in pairs(game:GetDescendants()) do
-        if C.Name == "v_T Knife" or C.Name == "v_CT Knife" then
-            C.Name = "hdf"
-        end
-    end
-    local bj = game.ReplicatedStorage.Viewmodels[bK]
-    bj:Clone().Parent = game.ReplicatedStorage.Viewmodels
-    local bL = bj:Clone()
-    local bh = bj:Clone()
-    bL.Name = "v_CT Knife"
-    bh.Name = "v_T Knife"
-    bL.Parent = game.ReplicatedStorage.Viewmodels
-    bh.Parent = game.ReplicatedStorage.Viewmodels
-end)
-
-enabledViewmodel = aC:CreateToggle("Enabled Viewmodel", function(K)
-    ViewmodelEnabled = K
-end)
-
-xViewmodel = aC:CreateSlider("X", 360, function(W)
-    ViewmodelX = W
-end)
-
-yViewmodel = aC:CreateSlider("Y", 360, function(W)
-    ViewmodelY = W
-end)
-
-zViewmodel = aC:CreateSlider("Z", 360, function(W)
-    ViewmodelZ = W
-end)
 ------------------------------------ MOVEMENT ------------------------------------
+
 local aJ = h.speedupdate
 bunnyHop = aD:CreateToggle("Bunny hop", function(K)
     k["Bunny hop"] = K
@@ -1303,7 +959,7 @@ a.InputBegan:connect(function(w)
                                 end
                                 wait(0.2)
                                 aQ.Color = Color3.new(0.9, 0.2, 0.2)
-                                wait(0.1)
+                                wait(0.8)
                                 aS.Edgebug.Debounce = false
                                 aS.Edgebug.NoDamage = false
                             end
@@ -1552,6 +1208,417 @@ PlrTrailToggle = aD:CreateToggle("Player Trail", function(K)
         PlrTrail:Disconnect()
     end
 end)
+
+------------------------------------ VISUALS ------------------------------------
+
+chamsToggle = aC:CreateToggle("Chams", function(K)
+    if K ~= k["Chams"] then
+        k["Chams"] = K
+        if k["Chams"] then
+            for B, C in next, e:GetPlayers() do
+                if C ~= g and C.Team ~= g.Team and C.Character and C.Character.PrimaryPart then
+                    chams(C)
+                end
+            end
+        else
+            ap:ClearAllChildren()
+        end
+    end
+end)
+
+M9Toggle = aC:CreateToggle("M9 Bayonet", function(K)
+    k["M9 Bayonet"] = K
+    aS.M9.Enabled = K
+    spawn(
+        function()
+            while aS.M9.Enabled do
+                d.RenderStepped:Wait()
+                pcall(
+                    function()
+                        if
+                            g.Character and g.Character:FindFirstChild("EquippedTool") and
+                                game.ReplicatedStorage.Weapons:FindFirstChild(g.Character.EquippedTool.Value):FindFirstChild(
+                                    "Melee"
+                                ) and
+                                workspace.Camera:FindFirstChild("Arms") and
+                                workspace.Camera.Arms:FindFirstChild("Handle2")
+                        then
+                            workspace.Camera.Arms.Handle.MeshId = "rbxassetid://5524010796"
+                            workspace.Camera.Arms.Handle.TextureID = "rbxassetid://5521767392"
+                        end
+                    end)
+                end
+        end)
+end)
+
+local b3 = Instance.new("ColorCorrectionEffect", game.Lighting)
+Nightmode = aC:CreateToggle("Nightmode", function(K)
+    k["Nightmode"] = K
+    if K then
+        b3.Brightness = -0.15
+        game.Lighting.Brightness = 0
+    else
+        b3.Brightness = 0
+        game.Lighting.Brightness = 1
+    end
+end)
+
+local zuhnmode = Instance.new("ColorCorrectionEffect", workspace.CurrentCamera)
+Zuhnmode = aC:CreateToggle("Zuhn Mode", function(K)
+    if K == true then
+        zuhnmode.Saturation = 1.2
+    elseif K == false then
+        zuhnmode.Saturation = 0
+    end
+end)
+
+bettershadows = aC:CreateToggle("Better Shadows", function(K)
+    k["Shadows"] = K
+end)
+
+Fog = aC:CreateToggle("Fog", function(K)
+    k["Fog"] = K
+end)
+
+depth = Instance.new("DepthOfFieldEffect", game.Lighting)
+depth.InFocusRadius = 50
+depth.FarIntensity = 0.3
+depthOfField = aC:CreateToggle("Depth of field", function(b4)
+    depth.Enabled = b4
+end)
+
+noFlash = aC:CreateToggle("No Flash", function(K)
+    if K == true then
+        game.Players.LocalPlayer.PlayerGui.Blnd.Enabled = false
+    elseif K == false then
+        game.Players.LocalPlayer.PlayerGui.Blnd.Enabled = true
+    end
+end)
+
+Skyboxes = {
+    ["Purple Nebula"] = {
+        ["SkyboxBk"] = "rbxassetid://159454299",
+        ["SkyboxDn"] = "rbxassetid://159454296",
+        ["SkyboxFt"] = "rbxassetid://159454293",
+        ["SkyboxLf"] = "rbxassetid://159454286",
+        ["SkyboxRt"] = "rbxassetid://159454300",
+        ["SkyboxUp"] = "rbxassetid://159454288"
+    },
+    ["Dusty Clouds"] = {
+        ["SkyboxBk"] = "rbxassetid://252760981",
+        ["SkyboxDn"] = "rbxassetid://252763035",
+        ["SkyboxFt"] = "rbxassetid://252761439",
+        ["SkyboxLf"] = "rbxassetid://252760980",
+        ["SkyboxRt"] = "rbxassetid://252760986",
+        ["SkyboxUp"] = "rbxassetid://252762652"
+    },
+    ["Night Sky"] = {
+        ["SkyboxBk"] = "rbxassetid://12064107",
+        ["SkyboxDn"] = "rbxassetid://12064152",
+        ["SkyboxFt"] = "rbxassetid://12064121",
+        ["SkyboxLf"] = "rbxassetid://12063984",
+        ["SkyboxRt"] = "rbxassetid://12064115",
+        ["SkyboxUp"] = "rbxassetid://12064131"
+    },
+    ["Pink Daylight"] = {
+        ["SkyboxBk"] = "rbxassetid://271042516",
+        ["SkyboxDn"] = "rbxassetid://271077243",
+        ["SkyboxFt"] = "rbxassetid://271042556",
+        ["SkyboxLf"] = "rbxassetid://271042310",
+        ["SkyboxRt"] = "rbxassetid://271042467",
+        ["SkyboxUp"] = "rbxassetid://271077958"
+    }
+}
+
+local b5 = workspace.CurrentCamera
+local b6 = Instance.new("SurfaceGui")
+b6.CanvasSize = Vector2.new(200, 200)
+b6.Name = "DropSurface"
+
+local b7 = Instance.new("ImageLabel")
+b7.BackgroundTransparency = 1
+b7.ImageColor3 = Color3.new(121 / 255, 121 / 255, 121 / 255)
+b7.Size = UDim2.new(0, 5, 0, 100)
+b7.ImageTransparency = 0.75
+b7.Image = "rbxassetid://221405600"
+
+local b8 = Instance.new("Part")
+b8.Transparency = 1
+b8.Anchored = true
+b8.CanCollide = false
+b8.FormFactor = "Custom"
+
+local b9 = Instance.new("SurfaceGui")
+b9.CanvasSize = Vector2.new(200, 200)
+b9.Face = "Top"
+b9.Parent = b8
+b9.Name = "DropleSurface"
+
+local ba = Instance.new("ImageLabel", b9)
+ba.Position = UDim2.new(0, 0, 0, 0)
+ba.Size = UDim2.new(1, 0, 1, 0)
+ba.BackgroundTransparency = 1
+ba.Image = "rbxassetid://221657524"
+ba.ImageColor3 = Color3.new(121 / 255, 121 / 255, 121 / 255)
+ba.ImageTransparency = 0.75
+ba.Name = "SplashImage"
+local bb = 300
+local bc = 900
+local bd = {}
+local be = {}
+
+function randring(bf, bg)
+    local bh = math.random() * math.pi * 2
+    local bi = math.random() * (bg - bf) + bf
+    return math.cos(bh) * bi, 0, math.sin(bh) * bi
+end
+
+function drople(b0)
+    local bj = b8:Clone()
+    bj.Parent = workspace.Debris
+    local bk = math.random() * math.pi * 2
+    table.insert(be, {part = bj, start = tick(), position = b0, label = bj.DropleSurface.SplashImage, angle = bk})
+end
+
+rainEnabled = aC:CreateToggle("Rain", function(K)
+    k["Rain"] = K
+    bd = {}
+    be = {}
+    if not k["Rain"] then
+        workspace.Debris:ClearAllChildren()
+    end
+    spawn(
+        function()
+            while k["Rain"] do
+                game["Run Service"].RenderStepped:wait()
+                if #bd < 150 then
+                    local bl = Instance.new("Part", workspace.Debris)
+                    local bm = math.random(1, 3) == 1 and 24 or 8
+                    local bn, bo, bp, bq = 0, 75, 3, 8
+                    if math.random(1, 3) == 1 then
+                        bn, bo, bp, bq = 75, 200, 9, 24
+                    end
+                    bl.CanCollide = false
+                    bl.Transparency = 0.5
+                    bl.Anchored = true
+                    bl.FormFactor = "Custom"
+                    bl.Size = Vector3.new(bq, bq, 0.2)
+                    bl.Transparency = 1
+                    local br = b6:Clone()
+                    br.Parent = bl
+                    br.CanvasSize = Vector2.new(200, 200)
+                    for B = 1, bp do
+                        local bs = b7:Clone()
+                        bs.Position = UDim2.new(0, math.random() * 195, 0, math.random() * 100)
+                        bs.Parent = br
+                    end
+                    bl.Position =
+                        Vector3.new(
+                        b5.CFrame.p.X + math.random(-100, 0),
+                        b5.CFrame.p.Y + 100,
+                        b5.CFrame.p.Z + math.random(-100, 100)
+                    )
+                    table.insert(
+                        bd,
+                        {
+                            part = bl,
+                            x = 0,
+                            y = math.random(),
+                            z = 0,
+                            stop = -1,
+                            close = bn,
+                            far = bo,
+                            labels = bl.DropSurface:GetChildren()
+                        }
+                    )
+                end
+                local b5 = workspace.CurrentCamera.CoordinateFrame
+                local bt = b5.lookVector
+                local bu = workspace.CurrentCamera.CoordinateFrame.p
+                for bv, bw in pairs(bd) do
+                    local bl, bx, by, bz = bw.part, bw.x, bw.y, bw.z
+                    local C = Vector3.new(bx, by, bz)
+                    local bA = b5:pointToObjectSpace(C)
+                    local bB = bA.z < 0
+                if by < bw.stop - 5 then
+                        if bB and (Vector3.new(bx, bw.stop, bz) - workspace.CurrentCamera.CFrame.p).Magnitude >= 5 then
+                            drople(Vector3.new(bx, bw.stop, bz))
+                        end
+                        bw.x, bv, bw.z = randring(bw.close, bw.far)
+                        bw.x, bw.z = bw.x + bu.x, bw.z + bu.z
+                        bw.y = bc
+                        local b0 = Vector3.new(bw.x, bw.y, bw.z)
+                        bl.CFrame = CFrame.new(b0, Vector3.new(bu.x, by, bu.z))
+                        local aZ = Ray.new(b0, Vector3.new(0, -bc - bb, 0))
+                        local bC, a_ = workspace.FindPartOnRay(workspace, aZ, home, true)
+                        if bC then
+                            bw.stop = a_.y
+                        else
+                            bw.stop = bb
+                        end
+                    else
+                        bw.y = by - 2
+                        if bB then
+                            local bD = (by - bc + 50) * .25 / 50 + .75
+                            if by < bw.stop - 1 then
+                                bD = .75 + .25 / 5 * (bw.stop - 1 - by)
+                            end
+                            if by > bc - 50 or by < bw.stop then
+                                for bv, bE in pairs(bw.labels) do
+                                    bE.ImageTransparency = bD
+                                end
+                            end
+                        end
+                        bl.CFrame = CFrame.new(C, Vector3.new(bu.x, by, bu.z))
+                    end
+                end
+                for bF = #be, 1, -1 do
+                    local bG = be[bF]
+                    local bh = (tick() - bG.start) * 3
+                    if bh > 1 then
+                        bG.part:Destroy()
+                        table.remove(be, bF)
+                    else
+                        bG.label.ImageTransparency = bh
+                        local bH = bh - bh * bh
+                        bG.part.Size = Vector3.new(2 / 3 + bh, 0.2, 2 / 3 + bh)
+                        bG.part.CFrame =
+                            CFrame.new(bG.position + Vector3.new(0, bH * 2, 0)) * CFrame.Angles(0, bG.angle, 0)
+                    end
+                end
+            end
+        end)
+end)
+
+skyboxEnabled = aC:CreateToggle("Custom skybox", function(K)
+    k["Custom skybox"] = K
+end)
+
+skyboxSelected = aC:CreateDropdown("Selected skybox", {"Night Sky", "Purple Nebula", "Pink Daylight", "Dusty Clouds"}, function(bI)
+    k["Selected skybox"] = bI
+    spawn(
+        function()
+            if not game.Lighting:FindFirstChild("customsky") then
+                if k["Custom skybox"] then
+                    local bJ = Instance.new("Sky", game.Lighting)
+                    bJ.Name = "customsky"
+                    if Skyboxes[bI] then
+                        for B, C in next, Skyboxes[bI] do
+                            game.Lighting.customsky[B] = C
+                        end
+                    end
+                end
+            end
+            if Skyboxes[bI] and game.Lighting:FindFirstChild("customsky") then
+                for B, C in next, Skyboxes[bI] do
+                    game.Lighting.customsky[B] = C
+                end
+            end
+            if not k["Custom skybox"] and game.Lighting:FindFirstChild("customsky") then
+                game.Lighting.customsky:Destroy()
+        end
+    end)
+end)
+
+chamsTransparency = aC:CreateSlider("Chams Transparency", 100, function(W)
+    k["Chams Transparency"] = W
+    for B, C in next, ap:GetChildren() do
+        C.Transparency = 0 + k["Chams Transparency"] / 100
+    end
+end)
+
+unlockInv = aC:CreateButton("Bayonet", function()
+    local bK = "v_Bayonet"
+    for bv, C in pairs(game:GetDescendants()) do
+        if C.Name == "v_T Knife" or C.Name == "v_CT Knife" then
+            C.Name = "hdf"
+        end
+    end
+    local bj = game.ReplicatedStorage.Viewmodels[bK]
+    bj:Clone().Parent = game.ReplicatedStorage.Viewmodels
+    local bL = bj:Clone()
+    local bh = bj:Clone()
+    bL.Name = "v_CT Knife"
+    bh.Name = "v_T Knife"
+    bL.Parent = game.ReplicatedStorage.Viewmodels
+    bh.Parent = game.ReplicatedStorage.Viewmodels
+end)
+
+enabledViewmodel = aC:CreateToggle("Enabled Viewmodel", function(K)
+    ViewmodelEnabled = K
+end)
+
+xViewmodel = aC:CreateSlider("X", 360, function(W)
+    ViewmodelX = W
+end)
+
+yViewmodel = aC:CreateSlider("Y", 360, function(W)
+    ViewmodelY = W
+end)
+
+zViewmodel = aC:CreateSlider("Z", 360, function(W)
+    ViewmodelZ = W
+end)
+
+------------------------------------ CONFIGS ------------------------------------
+
+configName = aF:Textbox("Config name")
+
+Config = aF:CreateDropdown("Config", listfiles("pepsi"), function(bI)
+    k.Config = bI
+end)
+
+createConfig = aF:CreateButton("Create config", function()
+    local bM = {}
+    for B, C in next, l.options do
+        if l.options[B].Type == "KeyBind" then
+            bM[B] = tostring(k[B])
+        else
+            bM[B] = k[B]
+        end
+    end
+    writefile("pepsi\\" .. configName.Text .. ".pepsi", c:JSONEncode(bM))
+    l.options.Config.updateList(listfiles("pepsi"))
+end)
+
+saveConfig = aF:CreateButton("Save config", function()
+    local bM = {}
+    if isfile(k.Config) then
+        for B, C in next, l.options do
+            if l.options[B].Type == "KeyBind" then
+                bM[B] = tostring(k[B])
+            else
+                bM[B] = k[B]
+            end
+        end
+        writefile(k.Config, c:JSONEncode(bM))
+    end
+    l.options.Config.updateList(listfiles("pepsi"))
+end)
+
+loadConfig = aF:CreateButton("Load config", function()
+    if isfile(k.Config) then
+        for B, C in next, c:JSONDecode(readfile(k.Config)) do
+            if l.options[B] then
+                local bN = l.options[B].Type
+                if bN == "Toggle" and k[B] ~= C then
+                    l.options[B].toggleFunction()
+                elseif bN == "Slider" or bN == "Dropdown" then
+                    l.options[B].changeValue(C)
+                elseif bN == "Keybind" then
+                    local bO = "return " .. C
+                    l.options[B].changeValue(loadstring(bO)())
+                end
+            end
+        end
+    end
+    l.options.Config.updateList(listfiles("pepsi"))
+end)
+
+refreshConfigs = aF:CreateButton("Refresh configs", function()
+    l.options.Config.updateList(listfiles("pepsi"))
+end)
+
 ------------------------------------ MISC ------------------------------------
 aE:CreateToggle("Watermark", function(K)
     if K == true then
@@ -2055,66 +2122,6 @@ end)
 unlockinventory = aG:CreateButton("Unlock Inventory", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/6segs/millionware/main/inv", true))()
 end)
------------------------------------- CONFIGS ------------------------------------
-configName = aF:Textbox("Config name")
-
-Config = aF:CreateDropdown("Config", listfiles("pepsi"), function(bI)
-    k.Config = bI
-end)
-
-createConfig = aF:CreateButton("Create config", function()
-    local bM = {}
-    for B, C in next, l.options do
-        if l.options[B].Type == "KeyBind" then
-            bM[B] = tostring(k[B])
-        else
-            bM[B] = k[B]
-        end
-    end
-    writefile("pepsi\\" .. configName.Text .. ".pepsi", c:JSONEncode(bM))
-    l.options.Config.updateList(listfiles("pepsi"))
-end)
-
-saveConfig = aF:CreateButton("Save config", function()
-    local bM = {}
-    if isfile(k.Config) then
-        for B, C in next, l.options do
-            if l.options[B].Type == "KeyBind" then
-                bM[B] = tostring(k[B])
-            else
-                bM[B] = k[B]
-            end
-        end
-        writefile(k.Config, c:JSONEncode(bM))
-    end
-    l.options.Config.updateList(listfiles("pepsi"))
-end)
-
-loadConfig = aF:CreateButton("Load config", function()
-    if isfile(k.Config) then
-        for B, C in next, c:JSONDecode(readfile(k.Config)) do
-            if l.options[B] then
-                local bN = l.options[B].Type
-                if bN == "Toggle" and k[B] ~= C then
-                    l.options[B].toggleFunction()
-                elseif bN == "Slider" or bN == "Dropdown" then
-                    l.options[B].changeValue(C)
-                elseif bN == "Keybind" then
-                    local bO = "return " .. C
-                    l.options[B].changeValue(loadstring(bO)())
-                end
-            end
-        end
-    end
-    l.options.Config.updateList(listfiles("pepsi"))
-end)
-
-refreshConfigs = aF:CreateButton("Refresh configs", function()
-    l.options.Config.updateList(listfiles("pepsi"))
-end)
-----------------------------------------------------------------------------------------
-
------------------------------------- FUNCTIONS 2 ---------------------------------------
 
 for B, C in next, game.Players.LocalPlayer.PlayerGui.GUI.SuitZoom:GetDescendants() do
     C.Visible = false
@@ -2206,8 +2213,18 @@ game:GetService("RunService").Stepped:connect(
                         end
                     end
                 end
+                
+                if k["Fakelag"] then
+                    if math.ceil(tick()) % 5 == 0 then
+                        game:GetService("NetworkClient"):SetOutgoingKBPSLimit(9e9)
+                    else
+                        game:GetService("NetworkClient"):SetOutgoingKBPSLimit(math.random(35, 80))
+                    end
+                end
+                game.Players.LocalPlayer.PlayerGui.GUI.SuitZoom.Visible = false
+                game.Players.LocalPlayer.PlayerGui.GUI.SuitZoom.BackgroundTransparency = 1
             end)
-    end)
+        end)
 
 -- btracers Settings
 local Other = {
@@ -2320,4 +2337,3 @@ oldIndex = hookfunc(getrawmetatable(game.Players.LocalPlayer.PlayerGui.Client)._
 	end
     return oldIndex(self, idx)
 end))
-----------------------------------------------------------------------------------------
