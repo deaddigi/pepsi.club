@@ -2206,6 +2206,8 @@ game:GetService("RunService").Stepped:connect(
                         end
                     end
                 end
+            end)
+    end)
 
 -- btracers Settings
 local Other = {
