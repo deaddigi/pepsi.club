@@ -1183,7 +1183,7 @@ keystrokesButton = aD:CreateToggle("Keystrokes", function(K)
                 Space.Visible = false
             end
         end)
-    
+
     elseif K == false then
         game.CoreGui.keystrokess:Destroy()
     end
@@ -1706,7 +1706,7 @@ aE:CreateToggle("Watermark", function(K)
 
         local function ZBZX_fake_script() -- Time.LocalScript 
             local script = Instance.new('LocalScript', Time)
-            
+
             local mo = "A.M."
             local mont = nil
             while wait() do
@@ -1870,7 +1870,7 @@ aE:CreateToggle("Spectator List", function(K)
                 end
             end
         end)
-    
+
         local function SCUAM_fake_script() -- Spectators.LocalScript 
             local script = Instance.new('LocalScript', Spectators)
             local gui = script.Parent
@@ -1878,7 +1878,7 @@ aE:CreateToggle("Spectator List", function(K)
             gui.Active = true
         end
         coroutine.wrap(SCUAM_fake_script)()
-    
+
     elseif K ==  false then
         game.CoreGui.SpectatorsList:Destroy()
     end
@@ -2201,7 +2201,7 @@ game:GetService("RunService").Stepped:connect(
                 else
                     game.Lighting.GlobalShadows = false
                 end
-                
+
                 if g.Character and k["Headless horseman"] and g.Character:FindFirstChild("Shirt") then
                     for B, C in next, game.Players.LocalPlayer.Character:GetDescendants() do
                         if
@@ -2213,7 +2213,7 @@ game:GetService("RunService").Stepped:connect(
                         end
                     end
                 end
-                
+
                 if k["Fakelag"] then
                     if math.ceil(tick()) % 5 == 0 then
                         game:GetService("NetworkClient"):SetOutgoingKBPSLimit(9e9)
@@ -2225,7 +2225,6 @@ game:GetService("RunService").Stepped:connect(
                 game.Players.LocalPlayer.PlayerGui.GUI.SuitZoom.BackgroundTransparency = 1
             end)
         end)
-end
 
 -- btracers Settings
 local Other = {
@@ -2302,7 +2301,7 @@ mt.__namecall = newcclosure(function(self, ...)
     local method = getnamecallmethod()
     local callingscript = getcallingscript()
     local args = {...}
-	
+
 	if not checkcaller() then
 		if method == "SetPrimaryPartCFrame" and self.Name == "Arms" and ViewmodelEnabled == true then
 			args[1] = args[1] * CFrame.new(Vector3.new(math.rad(ViewmodelX-180), math.rad(ViewmodelY-180), math.rad(ViewmodelZ-180)))
@@ -2324,7 +2323,7 @@ mt.__namecall = newcclosure(function(self, ...)
 			return
 		end
 	end
-    
+
     return oldNamecall(self, unpack(args))
 end)
 
