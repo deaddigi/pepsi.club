@@ -22,7 +22,7 @@ name.Position = UDim2.new(0.244148552, 0, 0.0746518224, 0)
 name.Size = UDim2.new(0, 200, 0, 14)
 name.Font = Enum.Font.Code
 name.Text = "pepsi.club"
-name.TextColor3 = Color3.fromRGB(0, 89, 149)
+name.TextColor3 = Color3.fromRGB(248, 98, 31)
 name.TextSize = 14.000
 
 welcome.Name = "welcome"
@@ -39,7 +39,7 @@ welcome.TextSize = 14.000
 load.Name = "load"
 load.Parent = main
 load.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-load.BorderColor3 = Color3.fromRGB(0, 89, 149)
+load.BorderColor3 = Color3.fromRGB(248, 98, 31)
 load.Position = UDim2.new(0.244897962, 0, 0.827586234, 0)
 load.Size = UDim2.new(0, 200, 0, 17)
 load.Font = Enum.Font.Code
