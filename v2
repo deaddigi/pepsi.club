@@ -1,19 +1,12 @@
 ------------------------------------ FIX VIEWMODELS ------------------------------------
-game.ReplicatedStorage.Viewmodels["v_USP"].HumanoidRootPart.Transparency = 1
-game.ReplicatedStorage.Viewmodels["v_Tec9"].HumanoidRootPart.Transparency = 1
-game.ReplicatedStorage.Viewmodels["v_Smoke Grenade"].HumanoidRootPart.Transparency = 1
-game.ReplicatedStorage.Viewmodels["v_Scout"].HumanoidRootPart.Transparency = 1
-game.ReplicatedStorage.Viewmodels["v_SawedOff"].HumanoidRootPart.Transparency = 1
-game.ReplicatedStorage.Viewmodels["v_SCAR-20"].HumanoidRootPart.Transparency = 1
-game.ReplicatedStorage.Viewmodels["v_Negev"].HumanoidRootPart.Transparency = 1
-game.ReplicatedStorage.Viewmodels["v_Incendiary Grenade"].HumanoidRootPart.Transparency = 1
-game.ReplicatedStorage.Viewmodels["v_Flashbang"].HumanoidRootPart.Transparency = 1
-game.ReplicatedStorage.Viewmodels["v_Decoy Grenade"].HumanoidRootPart.Transparency = 1
-game.ReplicatedStorage.Viewmodels["v_C4Halloween"].HumanoidRootPart.Transparency = 1
+for i,v in pairs(game.ReplicatedStorage.Viewmodels:GetChildren()) do
+    if v:FindFirstChild("HumanoidRootPart") and v.HumanoidRootPart.Transparency ~= 1 then
+        v.HumanoidRootPart.Transparency = 1
+    end
+end
 ----------------------------------------------------------------------------------------
-
-if game.CoreGui:FindFirstChild("pepsi") then
-    game.CoreGui.pepsi:Destroy()
+if game.CoreGui:FindFirstChild("pepsi.club") then
+    game.CoreGui["pepsi.club"]:Destroy()
 end
 local cbClient = getsenv(game.Players.LocalPlayer.PlayerGui.Client)
 local a = game:GetService("UserInputService")
@@ -34,11 +27,10 @@ function l:CreateUI()
         makefolder("pepsi")
     end
     local m = Instance.new("ScreenGui")
-    syn.protect_gui(m)
     m.Name = "pepsi.club"
     local n = Instance.new("Frame")
     n.Name = "main"
-    n.Size = UDim2.new(0, 320, 0, 308)
+    n.Size = UDim2.new(0, 320, 0, 365)
     n.Position = UDim2.new(0.5, -160, 0.5, -154)
     n.BackgroundColor3 = Color3.fromRGB(49, 49, 49)
     n.BorderSizePixel = 0
@@ -102,7 +94,6 @@ function l:CreateUI()
     v.BackgroundTransparency = 1
     v.Size = UDim2.new(0, 17, 0, 17)
     v.Image = "rbxassetid://7205257578"
-    v.ImageColor3 = Color3.fromRGB(0, 89, 149)
     v.ZIndex = 101
     v.Parent = m
     a.InputBegan:connect(
@@ -134,6 +125,14 @@ function l:CreateUI()
         z.ZIndex = 3
         z.Text = y
         z.Parent = s
+         z.MouseEnter:Connect(function()
+              z.TextSize = 14 
+              z.TextColor3 = Color3.fromRGB(248, 98, 31)
+    	    end)
+    	     z.MouseLeave:Connect(function()
+    		  z.TextSize = 13
+    		  z.TextColor3 = Color3.new(1, 1, 1)
+    	     end)
         local A = Instance.new("Frame")
         A.Name = y .. "tab"
         A.Size = UDim2.new(0.95, 0, 0.975, 0)
@@ -169,6 +168,12 @@ function l:CreateUI()
             I.BorderSizePixel = 1
             I.BorderColor3 = Color3.new()
             I.Parent = H
+             I.MouseEnter:Connect(function()
+              I.BorderColor3 = Color3.fromRGB(248, 98, 31)  
+    	    end)
+    	     I.MouseLeave:Connect(function()
+    		  I.BorderColor3 = Color3.new()
+    	     end)
             local J = Instance.new("TextLabel")
             J.Text = y
             J.BackgroundTransparency = 1
@@ -178,15 +183,37 @@ function l:CreateUI()
             J.Position = UDim2.new(1, 10, 0, 0)
             J.Parent = I
             J.Size = UDim2.new(0, J.TextBounds.X, 1, 0)
+             J.MouseEnter:Connect(function()
+              I.BorderColor3 = Color3.fromRGB(248, 98, 31)  
+    	    end)
+    	     J.MouseLeave:Connect(function()
+    		  I.BorderColor3 = Color3.new()
+    	     end)
             H.Size = UDim2.new(0, 22 + J.TextBounds.X, 0, 12)
             local function K()
                 G = not G
                 F(G)
-                I.BackgroundColor3 = G and Color3.fromRGB(0, 89, 149) or Color3.fromRGB(17, 17, 17)
+                I.BackgroundColor3 = G and Color3.fromRGB(248, 98, 31) or Color3.fromRGB(17, 17, 17)
             end
             H.MouseButton1Click:connect(K)
             local L = {toggleFunction = K, Name = y, Type = "Toggle"}
             l.options[y] = L
+        end
+        function E:CreateLabel(Text)
+            local Label = Instance.new("TextLabel")
+            Label.Name = "Label"
+            Label.Parent = A
+            Label.BackgroundColor3 = Color3.new(1, 1, 1)
+            Label.BackgroundTransparency = 1
+            Label.Position = UDim2.new(1.67999995, 0, -0.0149999997, 0)
+            Label.Size = UDim2.new(0, 199, 0, 11)
+            Label.ZIndex = 2
+            Label.Font = Enum.Font.Code
+            Label.Text = Text
+            Label.TextColor3 = Color3.new(1, 1, 1)
+            Label.TextSize = 12
+            Label.TextStrokeTransparency = 0.40000000596046
+            Label.TextXAlignment = Enum.TextXAlignment.Left
         end
         function E:CreateSlider(y, M, N)
             local O = false
@@ -201,10 +228,16 @@ function l:CreateUI()
             R.AutoButtonColor = false
             R.Text = ""
             R.Parent = A
+             R.MouseEnter:Connect(function()
+              R.BorderColor3 = Color3.fromRGB(248, 98, 31)  
+    	    end)
+    	     R.MouseLeave:Connect(function()
+    		  R.BorderColor3 = Color3.new()
+    	     end)
             local S = Instance.new("Frame")
             S.Name = "fill"
             S.Size = UDim2.new(0, 1, 1, 0)
-            S.BackgroundColor3 = Color3.fromRGB(0, 89, 149)
+            S.BackgroundColor3 = Color3.fromRGB(248, 98, 31)
             S.BorderSizePixel = 0
             S.Parent = R
             local T = Instance.new("TextLabel")
@@ -298,6 +331,12 @@ function l:CreateUI()
             a1.TextSize = 11
             a1.ZIndex = 99
             a1.Parent = A
+             a1.MouseEnter:Connect(function()
+              a1.BorderColor3 = Color3.fromRGB(248, 98, 31)  
+    	    end)
+    	     a1.MouseLeave:Connect(function()
+    		  a1.BorderColor3 = Color3.new()
+    	     end)
             local a2 = Instance.new("Frame")
             a2.Name = "list"
             a2.Size = UDim2.new(1, 0, 0, 0)
@@ -356,6 +395,14 @@ function l:CreateUI()
                     a8.TextWrapped = true
                     a8.Parent = a2
                     a8.ZIndex = 100
+                     a8.MouseEnter:Connect(function()
+                      a8.TextSize = 12 
+                      a8.TextColor3 = Color3.fromRGB(248, 98, 31)
+            	    end)
+            	     a8.MouseLeave:Connect(function()
+            		  a8.TextSize = 11
+            		  a8.TextColor3 = Color3.fromRGB(255, 255, 255)
+            	     end)
                     a8.MouseButton1Click:connect(
                         function()
                             a2.Visible = false
@@ -389,6 +436,12 @@ function l:CreateUI()
             ab.TextSize = 11
             ab.ZIndex = 0
             ab.Parent = A
+                         ab.MouseEnter:Connect(function()
+              ab.BorderColor3 = Color3.fromRGB(248, 98, 31)  
+    	    end)
+    	     ab.MouseLeave:Connect(function()
+    		  ab.BorderColor3 = Color3.new()
+    	     end)
             local ac = Instance.new("TextLabel")
             ac.Text = y
             ac.BackgroundTransparency = 1
@@ -450,6 +503,14 @@ function l:CreateUI()
             ah.Position = UDim2.new(1, 10, 0, 0)
             ah.Parent = ag
             ah.Size = UDim2.new(0, ah.TextBounds.X, 1, 0)
+            ah.MouseEnter:Connect(function()
+                ah.TextSize = 14 
+                ah.TextColor3 = Color3.fromRGB(248, 98, 31)
+            end)
+            ah.MouseLeave:Connect(function()
+                ah.TextSize = 13
+                ah.TextColor3 = Color3.new(1, 1, 1)
+            end)
             return ag
         end
         function E:CreateButton(y, ai)
@@ -457,7 +518,7 @@ function l:CreateUI()
             aj.Name = y
             aj.Size = UDim2.new(0, 100, 0, 12)
             aj.BackgroundColor3 = Color3.fromRGB(17, 17, 17)
-            aj.BorderColor3 = Color3.new()
+            aj.BorderColor3 = Color3.fromRGB()
             aj.AutoButtonColor = false
             aj.Text = y
             aj.Font = Enum.Font.Code
@@ -466,6 +527,12 @@ function l:CreateUI()
             aj.ZIndex = 0
             aj.Parent = A
             aj.MouseButton1Click:connect(ai)
+             aj.MouseEnter:Connect(function()
+              aj.BorderColor3 = Color3.fromRGB(248, 98, 31)  
+    	    end)
+    	aj.MouseLeave:Connect(function()
+    		aj.BorderColor3 = Color3.fromRGB(29, 29, 29)  
+    	    end)
         end
         return E
     end
@@ -505,7 +572,93 @@ function chams(aq)
                         ar.Visible = true
                         ar.Parent = ap
                         ar.Adornee = C
-                        ar.Color3 = Color3.fromRGB(0, 89, 149)
+                        ar.Color3 = Color3.fromRGB(248, 98, 31)
+                        if aq.Character:FindFirstChild("HumanoidRootPart") then
+                            aq.Character.HumanoidRootPart.AncestryChanged:connect(
+                                function()
+                                    ar:Destroy()
+                                end
+                            )
+                        end
+                    end
+                end
+            end
+        end
+    )
+end
+local as = nil
+local at = false
+local au = getrawmetatable(game)
+setreadonly(au, false)
+local av = au.__namecall
+local aw = au.__newindex
+au.__newindex =
+    newcclosure(
+    function(self, ax, W)
+        if ax == "WalkSpeed" and at then
+            return
+        end
+        return aw(self, ax, W)
+    end
+)
+au.__namecall =
+    newcclosure(
+    function(self, ...)
+        local ay = getnamecallmethod()
+        local az = {...}
+        if string.find(ay, "IgnoreList") then
+            if as and k["Silent aim"] then
+                az[1] =
+                    Ray.new(
+                    workspace.CurrentCamera.CFrame.Position,
+                    (as.CFrame.p +
+                        Vector3.new(0, (workspace.CurrentCamera.CFrame.Position - as.CFrame.p).Magnitude / 500, 0) -
+                        workspace.CurrentCamera.CFrame.Position).unit * 500
+                )
+            end
+        end
+        if tostring(ay) == "InvokeServer" and self.Name == "Hugh" then
+            return wait(9e9)
+        elseif tostring(ay) == "FireServer" and string.find(tostring(self.Name), "{") then
+            return wait(9e9)
+        end
+        return av(self, unpack(az))
+    end
+)
+function getNearest()
+    local ak = math.huge
+    local al = nil
+    local am = nil
+    for B, C in next, e:GetChildren() do
+        if C ~= g and C.Team ~= g and C.Character and C.Character.PrimaryPart then
+            local am, an = i:WorldToScreenPoint(C.Character["HumanoidRootPart"].Position)
+            if an then
+                local ao = (Vector2.new(j.X, j.Y) - Vector2.new(am.X, am.Y)).magnitude
+                if ao < ak then
+                    al = C
+                    ak = ao
+                end
+            end
+        end
+    end
+    return al, ak
+end
+local ap = Instance.new("Folder", game.CoreGui)
+function chams(aq)
+    pcall(
+        function()
+            if aq.Character then
+                for B, C in next, aq.Character:GetChildren() do
+                    if C:IsA "BasePart" and C.Name ~= "HumanoidRootPart" then
+                        local ar = Instance.new("BoxHandleAdornment")
+                        ar.Size = C.Size + Vector3.new(0.1, 0.1, 0.1)
+                        ar.Transparency = k["Chams Transparency"] / 100
+                        ar.ZIndex = 0
+                        ar.AlwaysOnTop = true
+                        ar.Visible = true
+                        ar.Parent = ap
+                        ar.Adornee = C
+                        ar.Color3 = Color3.fromRGB(248, 98, 31)
                         if aq.Character:FindFirstChild("HumanoidRootPart") then
                             aq.Character.HumanoidRootPart.AncestryChanged:connect(
                                 function()
@@ -567,9 +720,11 @@ local aC = aA:CreateTab("visuals")
 local aD = aA:CreateTab("movement")
 local aE = aA:CreateTab("other")
 local aG = aA:CreateTab("skins")
+local aH = aA:CreateTab("lua")
 local aF = aA:CreateTab("config")
 
 ------------------------------------ AIMBOT ------------------------------------
+aB:CreateLabel("Aimbot")
 
 silentAim = aB:CreateToggle("Silent aim", function(K)
     k["Silent aim"] = K
@@ -616,6 +771,8 @@ aimbotFOV = aB:CreateSlider("Aimbot FOV", 200, function(W)
     k["Aimbot FOV"] = W
 end)
 
+aB:CreateLabel("Gun mods")
+
 noSpread = aB:CreateToggle("No Spread", function(K)
     k["NoSpread"] = K
 end)
@@ -632,584 +789,163 @@ noRecoil = aB:CreateToggle("No Recoil", function(K)
     end
 end)
 
------------------------------------- MOVEMENT ------------------------------------
-
-local aJ = h.speedupdate
-bunnyHop = aD:CreateToggle("Bunny hop", function(K)
-    k["Bunny hop"] = K
-        if K then
-            spawn(
-                function()
-                    d:BindToRenderStep("bunnyHop", 1, function()
-                            if
-                                a:IsKeyDown(Enum.KeyCode.Space) and g.Character and
-                                    g.Character:FindFirstChild("Humanoid")
-                            then
-                                at = false
-                                g.Character.Humanoid.WalkSpeed = 20.5
-                                at = true
-                                g.Character.Humanoid.Jump = true
-                                h.speedupdate = function()
-                                end
-                            else
-                                at = false
-                                h.speedupdate = aJ
-                            end
-                        end
-                    )
-                end
-            )
-        else
-            h.speedupdate = aJ
-            d:UnbindFromRenderStep("bunnyHop")
-        end
-    end
-)
-
-local aK = {}
-local aL = workspace.CurrentCamera.ViewportSize.Y - 100
-local aM = aL
-local aN = 0
-local aO = {
-    Color3.fromRGB(85, 205, 252),
-    Color3.fromRGB(85, 205, 252),
-    Color3.fromRGB(247, 168, 184),
-    Color3.fromRGB(247, 168, 184),
-    Color3.fromRGB(255, 255, 255),
-    Color3.fromRGB(255, 255, 255),
-    Color3.fromRGB(247, 168, 184),
-    Color3.fromRGB(247, 168, 184)
-}
-
-local aP = Drawing.new("Text")
-aP.Text = ""
-aP.Center = true
-aP.Outline = true
-aP.Color = Color3.new(1, 1, 1)
-aP.Font = 3
-aP.Position = Vector2.new(workspace.CurrentCamera.ViewportSize.X / 2, workspace.CurrentCamera.ViewportSize.Y - 90)
-aP.Size = 20
-aP.Visible = false
-
-local aQ = Drawing.new("Text")
-aQ.Text = "EB"
-aQ.Center = true
-aQ.Outline = true
-aQ.Color = Color3.new(0.9, 0.2, 0.2)
-aQ.Font = 3
-aQ.Position = Vector2.new(workspace.CurrentCamera.ViewportSize.X / 2, workspace.CurrentCamera.ViewportSize.Y - 80)
-aQ.Size = 18
-aQ.Visible = false
-
-local aR = Drawing.new("Text")
-aR.Text = "JB"
-aR.Center = true
-aR.Outline = true
-aR.Color = Color3.new(1, 1, 1)
-aR.Font = 3
-aR.Position = Vector2.new(workspace.CurrentCamera.ViewportSize.X / 2, workspace.CurrentCamera.ViewportSize.Y - 50)
-aR.Size = 18
-aR.Visible = false
-
-local aS = {
-    Edgebug = {
-        Keybind = "Enum.KeyCode.E",
-        XZModifier = 2.4,
-        Debounce = false,
-        NoDamage = false,
-        YModifier = 0.2,
-        Enabled = false,
-        Held = false
-    },
-    Edgejump = {Held = false, Enabled = false, Debounce = false, Keybind = "Enum.KeyCode.LeftAlt"},
-    VelocityGraph = {Enabled = false, SmoothMode = false, Color = "Normal", TransCount = 1, DebounceCount = 0},
-    JumpBug = {Held = false, Enabled = false, Keybind = "Enum.KeyCode.T"},
-    M9 = {Enabled = false}
-}
-
-EdgebugToggle = aD:CreateToggle("Edgebug", function(K)
-    k["Edgebug"] = K
-    aS.Edgebug.Enabled = not aS.Edgebug.Enabled
-    aS.Edgebug.Held = false
-    aQ.Visible = false
-end)
-
-EdgejumpToggle = aD:CreateToggle("Edgejump", function(K)
-    k["Edgejump"] = K
-    aS.Edgejump.Enabled = not aS.Edgejump.Enabled
-    aS.Edgejump.Held = false
-end)
-
-EdgejumpToggle = aD:CreateToggle("Jumpbug", function(K)
-    k["Jumpbug"] = K
-    aS.JumpBug.Enabled = not aS.JumpBug.Enabled
-    aS.JumpBug.Held = false
-end)
-
-VelocityGraphToggle = aD:CreateToggle("Velocity Graph", function(K)
-    k["Velocity Graph"] = K
-    aS.VelocityGraph.Enabled = K
-    aP.Visible = K
-    spawn(
-        function()
-            while aS.VelocityGraph.Enabled do
-                if aS.VelocityGraph.SmoothMode then
-                    d.RenderStepped:Wait()
-                else
-                    d.RenderStepped:Wait()
-                    d.RenderStepped:Wait()
-                end
-                    aL = workspace.CurrentCamera.ViewportSize.Y - 100
-                    aQ.Position =
-                        Vector2.new(
-                        workspace.CurrentCamera.ViewportSize.X / 2,
-                        workspace.CurrentCamera.ViewportSize.Y - 70
-                    )
-                    aR.Position =
-                        Vector2.new(
-                        workspace.CurrentCamera.ViewportSize.X / 2,
-                        workspace.CurrentCamera.ViewportSize.Y - 50
-                    )
-                    aP.Position =
-                        Vector2.new(
-                        workspace.CurrentCamera.ViewportSize.X / 2,
-                        workspace.CurrentCamera.ViewportSize.Y - 90
-                    )
-                if g.Character and g.Character.PrimaryPart then
-                    if #aK >= 1 then
-                        local M = 100
-                        if #aK >= M then
-                            aK[1]:Remove()
-                            local aT = 0
-                            for B = 2, 6 do
-                                aT = aT + 1.8
-                                aK[B].Transparency = 1 - aT / 10
-                            end
-                            aK[2].Transparency = 0.1
-                            aK[3].Transparency = 0.2
-                            aK[4].Transparency = 0.4
-                            aK[5].Transparency = 0.6
-                            aK[6].Transparency = 0.8
-                            table.remove(aK, 1)
-                        end
-                        for B, C in ipairs(aK) do
-                            C.To = C.To - Vector2.new(2, 0)
-                            C.From = C.From - Vector2.new(2, 0)
-                        end
-                    end
-                    local aU = (g.Character.PrimaryPart.Velocity * Vector3.new(1, 0, 1)).magnitude
-                    local aV = aU * 14.85
-                    if aV > 300 then
-                        aV = 300
-                    end
-                    aP.Color = Color3.new(1, 1, 1)
-                    if math.floor(aU) < aN then
-                        aP.Color = Color3.new(1, 0.5, 0.3)
-                    end
-                    if math.floor(aU) > aN then
-                        aP.Color = Color3.new(0.5, 1, 0.3)
-                    end
-                    if math.floor(aV) == 300 then
-                        aP.Color = Color3.new(1, 0.3, 0.1)
-                    end
-                    local aW = Color3.new(1, 1, 1)
-                    if aS.VelocityGraph.Color == "Rainbow" then
-                        aW = Color3.fromHSV(tick() % 5 / 5, 1, 1)
-                    elseif aS.VelocityGraph.Color == "Trans" then
-                        aW = aO[aS.VelocityGraph.TransCount]
-                        aS.VelocityGraph.DebounceCount =
-                            aS.VelocityGraph.DebounceCount == 5 and 0 or aS.VelocityGraph.DebounceCount + 1
-                    if aS.VelocityGraph.DebounceCount == 0 then
-                        aS.VelocityGraph.TransCount =
-                        aS.VelocityGraph.TransCount == #aO and 1 or aS.VelocityGraph.TransCount + 1
-                        end
-                    end
-                    local aX = Drawing.new("Line")
-                    table.insert(aK, aX)
-                    aX.Color = aW
-                    aX.Thickness = 1
-                    aX.From = Vector2.new(workspace.CurrentCamera.ViewportSize.X / 2 + 98, aM)
-                    aX.To = Vector2.new(workspace.CurrentCamera.ViewportSize.X / 2 + 100, aL - aV / 6.5)
-                    aX.Transparency = 0
-                    aX.Visible = true
-                    if #aK >= 8 then
-                        aK[#aK - 1].Transparency = aK[#aK - 1].Transparency + 0.2
-                        aK[#aK - 2].Transparency = aK[#aK - 2].Transparency + 0.2
-                        aK[#aK - 3].Transparency = aK[#aK - 3].Transparency + 0.2
-                        aK[#aK - 4].Transparency = aK[#aK - 4].Transparency + 0.2
-                        aK[#aK - 5].Transparency = aK[#aK - 5].Transparency + 0.2
-                        aK[#aK - 7].Transparency = 1
-                    end
-                    aP.Text = tostring(math.floor(aV))
-                    aM = aL - aV / 6.5
-                    aN = math.floor(aU)
-                end
-            end
-        end)
-    for B, C in next, aK do
-        C:Remove()
-    end
-    aK = {}
-end)
-
-SmoothVelocityGraph = aD:CreateToggle("Smoother Graph", function(K)
-    k["Smoother Graph"] = K
-    aS.VelocityGraph.SmoothMode = K
-end)
-
-SmoothVelocityGraph = aD:CreateDropdown("Graph Color", {"Rainbow", "Trans", "Normal"}, function(K)
-    k["Graph Color"] = K
-    aS.VelocityGraph.TransCount = 1
-    aS.VelocityGraph.Color = K
-end)
-
-EdgebugKeybind = aD:CreateKeybind("Edgejump Keybind", Enum.KeyCode.LeftAlt, function(w)
-    k["Edgejump Keybind"] = tostring(w)
-    aS.Edgejump.Keybind = tostring(w)
-    aS.Edgejump.Held = false
-end)
-
-EdgebugKeybind = aD:CreateKeybind("Edgebug Keybind", Enum.KeyCode.E, function(w)
-    k["Edgebug Keybind"] = tostring(w)
-    aS.Edgejump.Keybind = tostring(w)
-    aS.Edgejump.Held = false
-end)
-
-JumpbugKeybind = aD:CreateKeybind("Jumpbug Keybind", Enum.KeyCode.T, function(w)
-    k["Jumpbug Keybind"] = tostring(w)
-    aS.JumpBug.Keybind = tostring(w)
-    aS.JumpBug.Held = false
-end)
-
-local au = getrawmetatable(game)
-setreadonly(au, false)
-local av = au.__namecall
-au.__namecall = newcclosure( function(self, ...)
-    local ay = getnamecallmethod()
-    local az = {...}
-    if self.Name == "FallDamage" and aS.Edgebug.NoDamage then
-        az[2] = 0
-    end
-    return av(self, unpack(az))
-end)
-
-a.InputBegan:connect(function(w)
-    local aY = w.KeyCode == Enum.KeyCode.Unknown and tostring(w.UserInputType) or tostring(w.KeyCode)
-    if aY == k["Edgebug Keybind"] and aS.Edgebug.Enabled then
-        aQ.Visible = true
-    end
-    if aY == aS.JumpBug.Keybind and aS.JumpBug.Enabled then
-        aR.Visible = true
-        aS.JumpBug.Held = true
-    end
-    if aY == k["Edgebug Keybind"] and aS.Edgebug.Enabled then
-        aS.Edgebug.Held = true
-            spawn(
-                function()
-                    while aS.Edgebug.Held do
-                        d.RenderStepped:Wait()
-                        if g.Character and g.Character:FindFirstChild("Humanoid") and g.Character.PrimaryPart then
-                            local aZ =
-                                Ray.new(
-                                g.Character.HumanoidRootPart.Position,
-                                (g.Character.HumanoidRootPart.Position - g.Character.HumanoidRootPart.Position -
-                                    Vector3.new(0, 1, 0)).unit * 500
-                            )
-                            local a_, b0, b1 = workspace:FindPartOnRayWithIgnoreList(aZ, {g.Character})
-                            if
-                                g.Character.HumanoidRootPart.Position.Y - 2.99 <= b0.Y + 2.5 and
-                                    g.Character.Humanoid:GetState() == Enum.HumanoidStateType.Freefall and
-                                    g.Character.HumanoidRootPart.Velocity.Y <= 0 and
-                                    not aS.Edgebug.Debounce
-                            then
-                                aS.Edgebug.Debounce = true
-                                aS.Edgebug.NoDamage = true
-                                repeat
-                                    wait()
-                                until g.Character.Humanoid:GetState() ~= Enum.HumanoidStateType.Freefall
-                                if g.Character.HumanoidRootPart.Position.Y - 3.49 <= b0.Y + 2.5 then
-                                    aQ.Color = Color3.new(0.2, 0.9, 0.2)
-                                    wait()
-                                    game.StarterGui:SetCore("SendNotification", {
-                                    Title = "pepsi.club";
-                                    Text = "edgebugged !";
-                                    Icon = "rbxassetid://6910419016";
-                                    Duration = 3;
-                                    })
-                                    local ebsfx = Instance.new("Sound")
-                                    ebsfx.Parent = game:GetService("SoundService")
-                                    ebsfx.SoundId = 'rbxassetid://7463103082'
-                                    ebsfx.Volume = 2
-                                    ebsfx:Play()
-                                    g.Character.HumanoidRootPart.Velocity =
-                                        Vector3.new(
-                                        g.Character.HumanoidRootPart.Velocity.X * aS.Edgebug.XZModifier,
-                                        g.Character.HumanoidRootPart.Velocity.Y * aS.Edgebug.YModifier,
-                                        g.Character.HumanoidRootPart.Velocity.Z * aS.Edgebug.XZModifier
-                                    )
-                                    local b2 = g.Character.HumanoidRootPart.Velocity
-                                    pcall(
-                                        function()
-                                            for B = 1, 3 do
-                                                wait()
-                                                g.Character.HumanoidRootPart.Velocity = b2 - Vector3.new(0, 20, 0)
-                                            end
-                                        end
-                                    )
-                                end
-                                wait(0.2)
-                                aQ.Color = Color3.new(0.9, 0.2, 0.2)
-                                wait(0.8)
-                                aS.Edgebug.Debounce = false
-                                aS.Edgebug.NoDamage = false
-                            end
-                        end
-                    end
-                end)
-        end
-        if aY == aS.Edgejump.Keybind and aS.Edgejump.Enabled then
-            aS.Edgejump.Held = true
-            while aS.Edgejump.Held do
-                d.RenderStepped:Wait()
-                if g.Character and g.Character:FindFirstChild("Humanoid") and not aS.Edgejump.Debounce then
-                    if g.Character.Humanoid:GetState() == Enum.HumanoidStateType.Freefall then
-                        return
-                    end
-                    if g.Character.Humanoid:GetState() ~= Enum.HumanoidStateType.Freefall then
-                        wait(0.05)
-                        if g.Character.Humanoid:GetState() == Enum.HumanoidStateType.Freefall then
-                            game.Players.LocalPlayer.Character.Humanoid:ChangeState("Jumping")
-                            aS.Edgejump.Debounce = true
-                            wait(0.5)
-                            aS.Edgejump.Debounce = false
-                        end
-                    end
-                end
-            end
-        end
-    end
-)
-
-a.InputEnded:connect(
-    function(w)
-        local aY = w.KeyCode == Enum.KeyCode.Unknown and tostring(w.UserInputType) or tostring(w.KeyCode)
-        if aY == k["Edgebug Keybind"] and aS.Edgebug.Enabled then
-            aQ.Visible = false
-        end
-        if aY == k["Edgebug Keybind"] then
-            aS.Edgebug.Held = false
-        end
-        if aY == aS.Edgejump.Keybind then
-            aS.Edgejump.Held = false
-        end
-        if aY == aS.JumpBug.Keybind then
-            aR.Visible = false
-            aS.JumpBug.Held = false
-        end
-    end
-)
-
-d.Stepped:connect(
-    function()
-        if g.Character and g.Character:FindFirstChild("Humanoid") then
-            if aS.JumpBug.Enabled and aS.JumpBug.Held then
-                game.Players.LocalPlayer.Character.Humanoid.JumpPower = 23
-            else
-                game.Players.LocalPlayer.Character.Humanoid.JumpPower = 20
-            end
-        end
-    end
-)
-
-infStamina = aD:CreateToggle("Inf Stamina", function(K)
-    if K == true then
-		game:GetService("RunService"):BindToRenderStep("Stamina", 100, function()
-			if cbClient.crouchcooldown ~= 0 then
-				cbClient.crouchcooldown = 0
-			end
-		end)
-	elseif K == false then
-		game:GetService("RunService"):UnbindFromRenderStep("Stamina")
-	end
-end)
-
-keystrokesButton = aD:CreateToggle("Keystrokes", function(K)
-    if K == true then
-        local ScreenGui = Instance.new("ScreenGui")
-        local W = Instance.new("TextLabel")
-        local A = Instance.new("TextLabel")
-        local S = Instance.new("TextLabel")
-        local D = Instance.new("TextLabel")
-        local E = Instance.new("TextLabel")
-        local R = Instance.new("TextLabel")
-        local Space = Instance.new("TextLabel")
-
-        ScreenGui.Parent = game.CoreGui
-        ScreenGui.Name = "keystrokess"
-
-        W.Name = "W"
-        W.Parent = ScreenGui
-        W.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        W.BackgroundTransparency = 1.000
-        W.Position = UDim2.new(0.488053292, 0, 0.728395104, 0)
-        W.Size = UDim2.new(0, 29, 0, 28)
-        W.Visible = false
-        W.Font = Enum.Font.Code
-        W.Text = "W"
-        W.TextColor3 = Color3.fromRGB(255, 255, 255)
-        W.TextSize = 14.000
-        W.TextStrokeTransparency = 0.000
-
-        A.Name = "A"
-        A.Parent = ScreenGui
-        A.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        A.BackgroundTransparency = 1.000
-        A.Position = UDim2.new(0.453584045, 0, 0.777777791, 0)
-        A.Size = UDim2.new(0, 29, 0, 28)
-        A.Visible = false
-        A.Font = Enum.Font.Code
-        A.Text = "A"
-        A.TextColor3 = Color3.fromRGB(255, 255, 255)
-        A.TextSize = 14.000
-        A.TextStrokeTransparency = 0.000
-
-        S.Name = "S"
-        S.Parent = ScreenGui
-        S.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        S.BackgroundTransparency = 1.000
-        S.Position = UDim2.new(0.488053292, 0, 0.777777791, 0)
-        S.Size = UDim2.new(0, 29, 0, 28)
-        S.Visible = false
-        S.Font = Enum.Font.Code
-        S.Text = "S"
-        S.TextColor3 = Color3.fromRGB(255, 255, 255)
-        S.TextSize = 14.000
-        S.TextStrokeTransparency = 0.000
-
-        D.Name = "D"
-        D.Parent = ScreenGui
-        D.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        D.BackgroundTransparency = 1.000
-        D.Position = UDim2.new(0.522522688, 0, 0.777777791, 0)
-        D.Size = UDim2.new(0, 29, 0, 28)
-        D.Visible = false
-        D.Font = Enum.Font.Code
-        D.Text = "D"
-        D.TextColor3 = Color3.fromRGB(255, 255, 255)
-        D.TextSize = 14.000
-        D.TextStrokeTransparency = 0.000
-
-        E.Name = "E"
-        E.Parent = ScreenGui
-        E.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        E.BackgroundTransparency = 1.000
-        E.Position = UDim2.new(0.453584045, 0, 0.728395045, 0)
-        E.Size = UDim2.new(0, 29, 0, 28)
-        E.Visible = false
-        E.Font = Enum.Font.Code
-        E.Text = "E"
-        E.TextColor3 = Color3.fromRGB(255, 255, 255)
-        E.TextSize = 14.000
-        E.TextStrokeTransparency = 0.000
-
-        R.Name = "R"
-        R.Parent = ScreenGui
-        R.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        R.BackgroundTransparency = 1.000
-        R.Position = UDim2.new(0.522522688, 0, 0.728395045, 0)
-        R.Size = UDim2.new(0, 29, 0, 28)
-        R.Visible = false
-        R.Font = Enum.Font.Code
-        R.Text = "R"
-        R.TextColor3 = Color3.fromRGB(255, 255, 255)
-        R.TextSize = 14.000
-        R.TextStrokeTransparency = 0.000
-
-        Space.Name = "Space"
-        Space.Parent = ScreenGui
-        Space.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        Space.BackgroundTransparency = 1.000
-        Space.Position = UDim2.new(0.470035285, 0, 0.825396895, 0)
-        Space.Size = UDim2.new(0, 87, 0, 28)
-        Space.Visible = false
-        Space.Font = Enum.Font.Code
-        Space.Text = "Space"
-        Space.TextColor3 = Color3.fromRGB(255, 255, 255)
-        Space.TextSize = 14.000
-        Space.TextStrokeTransparency = 0.000
-
-        local UserInputService = game:GetService("UserInputService")
-
-        local W1Key = Enum.KeyCode.W
-        local A1Key = Enum.KeyCode.A
-        local S1Key = Enum.KeyCode.S
-        local D1Key = Enum.KeyCode.D
-        local E1Key = Enum.KeyCode.E
-        local R1Key = Enum.KeyCode.R
-        local SpaceKey = Enum.KeyCode.Space
-
-        UserInputService.InputBegan:Connect(function(input)
-            if (input.KeyCode == W1Key) then
-                W.Visible = true
-            elseif (input.KeyCode == A1Key) then
-                A.Visible = true
-            elseif (input.KeyCode == S1Key) then
-                S.Visible = true
-            elseif (input.KeyCode == D1Key) then
-                D.Visible = true
-            elseif (input.KeyCode == E1Key) then
-                E.Visible = true
-            elseif (input.KeyCode == R1Key) then
-                R.Visible = true
-            elseif (input.KeyCode == SpaceKey) then
-                Space.Visible = true
-            end
-        end)
-
-        UserInputService.InputEnded:Connect(function(input)
-            if (input.KeyCode == W1Key) then
-                W.Visible = false
-            elseif (input.KeyCode == A1Key) then
-                A.Visible = false
-            elseif (input.KeyCode == S1Key) then
-                S.Visible = false
-            elseif (input.KeyCode == D1Key) then
-                D.Visible = false
-            elseif (input.KeyCode == E1Key) then
-                E.Visible = false
-            elseif (input.KeyCode == R1Key) then
-                R.Visible = false
-            elseif (input.KeyCode == SpaceKey) then
-                Space.Visible = false
-            end
-        end)
-    
-    elseif K == false then
-        game.CoreGui.keystrokess:Destroy()
-    end
-end)
-
-PlrTrailToggle = aD:CreateToggle("Player Trail", function(K)
-    if K == true then
-        PlrTrail = game:GetService("RunService").RenderStepped:Connect(function()
-            pcall(function()
-                local player = game:GetService("Players").LocalPlayer
-                local LFoot = Instance.new("Attachment",player.Character.LeftFoot)
-                local RFoot = Instance.new("Attachment",player.Character.RightFoot)
-                local Trail = Instance.new("Trail")
-                Trail.Attachment0 = LFoot
-                Trail.Attachment1 = RFoot
-                Trail.Lifetime = 3
-                Trail.Parent = LFoot.Parent
-                Trail.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 0, 4)), ColorSequenceKeypoint.new(0.24, Color3.fromRGB(243, 255, 0)), ColorSequenceKeypoint.new(0.42, Color3.fromRGB(4, 246, 0)), ColorSequenceKeypoint.new(0.65, Color3.fromRGB(0, 221, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 0, 209))}
-            end)
-        end)
-    elseif K == false and PlrTrail then
-        PlrTrail:Disconnect()
-    end
-end)
-
 ------------------------------------ VISUALS ------------------------------------
+local bj = game:GetService("Players")
+local bk = bj.LocalPlayer
+local aV = bk:GetMouse()
+local cam = workspace.CurrentCamera
+local bl = getrawmetatable(game)
+local bm = bl.__namecall
+local bn = bl.__index
+local bo = bl.__newindex
+
+local bq = game:GetService("RunService")
+local aW = game:GetService("UserInputService")
+local bs = game:GetService("Lighting")
+local boxCOlor = Color3.new(1,1,1)
+local NameColor = Color3.new(1,1,1)
+local WeaponCOLOR = Color3.new(1,1,1)
+local HealthCOLOR = Color3.fromRGB(1,255,1)
+
+local boxf = false
+local activef = true
+local healthf = false
+local namesf = false
+local weaponf = false
+local Teammates = false
+local Enemies = true
+local cT = {}
+local cU = {}
+do
+    cU.default = {
+        Line = {Thickness = 1.5, Color = Color3.fromRGB(255, 255, 255), Visible = false},
+        Text = {
+            Size = 13,
+            Center = true,
+            Outline = true,
+            Font = 0,
+            Color = Color3.fromRGB(255, 255, 255),
+            Visible = false
+        },
+    Square = {Thickness = 1.5, Filled = false, Color = Color3.fromRGB(255, 255, 255), Visible = false}
+    }
+    function cU.create(aq)
+        local cV = Drawing.new(aq)
+            for bc, j in pairs(cU.default[aq]) do
+                cV[bc] = j
+            end
+            return cV
+        end
+        function cU.add(c0)
+            if not cT[c0] then
+                cT[c0] = {
+                    Name = cU.create("Text"),
+                    Weapon = cU.create("Text"),
+                    BoxOutline = cU.create("Square"),
+                    Box = cU.create("Square"),
+                    HealthOutline = cU.create("Line"),
+                    Health = cU.create("Line")
+                }
+            end
+        end
+        for af, c0 in pairs(bj:GetPlayers()) do
+            if c0 ~= bk then
+                cU.add(c0)
+            end
+        end
+        bj.PlayerAdded:Connect(cU.add)
+        bj.PlayerRemoving:Connect(
+            function(c0)
+                wait()
+                if cT[c0] then
+                    for bc, j in pairs(cT[c0]) do
+                        for cW, cX in pairs(j) do
+                            if j then
+                                j:Remove()
+                            end
+                        end
+                    end
+                    cT[c0] = nil
+                end
+            end
+        )
+    end
+    bq.RenderStepped:Connect(
+        function()
+            for af, c0 in pairs(bj:GetPlayers()) do
+                local aA = cT[c0]
+                if aA ~= nil then
+                    if
+                    c0 ~= bk and c0.Character and c0.Character:FindFirstChild("Humanoid") and
+                    c0.Character:FindFirstChild("HumanoidRootPart") and
+                    activef and c0.Team ~= bk.Team then
+                        local bV = c0.Character.HumanoidRootPart
+                        local c1, cY = cam:WorldToViewportPoint(bV.Position)
+                        local a6 =
+                        (cam:WorldToViewportPoint(bV.Position - Vector3.new(0, 3, 0)).Y -
+                            cam:WorldToViewportPoint(bV.Position + Vector3.new(0, 2.6, 0)).Y) /
+                        2
+                        aA.Box.Color = boxCOlor
+                        aA.Box.Size = Vector2.new(a6 * 1.5, a6 * 1.9)
+                        aA.Box.Position = Vector2.new(c1.X - a6 * 1.5 / 2, c1.Y - a6 * 1.6 / 2)
+                        aA.BoxOutline.Color = Color3.fromRGB(0, 0, 0)
+                        aA.BoxOutline.Thickness = 3
+                        aA.BoxOutline.Size = aA.Box.Size
+                        aA.BoxOutline.Position = aA.Box.Position
+                        aA.Health.Color = HealthCOLOR
+                        aA.Health.From = Vector2.new(aA.Box.Position.X - 5, aA.Box.Position.Y + aA.Box.Size.Y)
+                        aA.Health.To =
+                        Vector2.new(
+                            aA.Health.From.X,
+                            aA.Health.From.Y -
+                            c0.Character.Humanoid.Health / c0.Character.Humanoid.MaxHealth * aA.Box.Size.Y
+                        )
+                        aA.HealthOutline.Color = Color3.fromRGB(0, 0, 0)
+                        aA.HealthOutline.Thickness = 3
+                        aA.HealthOutline.From = Vector2.new(aA.Health.From.X, aA.Box.Position.Y + aA.Box.Size.Y + 1)
+                        aA.HealthOutline.To = Vector2.new(aA.Health.From.X, aA.Health.From.Y - 1 * aA.Box.Size.Y - 1)
+                        aA.Name.Color = NameColor
+                        aA.Name.Text = c0.Name
+                        aA.Name.Position = Vector2.new(aA.Box.Size.X / 2 + aA.Box.Position.X, aA.Box.Position.Y - 16)
+                        aA.Name.Font = Drawing.Fonts.Plex
+                        aA.Name.Outline = true
+                        aA.Name.Size = 14
+                        aA.Weapon.Color = WeaponCOLOR
+                        aA.Weapon.Position =
+                        Vector2.new(aA.Box.Size.X / 2 + aA.Box.Position.X, aA.Box.Size.Y + aA.Box.Position.Y + 1)
+                        aA.Weapon.Font = Drawing.Fonts.Plex
+                        aA.Weapon.Outline = true
+                        aA.Weapon.Size = 14
+                        if boxf then
+                            aA.Box.Visible = cY
+                            aA.BoxOutline.Visible = cY
+                        else
+                            aA.Box.Visible = false
+                            aA.BoxOutline.Visible = false
+                        end
+                        if healthf then
+                            aA.Health.Visible = cY
+                            aA.HealthOutline.Visible = cY
+                        else
+                            aA.Health.Visible = false
+                            aA.HealthOutline.Visible = false
+                        end
+                        aA.Name.Visible = namesf and cY or false
+                        aA.Weapon.Visible = weaponf and cY or false
+                        else
+                            aA.Box.Visible = false
+                            aA.BoxOutline.Visible = false
+                            aA.HealthOutline.Visible = false
+                            aA.Health.Visible = false
+                            aA.Name.Visible = false
+                            aA.Weapon.Visible = false
+                        end
+                end
+        end
+end)
+
+
+aC:CreateLabel("ESP")
 
 chamsToggle = aC:CreateToggle("Chams", function(K)
     if K ~= k["Chams"] then
@@ -1226,30 +962,26 @@ chamsToggle = aC:CreateToggle("Chams", function(K)
     end
 end)
 
-M9Toggle = aC:CreateToggle("M9 Bayonet", function(K)
-    k["M9 Bayonet"] = K
-    aS.M9.Enabled = K
-    spawn(
-        function()
-            while aS.M9.Enabled do
-                d.RenderStepped:Wait()
-                pcall(
-                    function()
-                        if
-                            g.Character and g.Character:FindFirstChild("EquippedTool") and
-                                game.ReplicatedStorage.Weapons:FindFirstChild(g.Character.EquippedTool.Value):FindFirstChild(
-                                    "Melee"
-                                ) and
-                                workspace.Camera:FindFirstChild("Arms") and
-                                workspace.Camera.Arms:FindFirstChild("Handle2")
-                        then
-                            workspace.Camera.Arms.Handle.MeshId = "rbxassetid://5524010796"
-                            workspace.Camera.Arms.Handle.TextureID = "rbxassetid://5521767392"
-                        end
-                    end)
-                end
-        end)
+chamsTransparency = aC:CreateSlider("Chams Transparency", 100, function(W)
+    k["Chams Transparency"] = W
+    for B, C in next, ap:GetChildren() do
+        C.Transparency = 0 + k["Chams Transparency"] / 100
+    end
 end)
+
+boxesToggle = aC:CreateToggle("Boxes", function(K)
+    boxf = K
+end)
+
+healthToggle = aC:CreateToggle("Health", function(K)
+    healthf = K
+end)
+
+nameToggle = aC:CreateToggle("Names", function(K)
+    namesf = K
+end)
+
+aC:CreateLabel("World")
 
 local b3 = Instance.new("ColorCorrectionEffect", game.Lighting)
 Nightmode = aC:CreateToggle("Nightmode", function(K)
@@ -1274,17 +1006,6 @@ end)
 
 bettershadows = aC:CreateToggle("Better Shadows", function(K)
     k["Shadows"] = K
-end)
-
-Fog = aC:CreateToggle("Fog", function(K)
-    k["Fog"] = K
-end)
-
-depth = Instance.new("DepthOfFieldEffect", game.Lighting)
-depth.InFocusRadius = 50
-depth.FarIntensity = 0.3
-depthOfField = aC:CreateToggle("Depth of field", function(b4)
-    depth.Enabled = b4
 end)
 
 noFlash = aC:CreateToggle("No Flash", function(K)
@@ -1490,6 +1211,11 @@ rainEnabled = aC:CreateToggle("Rain", function(K)
         end)
 end)
 
+
+ForceCrosshairToggle = aC:CreateToggle("Force Crosshair", function(K)
+    ForceCrosshairEnabled = K
+end)
+
 skyboxEnabled = aC:CreateToggle("Custom skybox", function(K)
     k["Custom skybox"] = K
 end)
@@ -1520,29 +1246,7 @@ skyboxSelected = aC:CreateDropdown("Selected skybox", {"Night Sky", "Purple Nebu
     end)
 end)
 
-chamsTransparency = aC:CreateSlider("Chams Transparency", 100, function(W)
-    k["Chams Transparency"] = W
-    for B, C in next, ap:GetChildren() do
-        C.Transparency = 0 + k["Chams Transparency"] / 100
-    end
-end)
-
-unlockInv = aC:CreateButton("Bayonet", function()
-    local bK = "v_Bayonet"
-    for bv, C in pairs(game:GetDescendants()) do
-        if C.Name == "v_T Knife" or C.Name == "v_CT Knife" then
-            C.Name = "hdf"
-        end
-    end
-    local bj = game.ReplicatedStorage.Viewmodels[bK]
-    bj:Clone().Parent = game.ReplicatedStorage.Viewmodels
-    local bL = bj:Clone()
-    local bh = bj:Clone()
-    bL.Name = "v_CT Knife"
-    bh.Name = "v_T Knife"
-    bL.Parent = game.ReplicatedStorage.Viewmodels
-    bh.Parent = game.ReplicatedStorage.Viewmodels
-end)
+aC:CreateLabel("Viewmodel")
 
 enabledViewmodel = aC:CreateToggle("Enabled Viewmodel", function(K)
     ViewmodelEnabled = K
@@ -1559,8 +1263,602 @@ end)
 zViewmodel = aC:CreateSlider("Z", 360, function(W)
     ViewmodelZ = W
 end)
+------------------------------------ MOVEMENT ------------------------------------
+aD:CreateLabel("Movement")
+
+local aJ = h.speedupdate
+bunnyHop = aD:CreateToggle("Bunny hop", function(K)
+    k["Bunny hop"] = K
+        if K then
+            spawn(
+                function()
+                    d:BindToRenderStep("bunnyHop", 1, function()
+                            if
+                                a:IsKeyDown(Enum.KeyCode.Space) and g.Character and
+                                    g.Character:FindFirstChild("Humanoid")
+                            then
+                                at = false
+                                g.Character.Humanoid.WalkSpeed = 20.5
+                                at = true
+                                g.Character.Humanoid.Jump = true
+                                h.speedupdate = function()
+                                end
+                            else
+                                at = false
+                                h.speedupdate = aJ
+                            end
+                        end
+                    )
+                end
+            )
+        else
+            h.speedupdate = aJ
+            d:UnbindFromRenderStep("bunnyHop")
+        end
+    end
+)
+
+local aK = {}
+local aL = workspace.CurrentCamera.ViewportSize.Y - 100
+local aM = aL
+local aN = 0
+local aO = {
+    Color3.fromRGB(85, 205, 252),
+    Color3.fromRGB(85, 205, 252),
+    Color3.fromRGB(247, 168, 184),
+    Color3.fromRGB(247, 168, 184),
+    Color3.fromRGB(255, 255, 255),
+    Color3.fromRGB(255, 255, 255),
+    Color3.fromRGB(247, 168, 184),
+    Color3.fromRGB(247, 168, 184)
+}
+
+local aP = Drawing.new("Text")
+aP.Text = ""
+aP.Center = true
+aP.Outline = true
+aP.Color = Color3.new(1, 1, 1)
+aP.Font = 3
+aP.Position = Vector2.new(workspace.CurrentCamera.ViewportSize.X / 2, workspace.CurrentCamera.ViewportSize.Y - 90)
+aP.Size = 20
+aP.Visible = false
+
+local aQ = Drawing.new("Text")
+aQ.Text = "EB"
+aQ.Center = true
+aQ.Outline = true
+aQ.Color = Color3.new(0.9, 0.2, 0.2)
+aQ.Font = 3
+aQ.Position = Vector2.new(workspace.CurrentCamera.ViewportSize.X / 2, workspace.CurrentCamera.ViewportSize.Y - 80)
+aQ.Size = 18
+aQ.Visible = false
+
+local aR = Drawing.new("Text")
+aR.Text = "JB"
+aR.Center = true
+aR.Outline = true
+aR.Color = Color3.new(1, 1, 1)
+aR.Font = 3
+aR.Position = Vector2.new(workspace.CurrentCamera.ViewportSize.X / 2, workspace.CurrentCamera.ViewportSize.Y - 50)
+aR.Size = 18
+aR.Visible = false
+
+local aS = {
+    Edgebug = {
+        Keybind = "Enum.KeyCode.E",
+        XZModifier = 2.4,
+        Debounce = false,
+        NoDamage = false,
+        YModifier = 0.2,
+        Enabled = false,
+        Held = false
+    },
+    Edgejump = {Held = false, Enabled = false, Debounce = false, Keybind = "Enum.KeyCode.LeftAlt"},
+    VelocityGraph = {Enabled = false, SmoothMode = false, Color = "Normal", TransCount = 1, DebounceCount = 0},
+    JumpBug = {Held = false, Enabled = false, Keybind = "Enum.KeyCode.T"},
+    M9 = {Enabled = false}
+}
+
+EdgebugToggle = aD:CreateToggle("Edgebug", function(K)
+    k["Edgebug"] = K
+    aS.Edgebug.Enabled = not aS.Edgebug.Enabled
+    aS.Edgebug.Held = false
+    aQ.Visible = false
+end)
+
+EdgejumpToggle = aD:CreateToggle("Edgejump", function(K)
+    k["Edgejump"] = K
+    aS.Edgejump.Enabled = not aS.Edgejump.Enabled
+    aS.Edgejump.Held = false
+end)
+
+EdgejumpToggle = aD:CreateToggle("Jumpbug", function(K)
+    k["Jumpbug"] = K
+    aS.JumpBug.Enabled = not aS.JumpBug.Enabled
+    aS.JumpBug.Held = false
+end)
+
+aD:CreateLabel("Sounds")
+
+local ebsfx = Instance.new("Sound")
+ebsfx.Parent = game:GetService("SoundService")
+
+ebSoundsDropdown = aD:CreateDropdown("EB Sound", {"Ownage", "Godlike", "Skeet"}, function(K)
+    if K == "Ownage" then
+        ebsfx.SoundId = 'rbxassetid://6887181639'
+    elseif K == "Godlike" then
+        ebsfx.SoundId = 'rbxassetid://7463103082'
+    elseif K == "Skeet" then
+        ebsfx.SoundId = 'rbxassetid://5447626464'
+    end
+end)
+
+aD:CreateLabel("Keybinds")
+
+EdgebugKeybind = aD:CreateKeybind("Edgejump Keybind", Enum.KeyCode.LeftAlt, function(w)
+    k["Edgejump Keybind"] = tostring(w)
+    aS.Edgejump.Keybind = tostring(w)
+    aS.Edgejump.Held = false
+end)
+
+EdgebugKeybind = aD:CreateKeybind("Edgebug Keybind", Enum.KeyCode.E, function(w)
+    k["Edgebug Keybind"] = tostring(w)
+    aS.Edgejump.Keybind = tostring(w)
+    aS.Edgejump.Held = false
+end)
+
+JumpbugKeybind = aD:CreateKeybind("Jumpbug Keybind", Enum.KeyCode.T, function(w)
+    k["Jumpbug Keybind"] = tostring(w)
+    aS.JumpBug.Keybind = tostring(w)
+    aS.JumpBug.Held = false
+end)
+
+local au = getrawmetatable(game)
+setreadonly(au, false)
+local av = au.__namecall
+au.__namecall = newcclosure( function(self, ...)
+    local ay = getnamecallmethod()
+    local az = {...}
+    if self.Name == "FallDamage" and aS.Edgebug.NoDamage then
+        az[2] = 0
+    end
+    return av(self, unpack(az))
+end)
+
+a.InputBegan:connect(function(w)
+    local aY = w.KeyCode == Enum.KeyCode.Unknown and tostring(w.UserInputType) or tostring(w.KeyCode)
+    if aY == k["Edgebug Keybind"] and aS.Edgebug.Enabled then
+        aQ.Visible = true
+    end
+    if aY == aS.JumpBug.Keybind and aS.JumpBug.Enabled then
+        aR.Visible = true
+        aS.JumpBug.Held = true
+    end
+    if aY == k["Edgebug Keybind"] and aS.Edgebug.Enabled then
+        aS.Edgebug.Held = true
+            spawn(
+                function()
+                    while aS.Edgebug.Held do
+                        d.RenderStepped:Wait()
+                        if g.Character and g.Character:FindFirstChild("Humanoid") and g.Character.PrimaryPart then
+                            local aZ =
+                                Ray.new(
+                                g.Character.HumanoidRootPart.Position,
+                                (g.Character.HumanoidRootPart.Position - g.Character.HumanoidRootPart.Position -
+                                    Vector3.new(0, 1, 0)).unit * 500
+                            )
+                            local a_, b0, b1 = workspace:FindPartOnRayWithIgnoreList(aZ, {g.Character})
+                            if
+                                g.Character.HumanoidRootPart.Position.Y - 2.99 <= b0.Y + 2.5 and
+                                    g.Character.Humanoid:GetState() == Enum.HumanoidStateType.Freefall and
+                                    g.Character.HumanoidRootPart.Velocity.Y <= 0 and
+                                    not aS.Edgebug.Debounce
+                            then
+                                aS.Edgebug.Debounce = true
+                                aS.Edgebug.NoDamage = true
+                                repeat
+                                    wait()
+                                until g.Character.Humanoid:GetState() ~= Enum.HumanoidStateType.Freefall
+                                if g.Character.HumanoidRootPart.Position.Y - 3.49 <= b0.Y + 2.5 then
+                                    aQ.Color = Color3.new(0.2, 0.9, 0.2)
+                                    wait()
+                                    game.StarterGui:SetCore("SendNotification", {
+                                    Title = "pepsi.club";
+                                    Text = "edgebugged !";
+                                    Icon = "rbxassetid://6910419016";
+                                    Duration = 3;
+                                    })
+                                    ebsfx.Volume = 2
+                                    ebsfx:Play()
+                                    g.Character.HumanoidRootPart.Velocity =
+                                        Vector3.new(
+                                        g.Character.HumanoidRootPart.Velocity.X * aS.Edgebug.XZModifier,
+                                        g.Character.HumanoidRootPart.Velocity.Y * aS.Edgebug.YModifier,
+                                        g.Character.HumanoidRootPart.Velocity.Z * aS.Edgebug.XZModifier
+                                    )
+                                    local b2 = g.Character.HumanoidRootPart.Velocity
+                                    pcall(
+                                        function()
+                                            for B = 1, 3 do
+                                                wait()
+                                                g.Character.HumanoidRootPart.Velocity = b2 - Vector3.new(0, 20, 0)
+                                            end
+                                        end
+                                    )
+                                end
+                                wait(0)
+                                aQ.Color = Color3.new(0.9, 0.2, 0.2)
+                                wait(0)
+                                aS.Edgebug.Debounce = false
+                                aS.Edgebug.NoDamage = false
+                            end
+                        end
+                    end
+                end)
+        end
+        if aY == aS.Edgejump.Keybind and aS.Edgejump.Enabled then
+            aS.Edgejump.Held = true
+            while aS.Edgejump.Held do
+                d.RenderStepped:Wait()
+                if g.Character and g.Character:FindFirstChild("Humanoid") and not aS.Edgejump.Debounce then
+                    if g.Character.Humanoid:GetState() == Enum.HumanoidStateType.Freefall then
+                        return
+                    end
+                    if g.Character.Humanoid:GetState() ~= Enum.HumanoidStateType.Freefall then
+                        wait(0.05)
+                        if g.Character.Humanoid:GetState() == Enum.HumanoidStateType.Freefall then
+                            game.Players.LocalPlayer.Character.Humanoid:ChangeState("Jumping")
+                            aS.Edgejump.Debounce = true
+                            wait(0.5)
+                            aS.Edgejump.Debounce = false
+                        end
+                    end
+                end
+            end
+        end
+    end
+)
+
+a.InputEnded:connect(
+    function(w)
+        local aY = w.KeyCode == Enum.KeyCode.Unknown and tostring(w.UserInputType) or tostring(w.KeyCode)
+        if aY == k["Edgebug Keybind"] and aS.Edgebug.Enabled then
+            aQ.Visible = false
+        end
+        if aY == k["Edgebug Keybind"] then
+            aS.Edgebug.Held = false
+        end
+        if aY == aS.Edgejump.Keybind then
+            aS.Edgejump.Held = false
+        end
+        if aY == aS.JumpBug.Keybind then
+            aR.Visible = false
+            aS.JumpBug.Held = false
+        end
+    end
+)
+
+d.Stepped:connect(
+    function()
+        if g.Character and g.Character:FindFirstChild("Humanoid") then
+            if aS.JumpBug.Enabled and aS.JumpBug.Held then
+                game.Players.LocalPlayer.Character.Humanoid.JumpPower = 23
+            else
+                game.Players.LocalPlayer.Character.Humanoid.JumpPower = 20
+            end
+        end
+    end
+)
+
+aD:CreateLabel("Other")
+
+infStamina = aD:CreateToggle("Inf Stamina", function(K)
+    if K == true then
+		game:GetService("RunService"):BindToRenderStep("Stamina", 100, function()
+			if cbClient.crouchcooldown ~= 0 then
+				cbClient.crouchcooldown = 0
+			end
+		end)
+	elseif K == false then
+		game:GetService("RunService"):UnbindFromRenderStep("Stamina")
+	end
+end)
+
+keystrokesButton = aD:CreateToggle("Keystrokes", function(K)
+    if K == true then
+        local ScreenGui = Instance.new("ScreenGui")
+        local W = Instance.new("TextLabel")
+        local A = Instance.new("TextLabel")
+        local S = Instance.new("TextLabel")
+        local D = Instance.new("TextLabel")
+        local E = Instance.new("TextLabel")
+        local R = Instance.new("TextLabel")
+        local Space = Instance.new("TextLabel")
+
+        ScreenGui.Parent = game.CoreGui
+        ScreenGui.Name = "keystrokess"
+
+        W.Name = "W"
+        W.Parent = ScreenGui
+        W.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        W.BackgroundTransparency = 1.000
+        W.Position = UDim2.new(0.488053292, 0, 0.728395104, 0)
+        W.Size = UDim2.new(0, 29, 0, 28)
+        W.Visible = false
+        W.Font = Enum.Font.Code
+        W.Text = "W"
+        W.TextColor3 = Color3.fromRGB(255, 255, 255)
+        W.TextSize = 14.000
+        W.TextStrokeTransparency = 0.000
+
+        A.Name = "A"
+        A.Parent = ScreenGui
+        A.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        A.BackgroundTransparency = 1.000
+        A.Position = UDim2.new(0.453584045, 0, 0.777777791, 0)
+        A.Size = UDim2.new(0, 29, 0, 28)
+        A.Visible = false
+        A.Font = Enum.Font.Code
+        A.Text = "A"
+        A.TextColor3 = Color3.fromRGB(255, 255, 255)
+        A.TextSize = 14.000
+        A.TextStrokeTransparency = 0.000
+
+        S.Name = "S"
+        S.Parent = ScreenGui
+        S.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        S.BackgroundTransparency = 1.000
+        S.Position = UDim2.new(0.488053292, 0, 0.777777791, 0)
+        S.Size = UDim2.new(0, 29, 0, 28)
+        S.Visible = false
+        S.Font = Enum.Font.Code
+        S.Text = "S"
+        S.TextColor3 = Color3.fromRGB(255, 255, 255)
+        S.TextSize = 14.000
+        S.TextStrokeTransparency = 0.000
+
+        D.Name = "D"
+        D.Parent = ScreenGui
+        D.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        D.BackgroundTransparency = 1.000
+        D.Position = UDim2.new(0.522522688, 0, 0.777777791, 0)
+        D.Size = UDim2.new(0, 29, 0, 28)
+        D.Visible = false
+        D.Font = Enum.Font.Code
+        D.Text = "D"
+        D.TextColor3 = Color3.fromRGB(255, 255, 255)
+        D.TextSize = 14.000
+        D.TextStrokeTransparency = 0.000
+
+        E.Name = "E"
+        E.Parent = ScreenGui
+        E.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        E.BackgroundTransparency = 1.000
+        E.Position = UDim2.new(0.453584045, 0, 0.728395045, 0)
+        E.Size = UDim2.new(0, 29, 0, 28)
+        E.Visible = false
+        E.Font = Enum.Font.Code
+        E.Text = "E"
+        E.TextColor3 = Color3.fromRGB(255, 255, 255)
+        E.TextSize = 14.000
+        E.TextStrokeTransparency = 0.000
+
+        R.Name = "R"
+        R.Parent = ScreenGui
+        R.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        R.BackgroundTransparency = 1.000
+        R.Position = UDim2.new(0.522522688, 0, 0.728395045, 0)
+        R.Size = UDim2.new(0, 29, 0, 28)
+        R.Visible = false
+        R.Font = Enum.Font.Code
+        R.Text = "R"
+        R.TextColor3 = Color3.fromRGB(255, 255, 255)
+        R.TextSize = 14.000
+        R.TextStrokeTransparency = 0.000
+
+        Space.Name = "Space"
+        Space.Parent = ScreenGui
+        Space.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        Space.BackgroundTransparency = 1.000
+        Space.Position = UDim2.new(0.470035285, 0, 0.825396895, 0)
+        Space.Size = UDim2.new(0, 87, 0, 28)
+        Space.Visible = false
+        Space.Font = Enum.Font.Code
+        Space.Text = "Space"
+        Space.TextColor3 = Color3.fromRGB(255, 255, 255)
+        Space.TextSize = 14.000
+        Space.TextStrokeTransparency = 0.000
+
+        local UserInputService = game:GetService("UserInputService")
+
+        local W1Key = Enum.KeyCode.W
+        local A1Key = Enum.KeyCode.A
+        local S1Key = Enum.KeyCode.S
+        local D1Key = Enum.KeyCode.D
+        local E1Key = Enum.KeyCode.E
+        local R1Key = Enum.KeyCode.R
+        local SpaceKey = Enum.KeyCode.Space
+
+        UserInputService.InputBegan:Connect(function(input)
+            if (input.KeyCode == W1Key) then
+                W.Visible = true
+            elseif (input.KeyCode == A1Key) then
+                A.Visible = true
+            elseif (input.KeyCode == S1Key) then
+                S.Visible = true
+            elseif (input.KeyCode == D1Key) then
+                D.Visible = true
+            elseif (input.KeyCode == E1Key) then
+                E.Visible = true
+            elseif (input.KeyCode == R1Key) then
+                R.Visible = true
+            elseif (input.KeyCode == SpaceKey) then
+                Space.Visible = true
+            end
+        end)
+
+        UserInputService.InputEnded:Connect(function(input)
+            if (input.KeyCode == W1Key) then
+                W.Visible = false
+            elseif (input.KeyCode == A1Key) then
+                A.Visible = false
+            elseif (input.KeyCode == S1Key) then
+                S.Visible = false
+            elseif (input.KeyCode == D1Key) then
+                D.Visible = false
+            elseif (input.KeyCode == E1Key) then
+                E.Visible = false
+            elseif (input.KeyCode == R1Key) then
+                R.Visible = false
+            elseif (input.KeyCode == SpaceKey) then
+                Space.Visible = false
+            end
+        end)
+    
+    elseif K == false then
+        game.CoreGui.keystrokess:Destroy()
+    end
+end)
+
+PlrTrailToggle = aD:CreateToggle("Player Trail", function(K)
+    if K == true then
+        PlrTrail = game:GetService("RunService").RenderStepped:Connect(function()
+            pcall(function()
+                local player = game:GetService("Players").LocalPlayer
+                local LFoot = Instance.new("Attachment",player.Character.LeftFoot)
+                local RFoot = Instance.new("Attachment",player.Character.RightFoot)
+                local Trail = Instance.new("Trail")
+                Trail.Attachment0 = LFoot
+                Trail.Attachment1 = RFoot
+                Trail.Lifetime = 3
+                Trail.Parent = LFoot.Parent
+                Trail.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 0, 4)), ColorSequenceKeypoint.new(0.24, Color3.fromRGB(243, 255, 0)), ColorSequenceKeypoint.new(0.42, Color3.fromRGB(4, 246, 0)), ColorSequenceKeypoint.new(0.65, Color3.fromRGB(0, 221, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 0, 209))}
+            end)
+        end)
+    elseif K == false and PlrTrail then
+        PlrTrail:Disconnect()
+    end
+end)
+
+VelocityGraphToggle = aD:CreateToggle("Velocity Graph", function(K)
+    k["Velocity Graph"] = K
+    aS.VelocityGraph.Enabled = K
+    aP.Visible = K
+    spawn(
+        function()
+            while aS.VelocityGraph.Enabled do
+                if aS.VelocityGraph.SmoothMode then
+                    d.RenderStepped:Wait()
+                else
+                    d.RenderStepped:Wait()
+                    d.RenderStepped:Wait()
+                end
+                    aL = workspace.CurrentCamera.ViewportSize.Y - 100
+                    aQ.Position =
+                        Vector2.new(
+                        workspace.CurrentCamera.ViewportSize.X / 2,
+                        workspace.CurrentCamera.ViewportSize.Y - 70
+                    )
+                    aR.Position =
+                        Vector2.new(
+                        workspace.CurrentCamera.ViewportSize.X / 2,
+                        workspace.CurrentCamera.ViewportSize.Y - 50
+                    )
+                    aP.Position =
+                        Vector2.new(
+                        workspace.CurrentCamera.ViewportSize.X / 2,
+                        workspace.CurrentCamera.ViewportSize.Y - 90
+                    )
+                if g.Character and g.Character.PrimaryPart then
+                    if #aK >= 1 then
+                        local M = 100
+                        if #aK >= M then
+                            aK[1]:Remove()
+                            local aT = 0
+                            for B = 2, 6 do
+                                aT = aT + 1.8
+                                aK[B].Transparency = 1 - aT / 10
+                            end
+                            aK[2].Transparency = 0.1
+                            aK[3].Transparency = 0.2
+                            aK[4].Transparency = 0.4
+                            aK[5].Transparency = 0.6
+                            aK[6].Transparency = 0.8
+                            table.remove(aK, 1)
+                        end
+                        for B, C in ipairs(aK) do
+                            C.To = C.To - Vector2.new(2, 0)
+                            C.From = C.From - Vector2.new(2, 0)
+                        end
+                    end
+                    local aU = (g.Character.PrimaryPart.Velocity * Vector3.new(1, 0, 1)).magnitude
+                    local aV = aU * 14.85
+                    if aV > 300 then
+                        aV = 300
+                    end
+                    aP.Color = Color3.new(1, 1, 1)
+                    if math.floor(aU) < aN then
+                        aP.Color = Color3.new(1, 0.5, 0.3)
+                    end
+                    if math.floor(aU) > aN then
+                        aP.Color = Color3.new(0.5, 1, 0.3)
+                    end
+                    if math.floor(aV) == 300 then
+                        aP.Color = Color3.new(1, 0.3, 0.1)
+                    end
+                    local aW = Color3.new(1, 1, 1)
+                    if aS.VelocityGraph.Color == "Rainbow" then
+                        aW = Color3.fromHSV(tick() % 5 / 5, 1, 1)
+                    elseif aS.VelocityGraph.Color == "Trans" then
+                        aW = aO[aS.VelocityGraph.TransCount]
+                        aS.VelocityGraph.DebounceCount =
+                            aS.VelocityGraph.DebounceCount == 5 and 0 or aS.VelocityGraph.DebounceCount + 1
+                    if aS.VelocityGraph.DebounceCount == 0 then
+                        aS.VelocityGraph.TransCount =
+                        aS.VelocityGraph.TransCount == #aO and 1 or aS.VelocityGraph.TransCount + 1
+                        end
+                    end
+                    local aX = Drawing.new("Line")
+                    table.insert(aK, aX)
+                    aX.Color = aW
+                    aX.Thickness = 1
+                    aX.From = Vector2.new(workspace.CurrentCamera.ViewportSize.X / 2 + 98, aM)
+                    aX.To = Vector2.new(workspace.CurrentCamera.ViewportSize.X / 2 + 100, aL - aV / 6.5)
+                    aX.Transparency = 0
+                    aX.Visible = true
+                    if #aK >= 8 then
+                        aK[#aK - 1].Transparency = aK[#aK - 1].Transparency + 0.2
+                        aK[#aK - 2].Transparency = aK[#aK - 2].Transparency + 0.2
+                        aK[#aK - 3].Transparency = aK[#aK - 3].Transparency + 0.2
+                        aK[#aK - 4].Transparency = aK[#aK - 4].Transparency + 0.2
+                        aK[#aK - 5].Transparency = aK[#aK - 5].Transparency + 0.2
+                        aK[#aK - 7].Transparency = 1
+                    end
+                    aP.Text = tostring(math.floor(aV))
+                    aM = aL - aV / 6.5
+                    aN = math.floor(aU)
+                end
+            end
+        end)
+    for B, C in next, aK do
+        C:Remove()
+    end
+    aK = {}
+end)
+
+SmoothVelocityGraph = aD:CreateToggle("Smoother Graph", function(K)
+    k["Smoother Graph"] = K
+    aS.VelocityGraph.SmoothMode = K
+end)
+
+SmoothVelocityGraph = aD:CreateDropdown("Graph Color", {"Rainbow", "Trans", "Normal"}, function(K)
+    k["Graph Color"] = K
+    aS.VelocityGraph.TransCount = 1
+    aS.VelocityGraph.Color = K
+end)
 
 ------------------------------------ CONFIGS ------------------------------------
+aF:CreateLabel("Cfg")
 
 configName = aF:Textbox("Config name")
 
@@ -1620,6 +1918,8 @@ refreshConfigs = aF:CreateButton("Refresh configs", function()
 end)
 
 ------------------------------------ MISC ------------------------------------
+aE:CreateLabel("UI")
+
 aE:CreateToggle("Watermark", function(K)
     if K == true then
         local watermark = Instance.new("ScreenGui")
@@ -1629,7 +1929,6 @@ aE:CreateToggle("Watermark", function(K)
         local Container = Instance.new("Frame")
         local UIPadding = Instance.new("UIPadding")
         local Text = Instance.new("TextLabel")
-        local Time = Instance.new("TextLabel")
         local Background = Instance.new("Frame")
         local UIGradient_2 = Instance.new("UIGradient")
 
@@ -1646,10 +1945,9 @@ aE:CreateToggle("Watermark", function(K)
 
         Color.Name = "Color"
         Color.Parent = ScreenLabel
-        Color.BackgroundColor3 = Color3.fromRGB(0, 89, 149)
+        Color.BackgroundColor3 = Color3.fromRGB(248, 98, 31)
         Color.BorderSizePixel = 0
-        Color.Position = UDim2.new(0.0192307699, 0, 0, 0)
-        Color.Size = UDim2.new(0.642307699, 0, 0, 2)
+        Color.Size = UDim2.new(1.25, 0, 0, 2)
         Color.ZIndex = 2
 
         UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(60, 60, 60))}
@@ -1670,42 +1968,28 @@ aE:CreateToggle("Watermark", function(K)
         Text.Name = "Text"
         Text.Parent = Container
         Text.BackgroundTransparency = 1.000
-        Text.Position = UDim2.new(0.0381064788, 0, 0, 0)
-        Text.Size = UDim2.new(0.373076916, 0, 1, 0)
+        Text.Position = UDim2.new(0.0230769236, 0, 0, 0)
+        Text.Size = UDim2.new(1, 0, 1, 0)
         Text.ZIndex = 4
-        Text.Font = Enum.Font.Code
-        Text.Text = "pepsi.club!"
+        Text.Font = Enum.Font.RobotoMono
+        Text.Text = "pepsi.club | 00:00:00  | Oct. 17, 2021"
         Text.TextColor3 = Color3.fromRGB(65025, 65025, 65025)
         Text.TextSize = 14.000
         Text.TextStrokeTransparency = 0.000
         Text.TextXAlignment = Enum.TextXAlignment.Left
 
-        Time.Name = "Time"
-        Time.Parent = Container
-        Time.BackgroundTransparency = 1.000
-        Time.Position = UDim2.new(0.374206603, 0, 0, 0)
-        Time.Size = UDim2.new(0.278875738, 0, 1, 0)
-        Time.ZIndex = 4
-        Time.Font = Enum.Font.Code
-        Time.Text = "00:00:00"
-        Time.TextColor3 = Color3.fromRGB(65025, 65025, 65025)
-        Time.TextSize = 14.000
-        Time.TextStrokeTransparency = 0.000
-        Time.TextXAlignment = Enum.TextXAlignment.Left
-
         Background.Name = "Background"
         Background.Parent = ScreenLabel
         Background.BackgroundColor3 = Color3.fromRGB(23, 23, 23)
         Background.BorderColor3 = Color3.fromRGB(20, 20, 20)
-        Background.Position = UDim2.new(0.0192307699, 0, 0, 0)
-        Background.Size = UDim2.new(0.642307699, 0, 1, 0)
+        Background.Size = UDim2.new(1.25, 0, 1, 0)
 
         UIGradient_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(90, 90, 90))}
         UIGradient_2.Rotation = 90
         UIGradient_2.Parent = Background
 
-        local function ZBZX_fake_script() -- Time.LocalScript 
-            local script = Instance.new('LocalScript', Time)
+        local function UQHM_fake_script() -- Text.LocalScript 
+            local script = Instance.new('LocalScript', Text)
             
             local mo = "A.M."
             local mont = nil
@@ -1745,18 +2029,19 @@ aE:CreateToggle("Watermark", function(K)
                 if h > 12 then
                     h = h - 12
                 end
-                script.Parent.Text = "" ..h.. ":" ..m.. ":" ..s.. " "
+                script.Parent.Text = "pepsi.club | " ..h.. ":" ..m.. ":" ..s.. " " ..mo.. " | " ..mon[mont][1].. " " ..d.. ", " ..y
             end
         end
-        coroutine.wrap(ZBZX_fake_script)()
-        local function POWDOGC_fake_script() -- ScreenLabel.LocalScript 
-            local script = Instance.new('LocalScript', ScreenLabel)
 
+        coroutine.wrap(UQHM_fake_script)()
+        local function QQXIOK_fake_script() -- ScreenLabel.LocalScript 
+            local script = Instance.new('LocalScript', ScreenLabel)
+            
             local gui = script.Parent
             gui.Draggable = true
             gui.Active = true
         end
-        coroutine.wrap(POWDOGC_fake_script)()
+        coroutine.wrap(QQXIOK_fake_script)()
     elseif K == false then
         game.CoreGui.watermark:Destroy()
     end
@@ -1834,7 +2119,7 @@ aE:CreateToggle("Spectator List", function(K)
 
         Color.Name = "Color"
         Color.Parent = Spectators
-        Color.BackgroundColor3 = Color3.fromRGB(0, 89, 149)
+        Color.BackgroundColor3 = Color3.fromRGB(248, 98, 31)
         Color.BorderSizePixel = 0
         Color.Size = UDim2.new(1, 0, 0, 2)
         Color.ZIndex = 2
@@ -1901,6 +2186,8 @@ for B, C in next, game.Players.LocalPlayer.PlayerGui.Music:GetDescendants() do
     end
 end
 
+aE:CreateLabel("Other")
+
 aE:CreateToggle("Splatoon sound effects", function(K)
     k["Splatoon sound effects"] = K
     for B, C in next, game.Players.LocalPlayer.PlayerGui.Music:GetDescendants() do
@@ -1924,48 +2211,6 @@ end)
 
 aE:CreateToggle("Headless horseman", function(K)
     k["Headless horseman"] = K
-end)
-
-aE:CreateToggle("Fakelag", function(K)
-    k["Fakelag"] = K
-    game:GetService("NetworkClient"):SetOutgoingKBPSLimit(9e9)
-end)
-
-aE:CreateToggle("Remove Killers", function(K)
-    pcall(function()
-        local Clips = workspace.Map.Clips; Clips.Name = "FAT"; Clips.Parent = nil
-        local Killers = workspace.Map.Killers; Killers.Name = "FAT"; Killers.Parent = nil
-        if K == true then
-		    for i,v in pairs(Clips:GetChildren()) do
-				if v:IsA("BasePart") then
-					v:Remove()
-				end
-			end
-			for i,v in pairs(Killers:GetChildren()) do
-				if v:IsA("BasePart") then
-					v:Remove()
-				end
-			end
-		end
-		Killers.Name = "Killers"; Killers.Parent = workspace.Map
-		Clips.Name = "Clips"; Clips.Parent = workspace.Map
-    end)
-end)
-
-aE:CreateToggle("No Fall Damage", function(K)
-    k["NoFall"] = K
-end)
-
-aE:CreateToggle("No Fire Damage", function(K)
-    k["NoFire"] = K
-end)
-
-bulletTracers = aE:CreateToggle("Bullet Tracers", function(K)
-    if K == true then
-        BulletTracersEnabled = true
-    elseif K == false then
-        BulletTracersEnabled = false
-    end
 end)
 
 aE:CreateToggle("Kill All", function(K)
@@ -1997,9 +2242,146 @@ aE:CreateToggle("Kill All", function(K)
 	end
 end)
 
+aE:CreateToggle("Anti Kick", function(K)
+    if K == true then
+        game.ReplicatedStorage.Events.SendMsg.OnClientEvent:Connect(function(message)
+            local msg = string.split(message, " ")
+            if game.Players:FindFirstChild(msg[1]) and msg[7] == "1" and msg[12] == game.Players.LocalPlayer.Name then
+                game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, LocalPlayer)
+            end
+        end)
+    end
+end)
+
+OldGunSounds = aE:CreateToggle("Old Gun Sounds", function(K)
+if K == true then
+    OldSounds = game:GetService("RunService").RenderStepped:Connect(function()
+        pcall(function()
+            if g.Character.EquippedTool.Value == "AK47" then
+                g.Character.Gun.Shoot.SoundId = "rbxassetid://1112730119"
+            end
+            if g.Character.EquippedTool.Value == "M4A1" then
+                g.Character.Gun.SShoot.SoundId = "rbxassetid://1665639883"
+                g.Character.Gun.Shoot.SoundId = "rbxassetid://2515498997"
+            end
+            if g.Character.EquippedTool.Value == "Glock" then
+				g.Character.Gun.Shoot.SoundId = "rbxassetid://1112951656"
+			end
+			if g.Character.EquippedTool.Value == "Galil" then
+                g.Character.Gun.Shoot.SoundId = "rbxassetid://344800912"
+			end
+			if g.Character.EquippedTool.Value == "USP" then
+                g.Character.Gun.SShoot.SoundId = "rbxassetid://1112952739"
+                g.Character.Gun.Shoot.SoundId = "rbxassetid://2515499360"
+			end
+			if g.Character.EquippedTool.Value == "P2000" then
+                g.Character.Gun.Shoot.SoundId = "rbxassetid://263589107"
+            end
+            if  g.Character.EquippedTool.Value == "P250" then
+                g.Character.Gun.Shoot.SoundId = "rbxassetid://340365431"
+            end
+            if g.Character.EquippedTool.Value == "DesertEagle" then
+                g.Character.Gun.Shoot.SoundId = "rbxassetid://202918645"
+            end
+            if g.Character.EquippedTool.Value == "MP9" then
+                g.Character.Gun.Shoot.SoundId = "rbxassetid://222888810"
+            end
+            if g.Character.EquippedTool.Value == "UMP" then
+                g.Character.Gun.Shoot.SoundId = "rbxassetid://206953341"
+            end
+            if g.Character.EquippedTool.Value == "Famas" then
+                g.Character.Gun.Shoot.SoundId = "rbxassetid://206953280"
+            end
+            if g.Character.EquippedTool.Value == "Scout" then
+                g.Character.Gun.Shoot.SoundId = "rbxassetid://1112858108"
+            end
+            if g.Character.EquippedTool.Value == "AUG" then
+                g.Character.Gun.Shoot.SoundId = "rbxassetid://515215839"
+            end
+            if g.Character.EquippedTool.Value == "AWP" then
+                g.Character.Gun.Shoot.SoundId = "rbxassetid://202918637"
+            end
+            if g.Character.EquippedTool.Value == "G3SG1" then
+                g.Character.Gun.Shoot.SoundId = "rbxassetid://340365815"
+            end
+            if g.Character.EquippedTool.Value == "SG" then
+                g.Character.Gun.Shoot.SoundId = "rbxassetid://347270113"
+            end
+            if g.Character.EquippedTool.Value == "M4A4" then
+                g.Character.Gun.Shoot.SoundId = "rbxassetid://202918741"
+            end
+          	if g.Character.EquippedTool.Value == "Tec9" then
+                g.Character.Gun.Shoot.SoundId = "rbxassetid://206953317"
+                end
+            end)
+        end)
+    elseif K == false then
+        OldSounds:Disconnect()
+    end
+end)
+
+uncensorChat = aE:CreateToggle("Uncensor Chat", function(K)
+    if K == true then
+        NoChatFilterEnabled = true
+    elseif K == false then
+        NoChatFilterEnabled = false
+    end
+end)
+
+aE:CreateButton("Remove Textures", function()
+    workspace:FindFirstChildOfClass('Terrain').WaterWaveSize = 0
+    workspace:FindFirstChildOfClass('Terrain').WaterWaveSpeed = 0
+    workspace:FindFirstChildOfClass('Terrain').WaterReflectance = 0
+	workspace:FindFirstChildOfClass('Terrain').WaterTransparency = 0
+	for i,v in pairs(game:GetDescendants()) do
+		if v:IsA("Part") or v:IsA("UnionOperation") or v:IsA("MeshPart") or v:IsA("CornerWedgePart") or v:IsA("TrussPart") then
+			v.Material = "Plastic"
+			v.Reflectance = 0
+		elseif v:IsA("Decal") then
+			v.Transparency = 1
+		elseif v:IsA("Explosion") then
+			v.BlastPressure = 1
+			v.BlastRadius = 1
+		end
+	end
+end)
+
+aE:CreateToggle("Remove Killers", function(K)
+    pcall(function()
+        local Clips = workspace.Map.Clips; Clips.Name = "FAT"; Clips.Parent = nil
+        local Killers = workspace.Map.Killers; Killers.Name = "FAT"; Killers.Parent = nil
+        if K == true then
+		    for i,v in pairs(Clips:GetChildren()) do
+				if v:IsA("BasePart") then
+					v:Remove()
+				end
+			end
+			for i,v in pairs(Killers:GetChildren()) do
+				if v:IsA("BasePart") then
+					v:Remove()
+				end
+			end
+		end
+		Killers.Name = "Killers"; Killers.Parent = workspace.Map
+		Clips.Name = "Clips"; Clips.Parent = workspace.Map
+    end)
+end)
+
 aE:CreateButton("Rejoin", function()
     game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, LocalPlayer)
 end)
+
+aE:CreateLabel("Damage Bypass")
+
+aE:CreateToggle("No Fall Damage", function(K)
+    k["NoFall"] = K
+end)
+
+aE:CreateToggle("No Fire Damage", function(K)
+    k["NoFire"] = K
+end)
+
+aE:CreateLabel("On Hit")
 
 aE:CreateToggle("Hit Sound", function(K)
     if K then
@@ -2064,17 +2446,95 @@ aE:CreateToggle("Hit Marker", function(K)
     end
 end)
 
-aE:CreateToggle("Anti Kick", function(K)
+bulletTracers = aE:CreateToggle("Bullet Tracers", function(K)
     if K == true then
-        game.ReplicatedStorage.Events.SendMsg.OnClientEvent:Connect(function(message)
-            local msg = string.split(message, " ")
-            if game.Players:FindFirstChild(msg[1]) and msg[7] == "1" and msg[12] == game.Players.LocalPlayer.Name then
-                game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, LocalPlayer)
-            end
-        end)
+        BulletTracersEnabled = true
+    elseif K == false then
+        BulletTracersEnabled = false
     end
 end)
+------------------------------------ LUAS. ------------------------------------
+aH:CreateLabel("LUAs")
+
+local trannyenabled = false
+local socks = false
+
+trannyLua = aH:CreateToggle("Tranny Mode", function(K)
+    if K == true then
+        trannyenabled = true
+        socks = true
+    elseif K == false then
+        trannyenabled = false
+        socks = false
+    end
+end)
+
+local a = Instance.new("MeshPart",workspace)
+a.Size = Vector3.new(1.35,1.4,1.35)
+a.CanCollide = false
+a.Anchored = true
+a.MeshId = "rbxassetid://4249338569"
+a.TextureID = "rbxassetid://4249293955"
+
+game:GetService("RunService").RenderStepped:connect(function()
+    if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("LowerTorso") and trannyenabled then
+        a.Position = game.Players.LocalPlayer.Character.LowerTorso.Position
+        a.Rotation = game.Players.LocalPlayer.Character.LowerTorso.Rotation
+    end
+    if socks and game.Players.LocalPlayer.Character then
+        if game.Players.LocalPlayer.Character:FindFirstChild("Pants") then
+            game.Players.LocalPlayer.Character.Pants.PantsTemplate = "rbxassetid://5381345577"
+        end
+    end
+    a.Transparency = trannyenabled and 0 or 1
+end)
+
+aH:CreateLabel("More coming soon.")
 ------------------------------------ SKINS ------------------------------------
+aG:CreateLabel("Knives")
+
+M9Toggle = aG:CreateToggle("M9 Bayonet", function(K)
+    k["M9 Bayonet"] = K
+    aS.M9.Enabled = K
+    spawn(
+        function()
+            while aS.M9.Enabled do
+                d.RenderStepped:Wait()
+                pcall(
+                    function()
+                        if
+                            g.Character and g.Character:FindFirstChild("EquippedTool") and
+                                game.ReplicatedStorage.Weapons:FindFirstChild(g.Character.EquippedTool.Value):FindFirstChild(
+                                    "Melee"
+                                ) and
+                                workspace.Camera:FindFirstChild("Arms") and
+                                workspace.Camera.Arms:FindFirstChild("Handle2")
+                        then
+                            workspace.Camera.Arms.Handle.MeshId = "rbxassetid://5524010796"
+                            workspace.Camera.Arms.Handle.TextureID = "rbxassetid://5521767392"
+                        end
+                    end)
+                end
+        end)
+end)
+
+unlockInv = aG:CreateButton("Bayonet", function()
+    local bK = "v_Bayonet"
+    for bv, C in pairs(game:GetDescendants()) do
+        if C.Name == "v_T Knife" or C.Name == "v_CT Knife" then
+            C.Name = "hdf"
+        end
+    end
+    local bj = game.ReplicatedStorage.Viewmodels[bK]
+    bj:Clone().Parent = game.ReplicatedStorage.Viewmodels
+    local bL = bj:Clone()
+    local bh = bj:Clone()
+    bL.Name = "v_CT Knife"
+    bh.Name = "v_T Knife"
+    bL.Parent = game.ReplicatedStorage.Viewmodels
+    bh.Parent = game.ReplicatedStorage.Viewmodels
+end)
+
 Daggers = aG:CreateButton("Shadow Daggers", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/deaddigi/pepsi.club/main/skins/shadowdaggers", true))()
 end)
@@ -2085,6 +2545,10 @@ end)
 
 Fortnite = aG:CreateButton("$19 Fortnite Card", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/deaddigi/pepsi.club/main/skins/fortnitecard", true))()
+end)
+
+nsfwRem = aG:CreateButton("RemRem Knife", function()
+    loadstring(game:HttpGet("https://pastebin.com/raw/0V9dNtNM", true))()
 end)
 
 Skeleton = aG:CreateButton("Skeleton Knife", function()
@@ -2103,6 +2567,16 @@ Classic = aG:CreateButton("Classic Knife", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/deaddigi/pepsi.club/main/skins/classic", true))()
 end)
 
+resetViewmodels = aG:CreateButton("Reset Viewmodels", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/deaddigi/pepsi.club/main/skins/resetviewmodels", true))()
+end)
+
+unlockinventory = aG:CreateButton("Unlock Inventory", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/6segs/millionware/main/inv", true))()
+end)
+
+aG:CreateLabel("Arms")
+
 anarchia = aG:CreateButton("Anarchia", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/deaddigi/pepsi.club/main/skins/anarchiaarms", true))()
 end)
@@ -2115,12 +2589,58 @@ steve = aG:CreateButton("Steve", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/deaddigi/pepsi.club/main/skins/stevearms", true))()
 end)
 
-resetViewmodels = aG:CreateButton("Reset Viewmodels", function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/deaddigi/pepsi.club/main/skins/resetviewmodels", true))()
+aG:CreateLabel("Custom Skin")
+
+awpSkin = aG:CreateDropdown("AWP Skin", {"Neo-Noir", "Gugnir", "Hyper Beast", "Dragon Lore", "Atheris", "Asiimov"}, function(K)
+    if K == "Neo-Noir" then
+        game.ReplicatedStorage.Viewmodels["v_AWP"].Handle.TextureID = "rbxassetid://6585612923"
+        game.ReplicatedStorage.Viewmodels["v_AWP"].Scope.TextureID = "rbxassetid://6559601090"
+        game.ReplicatedStorage.Viewmodels["v_AWP"].Mag.TextureID = "rbxassetid://6585612923"
+        game.ReplicatedStorage.Viewmodels["v_AWP"].Slide.TextureID = "rbxassetid://6585612923"
+        game.ReplicatedStorage.Viewmodels["v_AWP"]["Slide 2"].TextureID = "rbxassetid://6585612923"
+    elseif K == "Gugnir" then
+        game.ReplicatedStorage.Viewmodels["v_AWP"].Handle.TextureID = "rbxassetid://6559063434"
+        game.ReplicatedStorage.Viewmodels["v_AWP"].Scope.TextureID = "rbxassetid://6561080965"
+        game.ReplicatedStorage.Viewmodels["v_AWP"].Mag.TextureID = "rbxassetid://2471931220"
+    elseif K == "Hyper Beast" then
+        game.ReplicatedStorage.Viewmodels["v_AWP"].Handle.TextureID = "rbxassetid://6585630605"
+        game.ReplicatedStorage.Viewmodels["v_AWP"].Scope.TextureID = "rbxassetid://6585630875"
+        game.ReplicatedStorage.Viewmodels["v_AWP"].Mag.TextureID = "rbxassetid://6585630605"
+        game.ReplicatedStorage.Viewmodels["v_AWP"].Slide.TextureID = "rbxassetid://6585630605"
+        game.ReplicatedStorage.Viewmodels["v_AWP"]["Slide 2"].TextureID = "rbxassetid://6585630605"
+    elseif K == "Dragon Lore" then
+        game.ReplicatedStorage.Viewmodels["v_AWP"].Handle.TextureID = "rbxassetid://6451539744"
+        game.ReplicatedStorage.Viewmodels["v_AWP"].Scope.TextureID = "rbxassetid://6451541040"
+        game.ReplicatedStorage.Viewmodels["v_AWP"].Mag.TextureID = "rbxassetid://2471931220"
+    elseif K == "Atheris" then
+        game.ReplicatedStorage.Viewmodels["v_AWP"].Handle.TextureID = "rbxassetid://6580844725"
+        game.ReplicatedStorage.Viewmodels["v_AWP"].Scope.TextureID = "rbxassetid://6580845315"
+        game.ReplicatedStorage.Viewmodels["v_AWP"].Mag.TextureID = "rbxassetid://6580844725"
+        game.ReplicatedStorage.Viewmodels["v_AWP"].Slide.TextureID = "rbxassetid://6580844725"
+        game.ReplicatedStorage.Viewmodels["v_AWP"]["Slide 2"].TextureID = "rbxassetid://6580844725"
+    elseif K == "Asiimov" then
+        game.ReplicatedStorage.Viewmodels["v_AWP"].Handle.TextureID = "rbxassetid://6581974020"
+        game.ReplicatedStorage.Viewmodels["v_AWP"].Scope.TextureID = "rbxassetid://6581974687"
+        game.ReplicatedStorage.Viewmodels["v_AWP"].Mag.TextureID = "rbxassetid://6581974020"
+        game.ReplicatedStorage.Viewmodels["v_AWP"].Slide.TextureID = "rbxassetid://6581974020"
+        game.ReplicatedStorage.Viewmodels["v_AWP"]["Slide 2"].TextureID = "rbxassetid://6581974020"
+    end
 end)
 
-unlockinventory = aG:CreateButton("Unlock Inventory", function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/6segs/millionware/main/inv", true))()
+deagleSkin = aG:CreateDropdown("Deagle Skin", {"City", "Code Red", "Printstream"}, function(K)
+    if K == "City" then
+        game.ReplicatedStorage.Viewmodels["v_DesertEagle"].Handle.TextureID = "rbxassetid://6458222794"
+        game.ReplicatedStorage.Viewmodels["v_DesertEagle"].Mag.TextureID = "rbxassetid://6458222794"
+        game.ReplicatedStorage.Viewmodels["v_DesertEagle"].Slide.TextureID = "rbxassetid://6458222794"
+    elseif K == "Code Red" then
+        game.ReplicatedStorage.Viewmodels["v_DesertEagle"].Handle.TextureID = "rbxassetid://6451093913"
+        game.ReplicatedStorage.Viewmodels["v_DesertEagle"].Mag.TextureID = "rbxassetid://6451093913"
+        game.ReplicatedStorage.Viewmodels["v_DesertEagle"].Slide.TextureID = "rbxassetid://6451093913"
+    elseif K == "Printstream" then
+        game.ReplicatedStorage.Viewmodels["v_DesertEagle"].Handle.TextureID = "rbxassetid://6442505045"
+        game.ReplicatedStorage.Viewmodels["v_DesertEagle"].Mag.TextureID = "rbxassetid://6442505045"
+        game.ReplicatedStorage.Viewmodels["v_DesertEagle"].Slide.TextureID = "rbxassetid://6451245869"
+    end
 end)
 
 for B, C in next, game.Players.LocalPlayer.PlayerGui.GUI.SuitZoom:GetDescendants() do
@@ -2211,14 +2731,6 @@ game:GetService("RunService").Stepped:connect(
                          then
                             C:Destroy()
                         end
-                    end
-                end
-                
-                if k["Fakelag"] then
-                    if math.ceil(tick()) % 5 == 0 then
-                        game:GetService("NetworkClient"):SetOutgoingKBPSLimit(9e9)
-                    else
-                        game:GetService("NetworkClient"):SetOutgoingKBPSLimit(math.random(35, 80))
                     end
                 end
                 game.Players.LocalPlayer.PlayerGui.GUI.SuitZoom.Visible = false
@@ -2323,7 +2835,6 @@ mt.__namecall = newcclosure(function(self, ...)
 			return
 		end
 	end
-    
     return oldNamecall(self, unpack(args))
 end)
 
@@ -2336,4 +2847,14 @@ oldIndex = hookfunc(getrawmetatable(game.Players.LocalPlayer.PlayerGui.Client)._
 		end
 	end
     return oldIndex(self, idx)
+end))
+
+    oldNewIndex = hookfunc(getrawmetatable(game.Players.LocalPlayer.PlayerGui.Client).__newindex, newcclosure(function(self, idx, val)
+	if not checkcaller() then
+		if self.Name == "Crosshair" and idx == "Visible" and val == false and game.Players.LocalPlayer.PlayerGui.GUI.Crosshairs.Scope.Visible == false and ForceCrosshairEnabled == true then
+			val = true
+		end
+	end
+	
+    return oldNewIndex(self, idx, val)
 end))
