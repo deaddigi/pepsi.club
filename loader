@@ -268,7 +268,7 @@ loadbutton.Text = ""
 loadbutton.TextColor3 = Color3.fromRGB(0, 0, 0)
 loadbutton.TextSize = 14.000
 loadbutton.MouseButton1Click:Connect(function()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/deaddigi/pepsi.club/main/2.2.1", true))()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/deaddigi/pepsi.club/main/2.2.2", true))()
 	game.CoreGui.loader:Destroy()
 end)
 
