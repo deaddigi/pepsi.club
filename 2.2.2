@@ -1355,38 +1355,6 @@ function isAlive(plr)
     return plr.Character and plr.Character:FindFirstChild("Humanoid") and plr.Character:FindFirstChild("Head") and plr.Character.Humanoid.Health > 0 and true or false
 end
 
-longJump = aD:CreateToggle("Long Jump", function(K)
-    k["lj"] = K
-        if K then
-            spawn(
-                function()
-                    d:BindToRenderStep("lj", 1, function()
-                            if
-                                a:IsKeyDown(Enum.KeyCode.Space) and g.Character and
-                                    g.Character:FindFirstChild("Humanoid")
-                            then
-                                at = false
-                                g.Character.Humanoid.WalkSpeed = 30.5
-                                at = true
-                                g.Character.Humanoid.Jump = true
-                                h.speedupdate = function()
-                                end
-                            else
-                                at = false
-                                h.speedupdate = aJ
-                            end
-                        end
-                    )
-                end
-            )
-        else
-            h.speedupdate = aJ
-            d:UnbindFromRenderStep("lj")
-        end
-    end
-)
-
-
 local aK = {}
 local aL = workspace.CurrentCamera.ViewportSize.Y - 100
 local aM = aL
