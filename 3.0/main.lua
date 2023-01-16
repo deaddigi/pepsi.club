@@ -328,6 +328,169 @@ local function spectlist()
 end
 coroutine.wrap(spectlist)()
 
+local keystrokesGui = Instance.new("ScreenGui")
+local Frame = Instance.new("Frame")
+local W = Instance.new("TextLabel")
+local S = Instance.new("TextLabel")
+local A = Instance.new("TextLabel")
+local D = Instance.new("TextLabel")
+local E = Instance.new("TextLabel")
+local R = Instance.new("TextLabel")
+local Space = Instance.new("TextLabel")
+
+keystrokesGui.Parent = game.CoreGui
+keystrokesGui.Name = "keystrokess"
+keystrokesGui.Enabled = false
+
+Frame.Parent = keystrokesGui
+Frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Frame.BackgroundTransparency = 1.000
+Frame.Position = UDim2.new(0.453987718, 0, 0.738977075, 0)
+Frame.Size = UDim2.new(0, 72, 0, 75)
+
+W.Name = "W"
+W.Parent = Frame
+W.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+W.BackgroundTransparency = 1.000
+W.Position = UDim2.new(0.287764132, 0, -0.0102292299, 0)
+W.Size = UDim2.new(0, 29, 0, 28)
+W.Font = Enum.Font.Code
+W.Text = "_"
+W.TextColor3 = Color3.fromRGB(255, 255, 255)
+W.TextSize = 14.000
+W.TextStrokeTransparency = 0.000
+
+S.Name = "S"
+S.Parent = Frame
+S.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+S.BackgroundTransparency = 1.000
+S.Position = UDim2.new(0.287764132, 0, 0.35915342, 0)
+S.Size = UDim2.new(0, 29, 0, 28)
+S.Font = Enum.Font.Code
+S.Text = "_"
+S.TextColor3 = Color3.fromRGB(255, 255, 255)
+S.TextSize = 14.000
+S.TextStrokeTransparency = 0.000
+
+A.Name = "A"
+A.Parent = Frame
+A.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+A.BackgroundTransparency = 1.000
+A.Position = UDim2.new(-0.0950409099, 0, 0.35915345, 0)
+A.Size = UDim2.new(0, 29, 0, 28)
+A.Font = Enum.Font.Code
+A.Text = "_"
+A.TextColor3 = Color3.fromRGB(255, 255, 255)
+A.TextSize = 14.000
+A.TextStrokeTransparency = 0.000
+
+D.Name = "D"
+D.Parent = Frame
+D.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+D.BackgroundTransparency = 1.000
+D.Position = UDim2.new(0.684458077, 0, 0.35915342, 0)
+D.Size = UDim2.new(0, 29, 0, 28)
+D.Font = Enum.Font.Code
+D.Text = "_"
+D.TextColor3 = Color3.fromRGB(255, 255, 255)
+D.TextSize = 14.000
+D.TextStrokeTransparency = 0.000
+
+E.Name = "E"
+E.Parent = Frame
+E.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+E.BackgroundTransparency = 1.000
+E.Position = UDim2.new(-0.0950409099, 0, -0.0102293491, 0)
+E.Size = UDim2.new(0, 29, 0, 28)
+E.Font = Enum.Font.Code
+E.Text = "_"
+E.TextColor3 = Color3.fromRGB(255, 255, 255)
+E.TextSize = 14.000
+E.TextStrokeTransparency = 0.000
+
+R.Name = "R"
+R.Parent = Frame
+R.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+R.BackgroundTransparency = 1.000
+R.Position = UDim2.new(0.683231115, 0, -0.0102292895, 0)
+R.Size = UDim2.new(0, 29, 0, 28)
+R.Font = Enum.Font.Code
+R.Text = "_"
+R.TextColor3 = Color3.fromRGB(255, 255, 255)
+R.TextSize = 14.000
+R.TextStrokeTransparency = 0.000
+
+Space.Name = "Space"
+Space.Parent = Frame
+Space.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Space.BackgroundTransparency = 1.000
+Space.Position = UDim2.new(-0.104209319, 0, 0.620387971, 0)
+Space.Size = UDim2.new(0, 87, 0, 28)
+Space.Font = Enum.Font.Code
+Space.Text = "_"
+Space.TextColor3 = Color3.fromRGB(255, 255, 255)
+Space.TextSize = 14.000
+Space.TextStrokeTransparency = 0.000
+
+-- Scripts:
+
+local function SJBA_fake_script() -- Frame.LocalScript 
+    local script = Instance.new('LocalScript', Frame)
+    local gui = script.Parent
+    gui.Draggable = true
+    gui.Active = true
+end
+coroutine.wrap(SJBA_fake_script)()
+
+local function UTCCBQ_fake_script() -- Frame.LocalScript 
+    local script = Instance.new('LocalScript', Frame)
+    local UIS = game:GetService("UserInputService")
+    local Sp = script.Parent.Space
+    local W = script.Parent.W
+    local A = script.Parent.A
+    local S = script.Parent.S
+    local D = script.Parent.D
+    local E = script.Parent.E
+    local R = script.Parent.R
+	
+    UIS.InputBegan:Connect(function(key)
+        if key.KeyCode == Enum.KeyCode.W then
+            W.Text = "W"
+        elseif key.KeyCode == Enum.KeyCode.A then
+            A.Text = "A"
+        elseif key.KeyCode == Enum.KeyCode.S then
+            S.Text = "S"
+        elseif key.KeyCode == Enum.KeyCode.D then
+            D.Text = "D"
+        elseif key.KeyCode == Enum.KeyCode.E then
+            E.Text = "E"
+        elseif key.KeyCode == Enum.KeyCode.R then
+            R.Text = "R"
+        elseif key.KeyCode == Enum.KeyCode.Space then
+            Sp.Text = "Space"
+        end
+    end)
+    
+    UIS.InputEnded:Connect(function(key)
+        if key.KeyCode == Enum.KeyCode.W then
+            W.Text = "_"
+        elseif key.KeyCode == Enum.KeyCode.A then
+            A.Text = "_"
+        elseif key.KeyCode == Enum.KeyCode.S then
+            S.Text = "_"
+        elseif key.KeyCode == Enum.KeyCode.D then
+            D.Text = "_"
+        elseif key.KeyCode == Enum.KeyCode.E then
+            E.Text = "_"
+        elseif key.KeyCode == Enum.KeyCode.R then
+            R.Text = "_"
+        elseif key.KeyCode == Enum.KeyCode.Space then
+            Sp.Text = "_"
+            end
+        end)
+    end
+coroutine.wrap(UTCCBQ_fake_script)()
+
 local ebtxt = Drawing.new("Text");ebtxt.Text = "EB";ebtxt.Center = true;ebtxt.Outline = true;ebtxt.Color = C3(255, 255, 255);ebtxt.Font = 3;ebtxt.Position = Vec2(currentCamera.ViewportSize.X / 2, currentCamera.ViewportSize.Y - 80);ebtxt.Size = 18;ebtxt.Visible = false;
 local ebcounter = Drawing.new("Text");ebcounter.Text = "eb: "..ebcount.."";ebcounter.Center = true;ebcounter.Outline = true;ebcounter.Color = C3(255, 255, 255);ebcounter.Font = 3;ebcounter.Position = Vec2(currentCamera.ViewportSize.X / 2, currentCamera.ViewportSize.Y - 50);ebcounter.Size = 18;ebcounter.Visible = false
 local VelocityCounter = Drawing.new("Text");VelocityCounter.Text = "";VelocityCounter.Center = true;VelocityCounter.Outline = true;VelocityCounter.Color = Color3.new(1,1,1);VelocityCounter.Font = 3;VelocityCounter.Position = Vec2(currentCamera.ViewportSize.X/2, currentCamera.ViewportSize.Y-70);VelocityCounter.Size = 20;VelocityCounter.Visible = false
@@ -1371,7 +1534,7 @@ end)
 
 --[[MiscSec1:AddToggle('misc_spam', {Text = 'Spam Chat', Default = false})
 Toggles.misc_spam:OnChanged(function()
-    ebenabled = Toggles.misc_spam.Value
+    
 end)
 MiscSec1:AddDropdown('misc_spamtype', {Values = {'Ownage', 'Wow', "Skeet", "Godlike"}, Default = 1, Multi = false, Text = 'Spam Type'})
 Options.misc_spamtype:OnChanged(function()
@@ -1438,19 +1601,35 @@ end)
 
 MiscSec2:AddToggle('mov_jumpbug', {Text = 'Jumpbug', Default = false})
 Toggles.mov_jumpbug:OnChanged(function()
-    ebenabled = Toggles.mov_jumpbug.Value
 end)
 MiscSec2:AddLabel('Keybind'):AddKeyPicker('mov_jumpbugbind', {Default = 'R', Mode = 'Hold', Text = 'Edgebug', NoUI = false})
 Options.mov_jumpbugbind:SetValue({ 'R', 'Hold' })
 
-MiscSec2:AddToggle('mov_edgebug', {Text = 'Keystrokes', Default = false})
-Toggles.mov_edgebug:OnChanged(function()
-    --ebenabled = Toggles.mov_edgebug.Value
+MiscSec2:AddToggle('mov_keystrokes', {Text = 'Keystrokes', Default = false})
+Toggles.mov_keystrokes:OnChanged(function()
+    runService.RenderStepped:Connect(function()
+    keystrokesGui.Enabled = Toggles.mov_keystrokes.Value
+    end)
+end)
+Toggles.mov_keystrokes:AddColorPicker('mov_keystrokescolor', {Default = C3(255, 255, 255), Title = 'Keystrokes Color'})
+Options.mov_keystrokescolor:OnChanged(function()
+    W.TextColor3 = Options.mov_keystrokescolor.Value
+    A.TextColor3 = Options.mov_keystrokescolor.Value
+    S.TextColor3 = Options.mov_keystrokescolor.Value
+    D.TextColor3 = Options.mov_keystrokescolor.Value
+    E.TextColor3 = Options.mov_keystrokescolor.Value
+    R.TextColor3 = Options.mov_keystrokescolor.Value
+    Space.TextColor3 = Options.mov_keystrokescolor.Value
 end)
 
-MiscSec2:AddToggle('mov_edgebug', {Text = 'Edgebug Counter', Default = false})
-Toggles.mov_edgebug:OnChanged(function()
-    ebcounter.Visible = Toggles.mov_edgebug.Value
+MiscSec2:AddToggle('mov_edgebugc', {Text = 'Edgebug Counter', Default = false})
+Toggles.mov_edgebugc:OnChanged(function()
+    ebcounter.Visible = Toggles.mov_edgebugc.Value
+end)
+
+MiscSec2:AddToggle('mov_edgebugchat', {Text = 'Show Edgebug Message', Default = false})
+Toggles.mov_edgebugchat:OnChanged(function()
+    ebenabled = Toggles.mov_edgebugchat.Value
 end)
 
 MiscSec2:AddToggle('mov_graph', {Text = 'Velocity Graph', Default = false}):AddColorPicker('mov_graphcolor', {Default = C3(255, 255, 255), Title = 'Graph Color'})
@@ -2078,7 +2257,7 @@ localPlayer.Additionals.TotalDamage.Changed:Connect(function(val)
 	end)()
 end)
 
-function onStep()
+function mainfunc()
     if IsAlive(localPlayer) then
         local currentState = localPlayer.Character.Humanoid:GetState()
         hookJp = Toggles.mov_jumpbug.Value and isButtonDown(Enum.KeyCode[Options.mov_jumpbugbind.Value])
@@ -2111,6 +2290,16 @@ function onStep()
                         ebsound:Play()
                     else
                         print("no")
+                    end
+                    
+                    if Toggles.mov_edgebugchat.Value == true then
+                        getsenv(localPlayer.PlayerGui.GUI.Main.Chats.DisplayChat).moveOldMessages()
+                        getsenv(localPlayer.PlayerGui.GUI.Main.Chats.DisplayChat).createNewMessage(
+                            "pepsi.club",
+                            "edgebugged",
+                            C3(2, 103, 172), 
+                            Color3.new(1,1,1),
+                            .01)
                     end
                     
                     ebcount = ebcount + 1
@@ -2147,7 +2336,7 @@ function onStep()
         lighting.TimeOfDay = 12
     end
 end
-runService.RenderStepped:Connect(onStep)
+runService.RenderStepped:Connect(mainfunc)
 
 if rayignore:FindFirstChild("Smokes") then
 	for _,smoke in pairs(rayignore:FindFirstChild("Smokes"):GetChildren()) do
