@@ -1150,8 +1150,8 @@ mespbombtog:AddColorPicker('mesp_bombcolor', {Default = C3(255, 0, 0), Title = '
 local mespweapontog = MiscESPTab:AddToggle('mesp_weapons', {Text = 'Weapon', Default = false})
 mespweapontog:AddColorPicker('mesp_weaponscolor', {Default = C3(88, 124, 220), Title = 'Color'})
 
-local mespnadetog = MiscESPTab:AddToggle('mesp_nades', {Text = 'Grenade', Default = false})
-mespnadetog:AddColorPicker('mesp_nadescolor', {Default = C3(75, 58, 222), Title = 'Color'})
+--[[local mespnadetog = MiscESPTab:AddToggle('mesp_nades', {Text = 'Grenade', Default = false})
+mespnadetog:AddColorPicker('mesp_nadescolor', {Default = C3(75, 58, 222), Title = 'Color'})]]
 
 MiscTab:AddToggle('misc_molly', {Text = 'Visualize Molly Radius', Default = false})
 Toggles.misc_molly:OnChanged(function()
@@ -1369,9 +1369,9 @@ Toggles.misc_lastvk:OnChanged(function()
     end
 end)
 
-MiscSec1:AddToggle('misc_spam', {Text = 'Spam Chat', Default = false})
+--[[MiscSec1:AddToggle('misc_spam', {Text = 'Spam Chat', Default = false})
 Toggles.misc_spam:OnChanged(function()
-    --ebenabled = Toggles.misc_spam.Value
+    ebenabled = Toggles.misc_spam.Value
 end)
 MiscSec1:AddDropdown('misc_spamtype', {Values = {'Ownage', 'Wow', "Skeet", "Godlike"}, Default = 1, Multi = false, Text = 'Spam Type'})
 Options.misc_spamtype:OnChanged(function()
@@ -1384,7 +1384,7 @@ Options.misc_spamtype:OnChanged(function()
     elseif Options.misc_spamtype.Value == "Godlike" then
         ebsfx = 7463103082
     end
-end)
+end)]]
 
 MiscSec2:AddToggle('mov_bhop', {Text = 'Bunny Hop', Default = false})
 Toggles.mov_bhop:OnChanged(function()
