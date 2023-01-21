@@ -2265,11 +2265,13 @@ function mainfunc()
             localPlayer.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
         end
         
-        if Toggles.cam_fovenabled.Value then
-            currentCamera.FieldOfView = Options.cam_fovvalue.Value
-        else
-            currentCamera.FieldOfView = 70
-        end
+	if localPlayer.PlayerGui.GUI.Crosshairs.Scope.Visible == false then
+		if Toggles.cam_fovenabled.Value then
+		    currentCamera.FieldOfView = Options.cam_fovvalue.Value
+		else
+		    currentCamera.FieldOfView = 70
+		end
+	end
         
         if Toggles.mov_edgebug.Value and not ebCooldown and isButtonDown(Enum.KeyCode[Options.mov_edgebugbind.Value]) then
             if oldState == Enum.HumanoidStateType.Freefall and currentState == Enum.HumanoidStateType.Landed then
@@ -2372,5 +2374,12 @@ if rayignore:FindFirstChild("Fires") then
 		end
 	end)
 end
+
+for i,v in pairs(game.ReplicatedStorage.Viewmodels:GetChildren()) do
+    if v:FindFirstChild("HumanoidRootPart") and v.HumanoidRootPart.Transparency ~= 1 then
+        v.HumanoidRootPart.Transparency = 1
+    end
+end
+
 Library:Notify('Finished Loading! Welcome ' ..localPlayer.Name.. ' to pepsi.club!');
 Library:Notify("Took to load "..string.format("%.5f", tick() - LoadingTime).." seconds.");
