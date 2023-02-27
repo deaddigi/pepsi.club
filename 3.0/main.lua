@@ -38,13 +38,13 @@ local LocalTab = ESPTabbox:AddTab('Local')
 
 local CameraTabbox = Tabs.Visuals:AddRightTabbox()
 local CamTab  = CameraTabbox:AddTab('Client')
-local VWTab = CameraTabbox:AddTab('Viewmodel')
+--local VWTab = CameraTabbox:AddTab('Viewmodel')
 
 local MiscTabbox = Tabs.Visuals:AddRightTabbox()
 local WRLTab  = MiscTabbox:AddTab('World')
 local MiscTab  = MiscTabbox:AddTab('Misc')
 local ArmsTab = MiscTabbox:AddTab('Self')
-local BulletsTab = MiscTabbox:AddTab('Bullet')
+--local BulletsTab = MiscTabbox:AddTab('Bullet')
 --local HitsTab = MiscTabbox:AddTab('Hit')
 local MiscESPTab = Tabs.Visuals:AddLeftGroupbox('Misc ESP')
 
@@ -53,7 +53,7 @@ local MiscSec2 = Tabs.Misc:AddLeftGroupbox('Movement')
 local MiscSec3 = Tabs.Misc:AddRightGroupbox('Tweaks')
 local MiscSec4 = Tabs.Misc:AddRightGroupbox('Hit')
 local MiscSec5 = Tabs.Misc:AddRightGroupbox('Others')
-local MiscSec6 = Tabs.Misc:AddRightGroupbox('Gun Mods')
+--local MiscSec6 = Tabs.Misc:AddRightGroupbox('Gun Mods')
 
 local MenuGroup = Tabs['UI Settings']:AddLeftGroupbox('Menu')
 ------------------------------------ VARS ------------------------------------
@@ -292,7 +292,6 @@ UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 local function spectlist()
 	local script = Instance.new('LocalScript', Frame)
 
-	
 	local function GetSpectators()
 		local CurrentSpectators = {}
 		for i,v in pairs(game:GetService("Players"):GetChildren()) do 
@@ -600,17 +599,6 @@ br_fov_circleout2.ZIndex = 9
 br_fov_circleout2.Transparency = 1
 br_fov_circleout2.Color = C3(0, 0, 0)
 
-runService.RenderStepped:Connect(function()
-    local mousepos = Vec2(userInput:GetMouseLocation().X, userInput:GetMouseLocation().Y)
-    br_fov_circleout1.Position = mousepos
-    br_fov_circle.Position = mousepos
-    br_fov_circleout2.Position = mousepos
-    
-    as_fov_circleout1.Position = mousepos
-    as_fov_circle.Position = mousepos
-    as_fov_circleout2.Position = mousepos
-end)
-
 local ExpectedArguments = {
     FindPartOnRayWithIgnoreList = {
         ArgCountRequired = 3,
@@ -780,7 +768,7 @@ esp.TeamCheck = function(v)
     end
 
     if s then return pass; end; return pass;
-end --[true = Same Team | false = Same Teama]
+end --[true = Same Team | false = Same Team]
 
 esp.NewPlayer = function(v)
     esp.playerObjects[v] = {
@@ -801,186 +789,6 @@ for _,v in ipairs(players:GetPlayers()) do
 end
 
 players.PlayerAdded:Connect(esp.NewPlayer)
-
-local mainLoop = runService.RenderStepped:Connect(function()
-    for i,v in pairs(esp.playerObjects) do
-        if not esp.HasCharacter(i) then
-            v.name.Visible = false
-            v.boxOutline.Visible = false
-            v.box.Visible = false
-            v.boxfill.Visible = false
-        end
-    
-        if esp.HasCharacter(i) then
-            local hum = i.Character.Humanoid
-            local hrp = i.Character.HumanoidRootPart
-            local head = i.Character.Head
-
-            local Vector, onScreen = currentCamera:WorldToViewportPoint(i.Character.HumanoidRootPart.Position)
-    
-            local Size = (currentCamera:WorldToViewportPoint(hrp.Position - Vec3(0, 3, 0)).Y - currentCamera:WorldToViewportPoint(hrp.Position + Vec3(0, 2.6, 0)).Y) / 2
-            local BoxSize = Vec2(math.floor(Size * 1.5), math.floor(Size * 1.9))
-            local BoxPos = Vec2(math.floor(Vector.X - Size * 1.5 / 2), math.floor(Vector.Y - Size * 1.6 / 2))
-            
-            local BoxFillSize = Vec2(math.floor(Size * 1.5), math.floor(Size * 1.9)) --same as box
-            local BoxFillPos = Vec2(math.floor(Vector.X - Size * 1.5 / 2), math.floor(Vector.Y - Size * 1.6 / 2)) -- this 1 too
-    
-            local BottomOffset = BoxSize.Y + BoxPos.Y + 1
-
-            if onScreen and esp.enabled then
-                if esp.settings.name.enabled then
-                    v.name.Position = Vec2(BoxSize.X / 2 + BoxPos.X, BoxPos.Y - 16)
-                    v.name.Outline = esp.settings.name.outline
-                    v.name.Color = esp.settings.name.color
-
-                    v.name.Font = esp.font
-                    v.name.Size = esp.fontsize
-
-                    if esp.settings.name.displaynames then
-                        v.name.Text = tostring(i.DisplayName)
-                    else
-                        v.name.Text = tostring(i.Name)
-                    end
-
-                    v.name.Visible = true
-                else
-                    v.name.Visible = false
-                end
-
-                if esp.settings.distance.enabled and localPlayer.Character and localPlayer.Character:FindFirstChild("HumanoidRootPart") then
-                    v.distance.Position = Vec2(BoxSize.X / 2 + BoxPos.X, BottomOffset)
-                    v.distance.Outline = esp.settings.distance.outline
-                    v.distance.Text = "[ " .. math.floor((hrp.Position - localPlayer.Character.HumanoidRootPart.Position).Magnitude) .. " studs]"
-                    v.distance.Color = esp.settings.distance.color
-                    BottomOffset = BottomOffset + 15
-
-                    v.distance.Font = esp.font
-                    v.distance.Size = esp.fontsize
-
-                    v.distance.Visible = true
-                else
-                    v.distance.Visible = false
-                end
-
-                if esp.settings.box.enabled then
-                    v.boxOutline.Size = BoxSize
-                    v.boxOutline.Position = BoxPos
-                    v.boxOutline.Visible = esp.settings.box.outline
-    
-                    v.box.Size = BoxSize
-                    v.box.Position = BoxPos
-                    v.box.Color = esp.settings.box.color
-                    v.box.Visible = true
-                else
-                    v.boxOutline.Visible = false
-                    v.box.Visible = false
-                end
-                
-                if esp.settings.boxfill.enabled then
-                    v.boxfill.Position = BoxFillPos
-                    v.boxfill.Size = BoxFillSize
-                    v.boxfill.Visible = esp.settings.boxfill.enabled
-                    v.boxfill.Filled = true
-                    v.boxfill.Color = esp.settings.boxfill.color
-                    v.boxfill.Transparency = esp.settings.boxfill.transparency
-                else
-                    v.boxfill.Visible = false
-                    v.boxfill.Filled = false
-                end
-
-                if esp.settings.healthbar.enabled then
-                    v.healthBar.From = Vec2((BoxPos.X - 5), BoxPos.Y + BoxSize.Y)
-                    v.healthBar.To = Vec2(v.healthBar.From.X, v.healthBar.From.Y - (hum.Health / hum.MaxHealth) * BoxSize.Y)
-                    v.healthBar.Color = C3(255 - 255 / (hum["MaxHealth"] / hum["Health"]), 255 / (hum["MaxHealth"] / hum["Health"]), 0)
-                    v.healthBar.Visible = true
-
-                    v.healthBarOutline.From = Vec2(v.healthBar.From.X, BoxPos.Y + BoxSize.Y + 1)
-                    v.healthBarOutline.To = Vec2(v.healthBar.From.X, (v.healthBar.From.Y - 1 * BoxSize.Y) -1)
-                    v.healthBarOutline.Visible = esp.settings.healthbar.outline
-                else
-                    v.healthBarOutline.Visible = false
-                    v.healthBar.Visible = false
-                end
-
-                if esp.settings.healthtext.enabled then
-                    v.healthText.Text = tostring(math.floor((hum.Health / hum.MaxHealth) * 100 + 0.5))
-                    v.healthText.Position = Vec2((BoxPos.X - 20), (BoxPos.Y + BoxSize.Y - 1 * BoxSize.Y) -1)
-                    v.healthText.Color = esp.settings.healthtext.color
-                    v.healthText.Outline = esp.settings.healthtext.outline
-
-                    v.healthText.Font = esp.font
-                    v.healthText.Size = esp.fontsize
-
-                    v.healthText.Visible = true
-                else
-                    v.healthText.Visible = false
-                end
-
-                if esp.settings.viewangle.enabled then
-                    local fromHead = currentCamera:worldToViewportPoint(head.CFrame.p)
-                    local toPoint = currentCamera:worldToViewportPoint((head.CFrame + (head.CFrame.lookVector * 10)).p)
-                    v.viewAngle.From = Vec2(fromHead.X, fromHead.Y)
-                    v.viewAngle.To = Vec2(toPoint.X, toPoint.Y)
-                    v.viewAngle.Color = esp.settings.viewangle.color
-                    v.viewAngle.Visible = true
-                end
-                
-                
-                if esp.teamcheck then
-                    if esp.TeamCheck(i) then
-                        v.name.Visible = esp.settings.name.enabled
-                        v.box.Visible = esp.settings.box.enabled
-                        v.boxfill.Visible = esp.settings.boxfill.enabled
-                        v.healthBar.Visible = esp.settings.healthbar.enabled
-                        v.healthText.Visible = esp.settings.healthtext.enabled
-                        v.distance.Visible = esp.settings.distance.enabled
-                        v.viewAngle.Visible = esp.settings.viewangle.enabled
-                        if ESPOutline then
-                            if esp.settings.box.enabled then
-                                v.boxOutline.Visible = esp.settings.box.outline
-                                v.boxOutline.Visible = esp.settings.box.outline
-                            end
-
-                            if esp.settings.healthbar.enabled then
-                                v.healthBarOutline.Visible = esp.settings.healthbar.outline
-                            end
-                        end
-                    else
-                        v.name.Visible = false
-                        v.boxOutline.Visible = false
-                        v.box.Visible = false
-                        v.boxfill.Visible = false
-                        v.healthBarOutline.Visible = false
-                        v.healthBar.Visible = false
-                        v.healthText.Visible = false
-                        v.distance.Visible = false
-                        v.viewAngle.Visible = false
-                    end
-                end
-            else
-                v.name.Visible = false
-                v.boxOutline.Visible = false
-                v.box.Visible = false
-                v.boxfill.Visible = false
-                v.healthBarOutline.Visible = false
-                v.healthBar.Visible = false
-                v.healthText.Visible = false
-                v.distance.Visible = false
-                v.viewAngle.Visible = false
-            end
-        else
-            v.name.Visible = false
-            v.boxOutline.Visible = false
-            v.box.Visible = false
-            v.boxfill.Visible = false
-            v.healthBarOutline.Visible = false
-            v.healthBar.Visible = false
-            v.healthText.Visible = false
-            v.distance.Visible = false
-            v.viewAngle.Visible = false
-        end
-    end
-end)
 ------------------------------------ CONTENT ------------------------------------
 AimbotSec1:AddToggle("aim_Enabled", {Text = "Enabled"}):AddKeyPicker("aim_Enabled_KeyPicker", {Default = "RightAlt", SyncToggleState = true, Mode = "Toggle", Text = "Silent Aim", NoUI = false});
 Options.aim_Enabled_KeyPicker:OnClick(function()
@@ -1015,46 +823,16 @@ end)
 
 AimbotSec1:AddToggle('br_fov', {Text = 'Show FOV Circle', Default = false})
 Toggles.br_fov:OnChanged(function()
-    runService.RenderStepped:Connect(function()
-    br_fov_circle.Visible = Toggles.br_fov.Value
-    end)
 end)
 Toggles.br_fov:AddColorPicker('br_fovcolor', {Default = C3(255,255,255), Title = 'FOV Circle Color'})
 Options.br_fovcolor:OnChanged(function()
     br_fov_circle.Color = Options.br_fovcolor.Value
 end)
 AimbotSec1:AddToggle('br_fovout', {Text = 'Circle Outline', Default = false})
-Toggles.br_fovout:OnChanged(function()
-    runService.RenderStepped:Connect(function() --// WHY A FUCKING LOOP I WANT TO KMS
-    if Toggles.br_fov.Value == true and Toggles.br_fovout.Value == true then
-       br_fov_circleout1.Visible = true
-       br_fov_circleout2.Visible = true
-    else
-        br_fov_circleout1.Visible = false
-        br_fov_circleout2.Visible = false
-    end
-    end)
-end)
 
 AimbotSec2:AddToggle('as_enabled', {Text = 'Enabled', Default = false})
 Toggles.as_enabled:OnChanged(function()
-   if Toggles.as_enabled.Value == true then
-        as_loop = runService.RenderStepped:Connect(function()
-            local pressed = userInput:IsMouseButtonPressed(Enum.UserInputType.MouseButton2)
-            
-            if pressed and IsAlive(localPlayer) then
-                local Line = Drawing.new("Line")
-                local curTar = getClosest(currentCamera.CFrame)
-                local hbpos = currentCamera:WorldToScreenPoint(curTar.Character[AimSettings.Hitbox].Position)
-                hbpos = Vec2(hbpos.X, hbpos.Y)
-                if (hbpos - currentCamera.ViewportSize/2).Magnitude < AimSettings.Radius then
-                    currentCamera.CFrame = currentCamera.CFrame:Lerp(CFrame.new(currentCamera.CFrame.Position, curTar.Character[AimSettings.Hitbox].Position), AimSettings.Smoothness)
-                end
-            end
-        end)
-    elseif Toggles.as_enabled.Value == false and as_loop then
-        as_loop:Disconnect()
-    end
+   AimSettings.Enabled = Toggles.as_enabled.Value
 end)
     
 AimbotSec2:AddToggle('as_tc', {Text = 'Team Check', Default = false})
@@ -1086,27 +864,11 @@ Options.as_radius:OnChanged(function()
 end)
 
 AimbotSec2:AddToggle('as_fov', {Text = 'Show FOV Circle', Default = false})
-Toggles.as_fov:OnChanged(function()
-    runService.RenderStepped:Connect(function()
-    as_fov_circle.Visible = Toggles.as_fov.Value
-    end)
-end)
 Toggles.as_fov:AddColorPicker('as_fovcolor', {Default = C3(255,255,255), Title = 'FOV Circle Color'})
 Options.as_fovcolor:OnChanged(function()
     as_fov_circle.Color = Options.as_fovcolor.Value
 end)
 AimbotSec2:AddToggle('as_fovout', {Text = 'Circle Outline', Default = false})
-Toggles.as_fovout:OnChanged(function()
-    runService.RenderStepped:Connect(function() --// WHY A FUCKING LOOP I WANT TO KMS
-    if Toggles.as_fov.Value == true and Toggles.as_fovout.Value == true then
-       as_fov_circleout1.Visible = true
-       as_fov_circleout2.Visible = true
-    else
-        as_fov_circleout1.Visible = false
-        as_fov_circleout2.Visible = false
-    end
-    end)
-end)
 --------------------------------------------------------------------------------------
 ESPTab:AddToggle('espenabled', {Text = 'Enabled', Default = false})
 Toggles.espenabled:OnChanged(function()
@@ -1237,7 +999,7 @@ CamTab:AddSlider('cam_fovvalue', {Text = 'FOV', Default = 70, Min = 60, Max = 12
 
 CamTab:AddToggle('cam_sway', {Text = 'Disable Weapon Swaying', Default = false}):OnChanged(function() end)
 
-CamTab:AddToggle('cam_forcecross', {Text = 'Force Crosshair', Default = false}):OnChanged(function() end)
+--CamTab:AddToggle('cam_forcecross', {Text = 'Force Crosshair', Default = false}):OnChanged(function() end)
 
 CamTab:AddToggle('cam_flash', {Text = 'Remove Flash', Default = false})
 Toggles.cam_flash:OnChanged(function()
@@ -1252,7 +1014,7 @@ CamTab:AddToggle('cam_smoke', {Text = 'Reduce Smoke', Default = false}):OnChange
 CamTab:AddSlider('cam_smokereduce', {Text = 'Value', Default = 100, Min = 1, Max = 100, Rounding = 0, Compact = false}):OnChanged(function() end)
 CamTab:AddLabel('Aura Color'):AddColorPicker('cam_smokeauracolor', {Default = C3(255, 0, 0), Title = 'Smoke Aura Color'})
 
-VWTab:AddToggle('vw_enabled', {Text = 'Enabled', Default = false}):OnChanged(function() end)
+--[[VWTab:AddToggle('vw_enabled', {Text = 'Enabled', Default = false}):OnChanged(function() end)
 local vmx = VWTab:AddSlider('vw_x', {Text = 'X', Default = 0, Min = -180, Max = 180, Rounding = 0, Compact = false}):OnChanged(function() end)
 local vmy = VWTab:AddSlider('vw_y', {Text = 'Y', Default = 0, Min = -180, Max = 180, Rounding = 0, Compact = false}):OnChanged(function() end)
 local vmz = VWTab:AddSlider('vw_z', {Text = 'Z', Default = 0, Min = -180, Max = 180, Rounding = 0, Compact = false}):OnChanged(function() end)
@@ -1260,7 +1022,7 @@ VWTab:AddButton('Reset Values', function()
     vmx:SetValue(0)
     vmy:SetValue(0)
     vmz:SetValue(0)
-end)
+end)]]
 
 local ambienttog = WRLTab:AddToggle('wrl_ambient', {Text = 'Ambience', Default = false})
 ambienttog:AddColorPicker('wrl_ambient1', {Default = C3(75, 58, 222), Title = 'Ambient'})
@@ -1333,14 +1095,6 @@ MiscTab:AddLabel('Color'):AddColorPicker('misc_mollycolor', {Default = C3(255, 0
 
 local blurvalue = 50
 local lv = Vector3.zero
-
-runService.RenderStepped:Connect(function()
-	local x,y,z = currentCamera.CFrame:ToEulerAnglesXYZ()
-	x,y,z = math.deg(x),math.deg(y),math.deg(z)
-	
-	Blur.Size = math.clamp((Vec3(x,y,z)-lv).Magnitude/2,2,10 + blurvalue)
-	lv = Vec3(x,y,z)
-end)
 MiscTab:AddToggle('misc_motionenabled', {Text = 'Motion Blur', Default = false})
 Toggles.misc_motionenabled:OnChanged(function()
     Blur.Enabled = Toggles.misc_motionenabled.Value
@@ -1385,7 +1139,7 @@ Options.arms_weaponchamstexture:OnChanged(function()
 end)
 
 
-BulletsTab:AddToggle('bullets_btenabled', {Text = 'Bullet Tracer', Default = false}):OnChanged(function() end)
+--[[BulletsTab:AddToggle('bullets_btenabled', {Text = 'Bullet Tracer', Default = false}):OnChanged(function() end)
 BulletsTab:AddSlider('bullets_bttime', {Text = 'Tracers Life Time', Default = 2, Min = 1, Max = 10, Rounding = 0, Compact = false}):OnChanged(function() end)
 BulletsTab:AddLabel('Tracer Color'):AddColorPicker('bullets_btcolor', {Default = C3(255, 0, 0), Title = 'Tracer Color'})
 BulletsTab:AddDropdown('bullets_bttexture', {Values = {"Lightning","Laser 1","Laser 2","Energy"}, Default = 1, Multi = false, Text = 'Tracer Texture'})
@@ -1403,14 +1157,9 @@ end)
 
 BulletsTab:AddToggle('bullets_impactenabled', {Text = 'Bullet Impact', Default = false}):OnChanged(function() end)
 BulletsTab:AddLabel('Impact Color'):AddColorPicker('bullets_impactenabledcolor', {Default = C3(0, 0, 255), Title = 'Impact Color'})
-BulletsTab:AddSlider('bullets_impacttime', {Text = 'Impact Life Time', Default = 3, Min = 1, Max = 10, Rounding = 0, Compact = false}):OnChanged(function() end)
+BulletsTab:AddSlider('bullets_impacttime', {Text = 'Impact Life Time', Default = 3, Min = 1, Max = 10, Rounding = 0, Compact = false}):OnChanged(function() end)]]
 --------------------------------------------------------------------------------------
 MiscSec1:AddToggle('misc_watermark', {Text = 'Watermark', Default = false}):AddColorPicker('misc_watermarkcolor', {Default = C3(2, 103, 172), Title = 'Watermark Color'})
-Toggles.misc_watermark:OnChanged(function()
-    runService.RenderStepped:Connect(function() --// WHY THE FUCK DO I HAVE TO MAKE THIS A LOOP
-        watermark.Enabled = Toggles.misc_watermark.Value
-    end)
-end)
 Options.misc_watermarkcolor:OnChanged(function()
     WatermarkColor.BackgroundColor3 = Options.misc_watermarkcolor.Value
 end)
@@ -1421,11 +1170,6 @@ Toggles.misc_binds:OnChanged(function()
 end)
 
 MiscSec1:AddToggle('misc_spectlist', {Text = 'Show Spectators List', Default = false}):AddColorPicker('misc_spectlistcolor', {Default = C3(2, 103, 172), Title = 'List Color'})
-Toggles.misc_spectlist:OnChanged(function()
-    runService.RenderStepped:Connect(function() --// WHY THE FUCK DO I HAVE TO MAKE THIS A LOPOP
-        SpectatorViewer.Enabled = Toggles.misc_spectlist.Value
-    end)
-end)
 Options.misc_spectlistcolor:OnChanged(function()
     SpectColor.BackgroundColor3 = Options.misc_spectlistcolor.Value
 end)
@@ -1453,72 +1197,6 @@ Toggles.misc_killers:OnChanged(function()
 end)
 
 MiscSec1:AddToggle('misc_oldsounds', {Text = 'Old Gun Sounds', Default = false})
-Toggles.misc_spectlist:OnChanged(function()
-    if Toggles.misc_oldsounds.Value == true then
-        OldSounds = runService.RenderStepped:Connect(function()
-            pcall(function()
-                if localPlayer.Character.EquippedTool.Value == "AK47" then
-                    localPlayer.Character.Gun.Shoot.SoundId = "rbxassetid://1112730119"
-                end
-                if localPlayer.Character.EquippedTool.Value == "M4A1" then
-                    localPlayer.Character.Gun.SShoot.SoundId = "rbxassetid://1665639883"
-                    localPlayer.Character.Gun.Shoot.SoundId = "rbxassetid://2515498997"
-                end
-                if localPlayer.Character.EquippedTool.Value == "Glock" then
-                    localPlayer.Character.Gun.Shoot.SoundId = "rbxassetid://1112951656"
-                end
-                if localPlayer.Character.EquippedTool.Value == "Galil" then
-                    localPlayer.Character.Gun.Shoot.SoundId = "rbxassetid://344800912"
-                end
-                if localPlayer.Character.EquippedTool.Value == "USP" then
-                    localPlayer.Character.Gun.SShoot.SoundId = "rbxassetid://1112952739"
-                    localPlayer.Character.Gun.Shoot.SoundId = "rbxassetid://2515499360"
-                end
-                if localPlayer.Character.EquippedTool.Value == "P2000" then
-                    localPlayer.Character.Gun.Shoot.SoundId = "rbxassetid://263589107"
-                end
-                if  localPlayer.Character.EquippedTool.Value == "P250" then
-                    localPlayer.Character.Gun.Shoot.SoundId = "rbxassetid://340365431"
-                end
-                if localPlayer.Character.EquippedTool.Value == "DesertEagle" then
-                    localPlayer.Character.Gun.Shoot.SoundId = "rbxassetid://202918645"
-                end
-                if localPlayer.Character.EquippedTool.Value == "MP9" then
-                    localPlayer.Character.Gun.Shoot.SoundId = "rbxassetid://222888810"
-                end
-                if localPlayer.Character.EquippedTool.Value == "UMP" then
-                    localPlayer.Character.Gun.Shoot.SoundId = "rbxassetid://206953341"
-                end
-                if localPlayer.Character.EquippedTool.Value == "Famas" then
-                    localPlayer.Character.Gun.Shoot.SoundId = "rbxassetid://206953280"
-                end
-                if localPlayer.Character.EquippedTool.Value == "Scout" then
-                    localPlayer.Character.Gun.Shoot.SoundId = "rbxassetid://1112858108"
-                end
-                if localPlayer.Character.EquippedTool.Value == "AUG" then
-                    localPlayer.Character.Gun.Shoot.SoundId = "rbxassetid://515215839"
-                end
-                if localPlayer.Character.EquippedTool.Value == "AWP" then
-                    localPlayer.Character.Gun.Shoot.SoundId = "rbxassetid://202918637"
-                end
-                if localPlayer.Character.EquippedTool.Value == "G3SG1" then
-                    localPlayer.Character.Gun.Shoot.SoundId = "rbxassetid://340365815"
-                end
-                if localPlayer.Character.EquippedTool.Value == "SG" then
-                    localPlayer.Character.Gun.Shoot.SoundId = "rbxassetid://347270113"
-                end
-                if localPlayer.Character.EquippedTool.Value == "M4A4" then
-                    localPlayer.Character.Gun.Shoot.SoundId = "rbxassetid://202918741"
-                end
-                if localPlayer.Character.EquippedTool.Value == "Tec9" then
-                    localPlayer.Character.Gun.Shoot.SoundId = "rbxassetid://206953317"
-                end
-            end)
-        end)
-    elseif Toggles.misc_oldsounds.Value == false and OldSounds then
-        OldSounds:Disconnect()
-    end
-end)
 
 MiscSec1:AddToggle('misc_lastvk', {Text = 'Rejoin on Last VK', Default = false})
 Toggles.misc_lastvk:OnChanged(function()
@@ -1550,30 +1228,6 @@ Options.misc_spamtype:OnChanged(function()
 end)]]
 
 MiscSec2:AddToggle('mov_bhop', {Text = 'Bunny Hop', Default = false})
-Toggles.mov_bhop:OnChanged(function()
-    if Toggles.mov_bhop.Value == true then
-        BunnyHopLoop = runService.RenderStepped:Connect(function()
-            if localPlayer.PlayerGui.GUI.Main.GlobalChat.Visible == false then
-                if IsAlive(localPlayer) and userInput:IsKeyDown(Enum.KeyCode.Space) then
-                    localPlayer.Character.Humanoid.Jump = true
-                    local speed = Options.mov_bhopspeed.Value
-                    local dir = currentCamera.CFrame.LookVector * Vec3(1,0,1)
-                    local move = Vec3()
-                    move = userInput:IsKeyDown(Enum.KeyCode.W) and move + dir or move
-                    move = userInput:IsKeyDown(Enum.KeyCode.S) and move - dir or move
-                    move = userInput:IsKeyDown(Enum.KeyCode.D) and move + Vec3(-dir.Z,0,dir.X) or move
-                    move = userInput:IsKeyDown(Enum.KeyCode.A) and move + Vec3(dir.Z,0,-dir.X) or move
-                    if move.Unit.X == move.Unit.X then
-                        move = move.Unit
-                        localPlayer.Character.HumanoidRootPart.Velocity = Vec3(move.X * speed, localPlayer.Character.HumanoidRootPart.Velocity.Y, move.Z * speed)
-                    end
-                end
-            end
-        end)
-    elseif Toggles.mov_bhop.Value == false and BunnyHopLoop then
-        BunnyHopLoop:Disconnect()
-    end
-end)
 MiscSec2:AddSlider('mov_bhopspeed', {Text = 'Bhop Speed', Default = 25, Min = 1, Max = 150, Rounding = 0, Compact = false})
 
 local ebtog = MiscSec2:AddToggle('mov_edgebug', {Text = 'Edgebug', Default = false})
@@ -1606,11 +1260,6 @@ MiscSec2:AddLabel('Keybind'):AddKeyPicker('mov_jumpbugbind', {Default = 'R', Mod
 Options.mov_jumpbugbind:SetValue({ 'R', 'Hold' })
 
 MiscSec2:AddToggle('mov_keystrokes', {Text = 'Keystrokes', Default = false})
-Toggles.mov_keystrokes:OnChanged(function()
-    runService.RenderStepped:Connect(function()
-    keystrokesGui.Enabled = Toggles.mov_keystrokes.Value
-    end)
-end)
 Toggles.mov_keystrokes:AddColorPicker('mov_keystrokescolor', {Default = C3(255, 255, 255), Title = 'Keystrokes Color'})
 Options.mov_keystrokescolor:OnChanged(function()
     W.TextColor3 = Options.mov_keystrokescolor.Value
@@ -1741,36 +1390,6 @@ MiscSec4:AddToggle('hit_hitmarker', {Text = 'Hit Marker', Default = false}):AddC
 MiscSec4:AddToggle('hit_killsay', {Text = 'Kill Say', Default = false})
 MiscSec4:AddInput('killsay_msg', {Default = 'sit', Numeric = false, Finished = false, Text = 'Message', Placeholder = 'Message'})
 
-MiscSec5:AddToggle('others_killall', {Text = 'Kill All', Default = false})
-Toggles.others_killall:OnChanged(function()
-    if Toggles.others_killall.Value == true then
-        KillAllLoop = runService.RenderStepped:Connect(function()
-            pcall(function()
-                for i,v in pairs(players:GetChildren()) do
-					if v.Character and v.Character.Humanoid.Health > 0 and localPlayer.Character.EquippedTool and v.Team ~= localPlayer.Team then
-						local Arguments = {
-							[1] = v.Character.Head,
-							[2] = v.Character.Head.Position,
-							[3] = localPlayer.Character.EquippedTool.Value,
-							[4] = 100,
-							[5] = localPlayer.Character.Gun,
-							[8] = 10, -- Damage Multiplier
-							[9] = false,
-							[10] = false, -- Is Wallbang
-							[11] = Vec3(),
-							[12] = 100,
-							[13] = Vec3()
-						}
-						game.ReplicatedStorage.Events.HitPart:FireServer(unpack(Arguments))
-					end
-				end
-			end)
-		end)
-	elseif Toggles.others_killall.Value == false and KillAllLoop then
-		KillAllLoop:Disconnect()
-	end
-end)
-
 MiscSec5:AddButton('Crash Server', function() 
     if not IsAlive(localPlayer) then
         Library:Notify('Waiting until you respawn. . .');
@@ -1791,7 +1410,7 @@ MiscSec5:AddButton('Anti Blood Lag', function()
     local senv = getsenv(localPlayer.PlayerGui.Client)senv.splatterBlood = function() end
 end)
 
-MiscSec6:AddToggle('mod_spread', {Text = 'No Spread', Default = false})
+--[[MiscSec6:AddToggle('mod_spread', {Text = 'No Spread', Default = false})
 MiscSec6:AddToggle('mod_recoil', {Text = 'No Recoil', Default = false})
 Toggles.mod_recoil:OnChanged(function()
     if Toggles.mod_recoil.Value == true then
@@ -1803,7 +1422,7 @@ Toggles.mod_recoil:OnChanged(function()
 	elseif Toggles.mod_recoil.Value == false and NoRecoil then
 		runService:UnbindFromRenderStep("NoRecoil")
 	end
-end)
+end)]]
 --------------------------------------------------------------------------------------
 MenuGroup:AddButton('Unload', function() Library:Unload() end)
 MenuGroup:AddLabel('Menu bind'):AddKeyPicker('MenuKeybind', { Default = 'End', NoUI = true, Text = 'Menu keybind' })
@@ -1848,7 +1467,7 @@ OthersSettings:AddButton('Copy Game Invite', function()
     setclipboard("Roblox.GameLauncher.joinGameInstance("..game.PlaceId..", "..game.JobId.."')")
 end)
 ------------------------------------ HOOK ------------------------------------
-local BeamPart = Instance.new("Part", workspace)
+--[[local BeamPart = Instance.new("Part", workspace)
 
 BeamPart.Name = "BeamPart"
 BeamPart.Transparency = 1
@@ -1915,9 +1534,9 @@ function CreateBulletImpact(pos)
 	BulletImpacts.Parent = currentCamera
 	wait(Options.bullets_impacttime.Value)
 	BulletImpacts:Destroy()
-end
+end]]
 
-local hookJp = nil
+--[[local hookJp = nil
 local meta = getrawmetatable(game)
 setreadonly(meta, false)
 local oldNamecall = meta.__namecall
@@ -1941,15 +1560,6 @@ meta.__namecall = newcclosure(function(self, ...)
             return
 		elseif self.Name == "FallDamage" and Toggles.tweaks_fall.Value == true then
             return
-		elseif method == "FireServer" and self.Name == "HitPart" then
-			spawn(function()
-				if Toggles.bullets_btenabled.Value == true then
-					local beam = createBeam(workspace.Camera.Arms.Flash.CFrame.p, args[2])
-				end
-				if Toggles.bullets_impactenabled.Value == true then
-                    CreateBulletImpact(args[2])
-                end
-			end)
 		elseif method == "Kick" then
 			return
 		elseif method == "FireServer" and self.Name == "ControlTurn" and SECHS == true then
@@ -1979,7 +1589,7 @@ meta.__newindex = newcclosure(function(self,idx,val)
         val = 26
     end
     return oldNewindex(self,idx,val)
-end)
+end)]]
 
 -- hooks
 --[[resume(create(function()
@@ -2257,23 +1867,330 @@ localPlayer.Additionals.TotalDamage.Changed:Connect(function(val)
 	end)()
 end)
 
-function mainfunc()
+
+
+if rayignore:FindFirstChild("Smokes") then
+	for _,smoke in pairs(rayignore:FindFirstChild("Smokes"):GetChildren()) do
+		smoke.Material = Enum.Material.Neon
+		smoke.Transparency = 0.5
+	end
+    rayignore:FindFirstChild("Smokes").ChildAdded:Connect(function(smoke)
+		runService.RenderStepped:Wait()
+		if Toggles.cam_smoke.Value then
+			smoke.ParticleEmitter.Rate = Options.cam_smokereduce.Value
+		end
+        smoke.Material = Enum.Material.Neon
+        smoke.Transparency = 0.5
+        smoke.Color = Options.cam_smokeauracolor.Value
+    end)
+end
+rayignore.ChildAdded:Connect(function(obj) 
+	if obj.Name == "Fires" then 
+		obj.ChildAdded:Connect(function(fire) 
+			if Toggles.misc_molly.Value then 
+				fire.Transparency = 0
+				fire.Color = Options.misc_mollycolor.Value
+			end 
+		end) 
+	end 
+end)
+
+if rayignore:FindFirstChild("Fires") then
+	rayignore:FindFirstChild("Fires").ChildAdded:Connect(function(fire)
+		if Toggles.misc_molly.Value then
+			fire.Transparency = 0
+			fire.Color = Options.misc_mollycolor.Value
+		end
+	end)
+end
+
+for i,v in pairs(game.ReplicatedStorage.Viewmodels:GetChildren()) do
+    if v:FindFirstChild("HumanoidRootPart") and v.HumanoidRootPart.Transparency ~= 1 then
+        v.HumanoidRootPart.Transparency = 1
+    end
+end
+--------------------------------------------------------------------------------------
+local function Combat()
+    if Toggles.as_enabled.Value then
+        local pressed = userInput:IsMouseButtonPressed(Enum.UserInputType.MouseButton2)
+        
+        if pressed and IsAlive(localPlayer) then
+            local Line = Drawing.new("Line")
+            local curTar = getClosest(currentCamera.CFrame)
+            local hbpos = currentCamera:WorldToScreenPoint(curTar.Character[AimSettings.Hitbox].Position)
+            hbpos = Vec2(hbpos.X, hbpos.Y)
+            if (hbpos - currentCamera.ViewportSize/2).Magnitude < AimSettings.Radius then
+                currentCamera.CFrame = currentCamera.CFrame:Lerp(CFrame.new(currentCamera.CFrame.Position, curTar.Character[AimSettings.Hitbox].Position), AimSettings.Smoothness)
+            end
+        end
+    end
+    if Toggles.as_fov.Value == true and Toggles.as_fovout.Value == true then
+       as_fov_circleout1.Visible = true
+       as_fov_circleout2.Visible = true
+    else
+        as_fov_circleout1.Visible = false
+        as_fov_circleout2.Visible = false
+    end
+    as_fov_circle.Visible = Toggles.as_fov.Value
+    
+    if Toggles.br_fov.Value == true and Toggles.br_fovout.Value == true then
+       br_fov_circleout1.Visible = true
+       br_fov_circleout2.Visible = true
+    else
+        br_fov_circleout1.Visible = false
+        br_fov_circleout2.Visible = false
+    end
+    br_fov_circle.Visible = Toggles.br_fov.Value
+    
+    
+    local mousepos = Vec2(userInput:GetMouseLocation().X, userInput:GetMouseLocation().Y)
+    br_fov_circleout1.Position = mousepos
+    br_fov_circle.Position = mousepos
+    br_fov_circleout2.Position = mousepos
+    
+    as_fov_circleout1.Position = mousepos
+    as_fov_circle.Position = mousepos
+    as_fov_circleout2.Position = mousepos
+end
+
+local function ESP()
+    for i,v in pairs(esp.playerObjects) do
+        if not esp.HasCharacter(i) then
+            v.name.Visible = false
+            v.boxOutline.Visible = false
+            v.box.Visible = false
+            v.boxfill.Visible = false
+        end
+    
+        if esp.HasCharacter(i) then
+            local hum = i.Character.Humanoid
+            local hrp = i.Character.HumanoidRootPart
+            local head = i.Character.Head
+
+            local Vector, onScreen = currentCamera:WorldToViewportPoint(i.Character.HumanoidRootPart.Position)
+    
+            local Size = (currentCamera:WorldToViewportPoint(hrp.Position - Vec3(0, 3, 0)).Y - currentCamera:WorldToViewportPoint(hrp.Position + Vec3(0, 2.6, 0)).Y) / 2
+            local BoxSize = Vec2(math.floor(Size * 1.5), math.floor(Size * 1.9))
+            local BoxPos = Vec2(math.floor(Vector.X - Size * 1.5 / 2), math.floor(Vector.Y - Size * 1.6 / 2))
+            
+            local BoxFillSize = Vec2(math.floor(Size * 1.5), math.floor(Size * 1.9)) --same as box
+            local BoxFillPos = Vec2(math.floor(Vector.X - Size * 1.5 / 2), math.floor(Vector.Y - Size * 1.6 / 2)) -- this 1 too
+    
+            local BottomOffset = BoxSize.Y + BoxPos.Y + 1
+
+            if onScreen and esp.enabled then
+                if esp.settings.name.enabled then
+                    v.name.Position = Vec2(BoxSize.X / 2 + BoxPos.X, BoxPos.Y - 16)
+                    v.name.Outline = esp.settings.name.outline
+                    v.name.Color = esp.settings.name.color
+
+                    v.name.Font = esp.font
+                    v.name.Size = esp.fontsize
+
+                    if esp.settings.name.displaynames then
+                        v.name.Text = tostring(i.DisplayName)
+                    else
+                        v.name.Text = tostring(i.Name)
+                    end
+
+                    v.name.Visible = true
+                else
+                    v.name.Visible = false
+                end
+
+                if esp.settings.distance.enabled and localPlayer.Character and localPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                    v.distance.Position = Vec2(BoxSize.X / 2 + BoxPos.X, BottomOffset)
+                    v.distance.Outline = esp.settings.distance.outline
+                    v.distance.Text = "[ " .. math.floor((hrp.Position - localPlayer.Character.HumanoidRootPart.Position).Magnitude) .. " studs]"
+                    v.distance.Color = esp.settings.distance.color
+                    BottomOffset = BottomOffset + 15
+
+                    v.distance.Font = esp.font
+                    v.distance.Size = esp.fontsize
+
+                    v.distance.Visible = true
+                else
+                    v.distance.Visible = false
+                end
+
+                if esp.settings.box.enabled then
+                    v.boxOutline.Size = BoxSize
+                    v.boxOutline.Position = BoxPos
+                    v.boxOutline.Visible = esp.settings.box.outline
+    
+                    v.box.Size = BoxSize
+                    v.box.Position = BoxPos
+                    v.box.Color = esp.settings.box.color
+                    v.box.Visible = true
+                else
+                    v.boxOutline.Visible = false
+                    v.box.Visible = false
+                end
+                
+                if esp.settings.boxfill.enabled then
+                    v.boxfill.Position = BoxFillPos
+                    v.boxfill.Size = BoxFillSize
+                    v.boxfill.Visible = esp.settings.boxfill.enabled
+                    v.boxfill.Filled = true
+                    v.boxfill.Color = esp.settings.boxfill.color
+                    v.boxfill.Transparency = esp.settings.boxfill.transparency
+                else
+                    v.boxfill.Visible = false
+                    v.boxfill.Filled = false
+                end
+
+                if esp.settings.healthbar.enabled then
+                    v.healthBar.From = Vec2((BoxPos.X - 5), BoxPos.Y + BoxSize.Y)
+                    v.healthBar.To = Vec2(v.healthBar.From.X, v.healthBar.From.Y - (hum.Health / hum.MaxHealth) * BoxSize.Y)
+                    v.healthBar.Color = C3(255 - 255 / (hum["MaxHealth"] / hum["Health"]), 255 / (hum["MaxHealth"] / hum["Health"]), 0)
+                    v.healthBar.Visible = true
+
+                    v.healthBarOutline.From = Vec2(v.healthBar.From.X, BoxPos.Y + BoxSize.Y + 1)
+                    v.healthBarOutline.To = Vec2(v.healthBar.From.X, (v.healthBar.From.Y - 1 * BoxSize.Y) -1)
+                    v.healthBarOutline.Visible = esp.settings.healthbar.outline
+                else
+                    v.healthBarOutline.Visible = false
+                    v.healthBar.Visible = false
+                end
+
+                if esp.settings.healthtext.enabled then
+                    v.healthText.Text = tostring(math.floor((hum.Health / hum.MaxHealth) * 100 + 0.5))
+                    v.healthText.Position = Vec2((BoxPos.X - 20), (BoxPos.Y + BoxSize.Y - 1 * BoxSize.Y) -1)
+                    v.healthText.Color = esp.settings.healthtext.color
+                    v.healthText.Outline = esp.settings.healthtext.outline
+
+                    v.healthText.Font = esp.font
+                    v.healthText.Size = esp.fontsize
+
+                    v.healthText.Visible = true
+                else
+                    v.healthText.Visible = false
+                end
+
+                if esp.settings.viewangle.enabled then
+                    local fromHead = currentCamera:worldToViewportPoint(head.CFrame.p)
+                    local toPoint = currentCamera:worldToViewportPoint((head.CFrame + (head.CFrame.lookVector * 10)).p)
+                    v.viewAngle.From = Vec2(fromHead.X, fromHead.Y)
+                    v.viewAngle.To = Vec2(toPoint.X, toPoint.Y)
+                    v.viewAngle.Color = esp.settings.viewangle.color
+                    v.viewAngle.Visible = true
+                end
+                
+                
+                if esp.teamcheck then
+                    if esp.TeamCheck(i) then
+                        v.name.Visible = esp.settings.name.enabled
+                        v.box.Visible = esp.settings.box.enabled
+                        v.boxfill.Visible = esp.settings.boxfill.enabled
+                        v.healthBar.Visible = esp.settings.healthbar.enabled
+                        v.healthText.Visible = esp.settings.healthtext.enabled
+                        v.distance.Visible = esp.settings.distance.enabled
+                        v.viewAngle.Visible = esp.settings.viewangle.enabled
+                        if ESPOutline then
+                            if esp.settings.box.enabled then
+                                v.boxOutline.Visible = esp.settings.box.outline
+                                v.boxOutline.Visible = esp.settings.box.outline
+                            end
+
+                            if esp.settings.healthbar.enabled then
+                                v.healthBarOutline.Visible = esp.settings.healthbar.outline
+                            end
+                        end
+                    else
+                        v.name.Visible = false
+                        v.boxOutline.Visible = false
+                        v.box.Visible = false
+                        v.boxfill.Visible = false
+                        v.healthBarOutline.Visible = false
+                        v.healthBar.Visible = false
+                        v.healthText.Visible = false
+                        v.distance.Visible = false
+                        v.viewAngle.Visible = false
+                    end
+                end
+            else
+                v.name.Visible = false
+                v.boxOutline.Visible = false
+                v.box.Visible = false
+                v.boxfill.Visible = false
+                v.healthBarOutline.Visible = false
+                v.healthBar.Visible = false
+                v.healthText.Visible = false
+                v.distance.Visible = false
+                v.viewAngle.Visible = false
+            end
+        else
+            v.name.Visible = false
+            v.boxOutline.Visible = false
+            v.box.Visible = false
+            v.boxfill.Visible = false
+            v.healthBarOutline.Visible = false
+            v.healthBar.Visible = false
+            v.healthText.Visible = false
+            v.distance.Visible = false
+            v.viewAngle.Visible = false
+        end
+    end
+end
+
+local function Visuals()
+    if Toggles.wrl_ambient.Value then
+        lighting.Ambient = Options.wrl_ambient1.Value
+        lighting.OutdoorAmbient = Options.wrl_ambient2.Value
+    else
+        lighting.Ambient = C3(255, 255, 255)
+        lighting.OutdoorAmbient = C3(255, 255, 255)
+    end
+    
+    if Toggles.wrl_forcetime.Value then
+        lighting.TimeOfDay = Options.wrl_forcetimevalue.Value
+    else
+        lighting.TimeOfDay = 12
+    end
+    
+    if localPlayer.PlayerGui.GUI.Crosshairs.Scope.Visible == false then
+        if Toggles.cam_fovenabled.Value then
+            currentCamera.FieldOfView = Options.cam_fovvalue.Value
+        else
+            currentCamera.FieldOfView = 70
+		end
+	end
+    
+    local x,y,z = currentCamera.CFrame:ToEulerAnglesXYZ()
+	x,y,z = math.deg(x),math.deg(y),math.deg(z)
+	
+	Blur.Size = math.clamp((Vec3(x,y,z)-lv).Magnitude/2,2,10 + blurvalue)
+	lv = Vec3(x,y,z)
+end
+
+function Movement()
+    if Toggles.mov_bhop.Value then
+        if localPlayer.PlayerGui.GUI.Main.GlobalChat.Visible == false then
+            if IsAlive(localPlayer) and userInput:IsKeyDown(Enum.KeyCode.Space) then
+                localPlayer.Character.Humanoid.Jump = true
+                local speed = Options.mov_bhopspeed.Value
+                local dir = currentCamera.CFrame.LookVector * Vec3(1,0,1)
+                local move = Vec3()
+                move = userInput:IsKeyDown(Enum.KeyCode.W) and move + dir or move
+                move = userInput:IsKeyDown(Enum.KeyCode.S) and move - dir or move
+                move = userInput:IsKeyDown(Enum.KeyCode.D) and move + Vec3(-dir.Z,0,dir.X) or move
+                move = userInput:IsKeyDown(Enum.KeyCode.A) and move + Vec3(dir.Z,0,-dir.X) or move
+                if move.Unit.X == move.Unit.X then
+                    move = move.Unit
+                    localPlayer.Character.HumanoidRootPart.Velocity = Vec3(move.X * speed, localPlayer.Character.HumanoidRootPart.Velocity.Y, move.Z * speed)
+                end
+            end
+        end
+    end
+    
     if IsAlive(localPlayer) then
         local currentState = localPlayer.Character.Humanoid:GetState()
-        hookJp = Toggles.mov_jumpbug.Value and isButtonDown(Enum.KeyCode[Options.mov_jumpbugbind.Value])
+        --hookJp = Toggles.mov_jumpbug.Value and isButtonDown(Enum.KeyCode[Options.mov_jumpbugbind.Value])
         if currentState == Enum.HumanoidStateType.Landed and userInput:IsKeyDown(Enum.KeyCode.Space) and Toggles.mov_bhop.Value then
             localPlayer.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
         end
         
-	if localPlayer.PlayerGui.GUI.Crosshairs.Scope.Visible == false then
-		if Toggles.cam_fovenabled.Value then
-		    currentCamera.FieldOfView = Options.cam_fovvalue.Value
-		else
-		    currentCamera.FieldOfView = 70
-		end
-	end
-        
-        if Toggles.mov_edgebug.Value and not ebCooldown and isButtonDown(Enum.KeyCode[Options.mov_edgebugbind.Value]) then
+        if Toggles.mov_edgebug.Value and not ebCooldown and isButtonDown(Enum.KeyCode[Options.mov_edgebugbind.Value]) and IsAlive(localPlayer) then
             if oldState == Enum.HumanoidStateType.Freefall and currentState == Enum.HumanoidStateType.Landed then
                 ebCooldown = true
                 ebtxt.Visible = true
@@ -2323,63 +2240,82 @@ function mainfunc()
         end
         VelocityCounter.Visible = false
     end
-    
-    if Toggles.wrl_ambient.Value then
-        lighting.Ambient = Options.wrl_ambient1.Value
-        lighting.OutdoorAmbient = Options.wrl_ambient2.Value
-    else
-        lighting.Ambient = C3(255, 255, 255)
-        lighting.OutdoorAmbient = C3(255, 255, 255)
-    end
-    
-    if Toggles.wrl_forcetime.Value then
-        lighting.TimeOfDay = Options.wrl_forcetimevalue.Value
-    else
-        lighting.TimeOfDay = 12
-    end
+    keystrokesGui.Enabled = Toggles.mov_keystrokes.Value
 end
-runService.RenderStepped:Connect(mainfunc)
 
-if rayignore:FindFirstChild("Smokes") then
-	for _,smoke in pairs(rayignore:FindFirstChild("Smokes"):GetChildren()) do
-		smoke.Material = Enum.Material.Neon
-		smoke.Transparency = 0.5
-	end
-    rayignore:FindFirstChild("Smokes").ChildAdded:Connect(function(smoke)
-		runService.RenderStepped:Wait()
-		if Toggles.cam_smoke.Value then
-			smoke.ParticleEmitter.Rate = Options.cam_smokereduce.Value
-		end
-        smoke.Material = Enum.Material.Neon
-        smoke.Transparency = 0.5
-        smoke.Color = Options.cam_smokeauracolor.Value
-    end)
+local function Misc()
+    watermark.Enabled = Toggles.misc_watermark.Value
+    SpectatorViewer.Enabled = Toggles.misc_spectlist.Value
+    
+    if Toggles.misc_oldsounds.Value then
+        pcall(function()
+            if localPlayer.Character.EquippedTool.Value == "AK47" then
+                localPlayer.Character.Gun.Shoot.SoundId = "rbxassetid://1112730119"
+            end
+            if localPlayer.Character.EquippedTool.Value == "M4A1" then
+                localPlayer.Character.Gun.SShoot.SoundId = "rbxassetid://1665639883"
+                localPlayer.Character.Gun.Shoot.SoundId = "rbxassetid://2515498997"
+            end
+            if localPlayer.Character.EquippedTool.Value == "Glock" then
+                localPlayer.Character.Gun.Shoot.SoundId = "rbxassetid://1112951656"
+            end
+            if localPlayer.Character.EquippedTool.Value == "Galil" then
+                localPlayer.Character.Gun.Shoot.SoundId = "rbxassetid://344800912"
+            end
+            if localPlayer.Character.EquippedTool.Value == "USP" then
+                localPlayer.Character.Gun.SShoot.SoundId = "rbxassetid://1112952739"
+                localPlayer.Character.Gun.Shoot.SoundId = "rbxassetid://2515499360"
+            end
+            if localPlayer.Character.EquippedTool.Value == "P2000" then
+                localPlayer.Character.Gun.Shoot.SoundId = "rbxassetid://263589107"
+            end
+            if  localPlayer.Character.EquippedTool.Value == "P250" then
+                localPlayer.Character.Gun.Shoot.SoundId = "rbxassetid://340365431"
+            end
+            if localPlayer.Character.EquippedTool.Value == "DesertEagle" then
+                localPlayer.Character.Gun.Shoot.SoundId = "rbxassetid://202918645"
+            end
+            if localPlayer.Character.EquippedTool.Value == "MP9" then
+                localPlayer.Character.Gun.Shoot.SoundId = "rbxassetid://222888810"
+            end
+            if localPlayer.Character.EquippedTool.Value == "UMP" then
+                localPlayer.Character.Gun.Shoot.SoundId = "rbxassetid://206953341"
+            end
+            if localPlayer.Character.EquippedTool.Value == "Famas" then
+                localPlayer.Character.Gun.Shoot.SoundId = "rbxassetid://206953280"
+            end
+            if localPlayer.Character.EquippedTool.Value == "Scout" then
+                localPlayer.Character.Gun.Shoot.SoundId = "rbxassetid://1112858108"
+            end
+            if localPlayer.Character.EquippedTool.Value == "AUG" then
+                localPlayer.Character.Gun.Shoot.SoundId = "rbxassetid://515215839"
+            end
+            if localPlayer.Character.EquippedTool.Value == "AWP" then
+                localPlayer.Character.Gun.Shoot.SoundId = "rbxassetid://202918637"
+            end
+            if localPlayer.Character.EquippedTool.Value == "G3SG1" then
+                localPlayer.Character.Gun.Shoot.SoundId = "rbxassetid://340365815"
+            end
+            if localPlayer.Character.EquippedTool.Value == "SG" then
+                localPlayer.Character.Gun.Shoot.SoundId = "rbxassetid://347270113"
+            end
+            if localPlayer.Character.EquippedTool.Value == "M4A4" then
+                localPlayer.Character.Gun.Shoot.SoundId = "rbxassetid://202918741"
+            end
+            if localPlayer.Character.EquippedTool.Value == "Tec9" then
+                localPlayer.Character.Gun.Shoot.SoundId = "rbxassetid://206953317"
+            end
+        end)
+    end
 end
-rayignore.ChildAdded:Connect(function(obj) 
-	if obj.Name == "Fires" then 
-		obj.ChildAdded:Connect(function(fire) 
-			if Toggles.misc_molly.Value then 
-				fire.Transparency = 0
-				fire.Color = Options.misc_mollycolor.Value
-			end 
-		end) 
-	end 
+
+runService.RenderStepped:Connect(function()
+    do Combat() end
+    do Visuals() end
+    do ESP() end
+    do Movement() end
+    do Misc() end
 end)
-
-if rayignore:FindFirstChild("Fires") then
-	rayignore:FindFirstChild("Fires").ChildAdded:Connect(function(fire)
-		if Toggles.misc_molly.Value then
-			fire.Transparency = 0
-			fire.Color = Options.misc_mollycolor.Value
-		end
-	end)
-end
-
-for i,v in pairs(game.ReplicatedStorage.Viewmodels:GetChildren()) do
-    if v:FindFirstChild("HumanoidRootPart") and v.HumanoidRootPart.Transparency ~= 1 then
-        v.HumanoidRootPart.Transparency = 1
-    end
-end
 
 Library:Notify('Finished Loading! Welcome ' ..localPlayer.Name.. ' to pepsi.club!');
 Library:Notify("Took to load "..string.format("%.5f", tick() - LoadingTime).." seconds.");
