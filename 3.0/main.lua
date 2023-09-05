@@ -1,12 +1,15 @@
 ------------------------------------ HOL UP ------------------------------------
 repeat wait() until game:IsLoaded()
 local LoadingTime = tick();
+
+LPH_NO_VIRTUALIZE = function(a) return a end
+LPH_NO_UPVALUES = function(a) return a end
 ------------------------------------ REPO ------------------------------------
-local repo = 'https://raw.githubusercontent.com/deaddigi/stuff/main/'
+local repo = 'https://raw.githubusercontent.com/violin-suzutsuki/LinoriaLib/main/'
 ------------------------------------ LINKS ------------------------------------
 local Library = loadstring(game:HttpGet(repo .. 'Library.lua'))()
-local ThemeManager = loadstring(game:HttpGet(repo .. 'Linoria%20Themes.lua'))()
-local SaveManager = loadstring(game:HttpGet(repo .. 'Save%20Manager.lua'))()
+local ThemeManager = loadstring(game:HttpGet(repo .. 'addons/ThemeManager.lua'))()
+local SaveManager = loadstring(game:HttpGet(repo .. 'addons/SaveManager.lua'))()
 
 Library:Notify('Loading UI...');
 wait(3)
@@ -27,10 +30,6 @@ local Tabs = {
 local AimbotSec1 = Tabs.Legitbot:AddLeftGroupbox('Bullet Redirection')
 local AimbotSec2 = Tabs.Legitbot:AddRightGroupbox('Aim Assist')
 
---local VisualSec1 = Tabs.Visuals:AddLeftGroupbox('ESP')
---local VisualSec12 = Tabs.Visuals:AddLeftGroupbox('ESP Settings')
---local VisualSec2 = Tabs.Visuals:AddRightGroupbox('World')
---local VisualSec3 = Tabs.Visuals:AddRightGroupbox('Self')
 local ESPTabbox = Tabs.Visuals:AddLeftTabbox()
 local ESPTab  = ESPTabbox:AddTab('ESP')
 local ESPSTab = Tabs.Visuals:AddLeftGroupbox('ESP Settings')
@@ -38,14 +37,13 @@ local LocalTab = ESPTabbox:AddTab('Local')
 
 local CameraTabbox = Tabs.Visuals:AddRightTabbox()
 local CamTab  = CameraTabbox:AddTab('Client')
---local VWTab = CameraTabbox:AddTab('Viewmodel')
+local VWTab = CameraTabbox:AddTab('Viewmodel')
 
 local MiscTabbox = Tabs.Visuals:AddRightTabbox()
 local WRLTab  = MiscTabbox:AddTab('World')
 local MiscTab  = MiscTabbox:AddTab('Misc')
 local ArmsTab = MiscTabbox:AddTab('Self')
---local BulletsTab = MiscTabbox:AddTab('Bullet')
---local HitsTab = MiscTabbox:AddTab('Hit')
+local BulletsTab = MiscTabbox:AddTab('Bullet')
 local MiscESPTab = Tabs.Visuals:AddLeftGroupbox('Misc ESP')
 
 local MiscSec1 = Tabs.Misc:AddLeftGroupbox('Main')
@@ -53,7 +51,7 @@ local MiscSec2 = Tabs.Misc:AddLeftGroupbox('Movement')
 local MiscSec3 = Tabs.Misc:AddRightGroupbox('Tweaks')
 local MiscSec4 = Tabs.Misc:AddRightGroupbox('Hit')
 local MiscSec5 = Tabs.Misc:AddRightGroupbox('Others')
---local MiscSec6 = Tabs.Misc:AddRightGroupbox('Gun Mods')
+local MiscSec6 = Tabs.Misc:AddLeftGroupbox('Gun Mods')
 
 local MenuGroup = Tabs['UI Settings']:AddLeftGroupbox('Menu')
 ------------------------------------ VARS ------------------------------------
@@ -514,6 +512,76 @@ function isButtonDown(key)
     end
 	return false
 end
+------------------------------------ ESP ------------------------------------
+local esp = {
+    playerObjects = {},
+    enabled = false,
+    teamcheck = true,
+    fontsize = 13,
+    font = 1,
+    settings = {
+        name = {enabled = false, outline = false, displaynames = false, color = C3(255, 255, 255)},
+        box = {enabled = false, outline = false, color = C3(255, 255, 255)},
+        boxfill = {enabled = false, color = C3(255, 0, 0), transparency = 0.5},
+        healthbar = {enabled = false, outline = false},
+        healthtext = {enabled = false, outline = false, color = C3(255, 255, 255)},
+        distance = {enabled = false, outline = false, color = C3(255, 255, 255)},
+        viewangle = {enabled = false, color = C3(255, 255, 255)},
+    }
+}
+
+esp.NewDrawing = function(type, properties)
+    local newD = Drawing.new(type)
+    for i,v in next, properties or {} do
+        local s,e = pcall(function()
+            newD[i] = v
+        end)
+
+        if not s then
+            warn(e)
+        end
+    end
+    return newD
+end
+
+esp.HasCharacter = function(v)
+    local pass = false
+    -- if u dont want an self esp then do this: if v ~= game.Players.LocalPlayer and v.Character, else if v ~= v.Character
+    if v ~= localPlayer and v.Character and v.Character:FindFirstChild("Humanoid") and v.Character:FindFirstChild("HumanoidRootPart") and v.Character:FindFirstChild("Head") then
+        pass = true
+    end
+
+    if s then return pass; end; return pass;
+end
+
+esp.TeamCheck = function(v)
+    local pass = true
+    if localPlayer.TeamColor == v.TeamColor then
+        pass = false
+    end
+
+    if s then return pass; end; return pass;
+end --[true = Same Team | false = Same Team]
+
+esp.NewPlayer = function(v)
+    esp.playerObjects[v] = {
+        name = esp.NewDrawing("Text", {Color = C3(255, 255, 255), Outline = true, Center = true, Size = 13, Font = 2}),
+        boxOutline = esp.NewDrawing("Square", {Color = C3(0, 0, 0), Thickness = 3, ZIndex = 2}),
+        box = esp.NewDrawing("Square", {Color = C3(255, 255, 255), Thickness = 1, ZIndex = 3}),
+        boxfill = esp.NewDrawing("Square", {Color = C3(255, 255, 255), Thickness = 1, ZIndex = 1}),
+        healthBarOutline = esp.NewDrawing("Line", {Color = C3(0, 0, 0), Thickness = 3}),
+        healthBar = esp.NewDrawing("Line", {Color = C3(255, 255, 255), Thickness = 1}),
+        healthText = esp.NewDrawing("Text", {Color = C3(255, 255, 255), Outline = true, Center = true, Size = 13, Font = 2}),
+        distance = esp.NewDrawing("Text", {Color = C3(255, 255, 255), Outline = true, Center = true, Size = 13, Font = 2}),
+        viewAngle = esp.NewDrawing("Line", {Color = C3(255, 255, 255), Thickness = 1}),
+    }
+end
+
+for _,v in ipairs(players:GetPlayers()) do
+    esp.NewPlayer(v)
+end
+
+players.PlayerAdded:Connect(esp.NewPlayer)
 ------------------------------------ SILENT AIM STUFF ------------------------------------
 --// all of the silent aim was made by xaxa, credits to him.
 local SilentAimSettings = {
@@ -719,76 +787,6 @@ local function getClosest(cframe)
    
    return target
 end
------------------------------------- ESP CODE ------------------------------------
-local esp = {
-    playerObjects = {},
-    enabled = false,
-    teamcheck = true,
-    fontsize = 13,
-    font = 1,
-    settings = {
-        name = {enabled = false, outline = false, displaynames = false, color = C3(255, 255, 255)},
-        box = {enabled = false, outline = false, color = C3(255, 255, 255)},
-        boxfill = {enabled = false, color = C3(255, 0, 0), transparency = 0.5},
-        healthbar = {enabled = false, outline = false},
-        healthtext = {enabled = false, outline = false, color = C3(255, 255, 255)},
-        distance = {enabled = false, outline = false, color = C3(255, 255, 255)},
-        viewangle = {enabled = false, color = C3(255, 255, 255)},
-    }
-}
-
-esp.NewDrawing = function(type, properties)
-    local newD = Drawing.new(type)
-    for i,v in next, properties or {} do
-        local s,e = pcall(function()
-            newD[i] = v
-        end)
-
-        if not s then
-            warn(e)
-        end
-    end
-    return newD
-end
-
-esp.HasCharacter = function(v)
-    local pass = false
-    -- if u dont want an self esp then do this: if v ~= game.Players.LocalPlayer and v.Character, else if v ~= v.Character
-    if v ~= localPlayer and v.Character and v.Character:FindFirstChild("Humanoid") and v.Character:FindFirstChild("HumanoidRootPart") and v.Character:FindFirstChild("Head") then
-        pass = true
-    end
-
-    if s then return pass; end; return pass;
-end
-
-esp.TeamCheck = function(v)
-    local pass = true
-    if localPlayer.TeamColor == v.TeamColor then
-        pass = false
-    end
-
-    if s then return pass; end; return pass;
-end --[true = Same Team | false = Same Team]
-
-esp.NewPlayer = function(v)
-    esp.playerObjects[v] = {
-        name = esp.NewDrawing("Text", {Color = C3(255, 255, 255), Outline = true, Center = true, Size = 13, Font = 2}),
-        boxOutline = esp.NewDrawing("Square", {Color = C3(0, 0, 0), Thickness = 3, ZIndex = 2}),
-        box = esp.NewDrawing("Square", {Color = C3(255, 255, 255), Thickness = 1, ZIndex = 3}),
-        boxfill = esp.NewDrawing("Square", {Color = C3(255, 255, 255), Thickness = 1, ZIndex = 1}),
-        healthBarOutline = esp.NewDrawing("Line", {Color = C3(0, 0, 0), Thickness = 3}),
-        healthBar = esp.NewDrawing("Line", {Color = C3(255, 255, 255), Thickness = 1}),
-        healthText = esp.NewDrawing("Text", {Color = C3(255, 255, 255), Outline = true, Center = true, Size = 13, Font = 2}),
-        distance = esp.NewDrawing("Text", {Color = C3(255, 255, 255), Outline = true, Center = true, Size = 13, Font = 2}),
-        viewAngle = esp.NewDrawing("Line", {Color = C3(255, 255, 255), Thickness = 1}),
-    }
-end
-
-for _,v in ipairs(players:GetPlayers()) do
-    esp.NewPlayer(v)
-end
-
-players.PlayerAdded:Connect(esp.NewPlayer)
 ------------------------------------ CONTENT ------------------------------------
 AimbotSec1:AddToggle("aim_Enabled", {Text = "Enabled"}):AddKeyPicker("aim_Enabled_KeyPicker", {Default = "RightAlt", SyncToggleState = true, Mode = "Toggle", Text = "Silent Aim", NoUI = false});
 Options.aim_Enabled_KeyPicker:OnClick(function()
@@ -954,7 +952,7 @@ Options.espfont:OnChanged(function()
         esp.font = 3
     end
 end)
-
+-- // Local Tab
 LocalTab:AddToggle('local_thirdperson', {Text = 'Third Person', Default = false}):AddKeyPicker('local_thirdpersonbind', {Default = 'X', SyncToggleState = true, Mode = 'Toggle', Text = "Third Person", NoUI = false})
 Toggles.local_thirdperson:OnChanged(function()
     if Toggles.local_thirdperson.Value == true then
@@ -993,14 +991,11 @@ Toggles.local_selfchams:OnChanged(function()
 end)
 selfchmams:AddColorPicker('selfchams_fill', {Default = C3(0, 0, 255), Title = 'Fill Color'})
 selfchmams:AddColorPicker('selfchams_outline', {Default = C3(0, 0, 0), Title = 'Outline Color'})
-
+-- // Camera Tab
 CamTab:AddToggle('cam_fovenabled', {Text = 'Override FOV', Default = false}):OnChanged(function() end)
 CamTab:AddSlider('cam_fovvalue', {Text = 'FOV', Default = 70, Min = 60, Max = 120, Rounding = 0, Compact = false}):OnChanged(function() end)
-
 CamTab:AddToggle('cam_sway', {Text = 'Disable Weapon Swaying', Default = false}):OnChanged(function() end)
-
---CamTab:AddToggle('cam_forcecross', {Text = 'Force Crosshair', Default = false}):OnChanged(function() end)
-
+CamTab:AddToggle('cam_forcecross', {Text = 'Force Crosshair', Default = false}):OnChanged(function() end)
 CamTab:AddToggle('cam_flash', {Text = 'Remove Flash', Default = false})
 Toggles.cam_flash:OnChanged(function()
     if Toggles.cam_flash.Value == true then
@@ -1009,44 +1004,42 @@ Toggles.cam_flash:OnChanged(function()
         localPlayer.PlayerGui.Blnd.Enabled = true
     end
 end)
-
 CamTab:AddToggle('cam_smoke', {Text = 'Reduce Smoke', Default = false}):OnChanged(function() end)
 CamTab:AddSlider('cam_smokereduce', {Text = 'Value', Default = 100, Min = 1, Max = 100, Rounding = 0, Compact = false}):OnChanged(function() end)
 CamTab:AddLabel('Aura Color'):AddColorPicker('cam_smokeauracolor', {Default = C3(255, 0, 0), Title = 'Smoke Aura Color'})
-
---[[VWTab:AddToggle('vw_enabled', {Text = 'Enabled', Default = false}):OnChanged(function() end)
+-- // Viewmodel Tab
+VWTab:AddToggle('vw_enabled', {Text = 'Enabled', Default = false}):OnChanged(function() end)
 local vmx = VWTab:AddSlider('vw_x', {Text = 'X', Default = 0, Min = -180, Max = 180, Rounding = 0, Compact = false}):OnChanged(function() end)
 local vmy = VWTab:AddSlider('vw_y', {Text = 'Y', Default = 0, Min = -180, Max = 180, Rounding = 0, Compact = false}):OnChanged(function() end)
 local vmz = VWTab:AddSlider('vw_z', {Text = 'Z', Default = 0, Min = -180, Max = 180, Rounding = 0, Compact = false}):OnChanged(function() end)
+local vmroll = VWTab:AddSlider('vw_roll', {Text = 'Roll', Default = 180, Min = 0, Max = 360, Rounding = 0, Compact = false}):OnChanged(function() end)
 VWTab:AddButton('Reset Values', function() 
     vmx:SetValue(0)
     vmy:SetValue(0)
     vmz:SetValue(0)
-end)]]
-
+    vmroll:SetValue(180)
+end)
+-- // World Tab
 local ambienttog = WRLTab:AddToggle('wrl_ambient', {Text = 'Ambience', Default = false})
 ambienttog:AddColorPicker('wrl_ambient1', {Default = C3(75, 58, 222), Title = 'Ambient'})
 ambienttog:AddColorPicker('wrl_ambient2', {Default = C3(109, 58, 206), Title = 'Outdoor'})
 
-WRLTab:AddToggle('wrl_shadows', {Text = 'Shadow Map', Default = false})
-Toggles.wrl_shadows:OnChanged(function()
-    sethiddenproperty(lighting, "Technology", Toggles.wrl_shadows.Value and "ShadowMap" or "Legacy")
+WRLTab:AddToggle('wrl_shadows', {Text = 'Shadow Map', Default = false}):OnChanged(function(val)
+    sethiddenproperty(lighting, "Technology", val and "ShadowMap" or "Legacy")
 end)
 
 WRLTab:AddToggle('wrl_forcetime', {Text = 'Force Time', Default = false}):OnChanged(function() end)
 WRLTab:AddSlider('wrl_forcetimevalue', {Text = 'Time', Default = 12, Min = 0, Max = 24, Rounding = 0, Compact = false}):OnChanged(function() end)
 
-WRLTab:AddToggle('wrl_saturation', {Text = 'Saturation', Default = false})
-Toggles.wrl_saturation:OnChanged(function()
-    if Toggles.wrl_saturation.Value == true then
+WRLTab:AddToggle('wrl_saturation', {Text = 'Saturation', Default = false}):OnChanged(function(val)
+    if val == true then
         saturationeffect.Enabled = true
-    elseif Toggles.wrl_saturation.Value == false then
+    elseif val == false then
         saturationeffect.Enabled = false
     end
 end)
-WRLTab:AddSlider('wrl_saturationvalue', {Text = 'Value', Default = 0, Min = 0, Max = 1, Rounding = 2, Compact = false})
-Options.wrl_saturationvalue:OnChanged(function()
-    saturationeffect.Saturation = Options.wrl_saturationvalue.Value
+WRLTab:AddSlider('wrl_saturationvalue', {Text = 'Value', Default = 0, Min = 0, Max = 1, Rounding = 2, Compact = false}):OnChanged(function(val)
+    saturationeffect.Saturation = val
 end)
 
 WRLTab:AddToggle('wrl_skyboxenabled', {Text = 'Skybox', Default = false}):OnChanged(function() end)
@@ -1074,13 +1067,9 @@ mespbombtog:AddColorPicker('mesp_bombcolor', {Default = C3(255, 0, 0), Title = '
 
 local mespweapontog = MiscESPTab:AddToggle('mesp_weapons', {Text = 'Weapon', Default = false})
 mespweapontog:AddColorPicker('mesp_weaponscolor', {Default = C3(88, 124, 220), Title = 'Color'})
-
---[[local mespnadetog = MiscESPTab:AddToggle('mesp_nades', {Text = 'Grenade', Default = false})
-mespnadetog:AddColorPicker('mesp_nadescolor', {Default = C3(75, 58, 222), Title = 'Color'})]]
-
-MiscTab:AddToggle('misc_molly', {Text = 'Visualize Molly Radius', Default = false})
-Toggles.misc_molly:OnChanged(function()
-    if Toggles.misc_molly.Value == true then 
+-- // Visuals Misc Tab
+MiscTab:AddToggle('misc_molly', {Text = 'Visualize Molly Radius', Default = false}):OnChanged(function(val)
+    if val == true then 
         for i, molly in pairs(rayignore:FindFirstChild("Fires"):GetChildren()) do 
             molly.Transparency = 0
             molly.Color = Options.misc_mollycolor.Value
@@ -1095,15 +1084,13 @@ MiscTab:AddLabel('Color'):AddColorPicker('misc_mollycolor', {Default = C3(255, 0
 
 local blurvalue = 50
 local lv = Vector3.zero
-MiscTab:AddToggle('misc_motionenabled', {Text = 'Motion Blur', Default = false})
-Toggles.misc_motionenabled:OnChanged(function()
-    Blur.Enabled = Toggles.misc_motionenabled.Value
+MiscTab:AddToggle('misc_motionenabled', {Text = 'Motion Blur', Default = false}):OnChanged(function(val)
+    Blur.Enabled = val
 end)
-MiscTab:AddSlider('misc_motionvalue', {Text = 'Size', Default = 50, Min = 1, Max = 100, Rounding = 0, Compact = false})
-Options.misc_motionvalue:OnChanged(function()
-    blurvalue = Options.misc_motionvalue.Value
+MiscTab:AddSlider('misc_motionvalue', {Text = 'Size', Default = 50, Min = 1, Max = 100, Rounding = 0, Compact = false}):OnChanged(function(val)
+    blurvalue = val
 end)
-
+-- // Self Chams Arms Tab
 ArmsTab:AddToggle('arms_chams', {Text = 'Enabled', Default = false})
 local armschamstog = ArmsTab:AddToggle('arms_armschams', {Text = 'Arms Chams', Default = false})
 armschamstog:AddColorPicker('arms_armschamscolor', {Default = C3(255, 0, 0), Title = 'Arm Color'})
@@ -1139,7 +1126,7 @@ Options.arms_weaponchamstexture:OnChanged(function()
 end)
 
 
---[[BulletsTab:AddToggle('bullets_btenabled', {Text = 'Bullet Tracer', Default = false}):OnChanged(function() end)
+BulletsTab:AddToggle('bullets_btenabled', {Text = 'Bullet Tracer', Default = false}):OnChanged(function() end)
 BulletsTab:AddSlider('bullets_bttime', {Text = 'Tracers Life Time', Default = 2, Min = 1, Max = 10, Rounding = 0, Compact = false}):OnChanged(function() end)
 BulletsTab:AddLabel('Tracer Color'):AddColorPicker('bullets_btcolor', {Default = C3(255, 0, 0), Title = 'Tracer Color'})
 BulletsTab:AddDropdown('bullets_bttexture', {Values = {"Lightning","Laser 1","Laser 2","Energy"}, Default = 1, Multi = false, Text = 'Tracer Texture'})
@@ -1157,7 +1144,11 @@ end)
 
 BulletsTab:AddToggle('bullets_impactenabled', {Text = 'Bullet Impact', Default = false}):OnChanged(function() end)
 BulletsTab:AddLabel('Impact Color'):AddColorPicker('bullets_impactenabledcolor', {Default = C3(0, 0, 255), Title = 'Impact Color'})
-BulletsTab:AddSlider('bullets_impacttime', {Text = 'Impact Life Time', Default = 3, Min = 1, Max = 10, Rounding = 0, Compact = false}):OnChanged(function() end)]]
+BulletsTab:AddSlider('bullets_impacttime', {Text = 'Impact Life Time', Default = 3, Min = 1, Max = 10, Rounding = 0, Compact = false}):OnChanged(function() end)
+
+BulletsTab:AddToggle('bullets_hitenabled', {Text = 'Hit Chams', Default = false}):OnChanged(function() end)
+BulletsTab:AddLabel('Hit Color'):AddColorPicker('bullets_hitcolor', {Default = C3(0, 0, 255), Title = 'Hit Color'})
+BulletsTab:AddSlider('bullets_hittime', {Text = 'Hit Life Time', Default = 3, Min = 1, Max = 10, Rounding = 0, Compact = false}):OnChanged(function() end)
 --------------------------------------------------------------------------------------
 MiscSec1:AddToggle('misc_watermark', {Text = 'Watermark', Default = false}):AddColorPicker('misc_watermarkcolor', {Default = C3(2, 103, 172), Title = 'Watermark Color'})
 Options.misc_watermarkcolor:OnChanged(function()
@@ -1323,32 +1314,12 @@ Toggles.mov_graph:OnChanged(function()
     end
 end)
 
-MiscSec3:AddToggle('tweaks_fire', {Text = 'No Fire Damage', Default = false}):OnChanged(function() end)
-MiscSec3:AddToggle('tweaks_fall', {Text = 'No Fall Damage', Default = false}):OnChanged(function() end)
-
+MiscSec3:AddToggle('tweaks_fire', {Text = 'No Fire Damage', Default = false})
+MiscSec3:AddToggle('tweaks_fall', {Text = 'No Fall Damage', Default = false})
 MiscSec3:AddToggle('tweaks_cash', {Text = 'Infinite Cash', Default = false})
-Toggles.tweaks_cash:OnChanged(function()
-    if Toggles.tweaks_cash.Value == true then
-        runService:BindToRenderStep("inf_cash", 100, function()
-            localPlayer.Cash.Value = 16000
-		end)
-	elseif Toggles.tweaks_cash.Value == false and inf_cash then
-		runService:UnbindFromRenderStep("inf_cash")
-	end
-end)
-
 MiscSec3:AddToggle('tweaks_duck', {Text = 'Infinite Duck', Default = false})
-Toggles.tweaks_duck:OnChanged(function()
-    if Toggles.tweaks_duck.Value == true then
-		runService:BindToRenderStep("Stamina", 100, function()
-			if cbClient.crouchcooldown ~= 0 then
-				cbClient.crouchcooldown = 0
-			end
-		end)
-	elseif Toggles.tweaks_duck.Value == false and Stamina then
-		runService:UnbindFromRenderStep("Stamina")
-	end
-end)
+MiscSec3:AddToggle('tweaks_time', {Text = 'Infinite Buy Time', Default = false})
+MiscSec3:AddToggle('tweaks_buy', {Text = 'Buy Anywhere', Default = false})
 
 MiscSec4:AddToggle('hit_hitsound', {Text = 'Hit Sound', Default = false})
 MiscSec4:AddDropdown('hit_hitsoundtype', {Values = {'Bameware', 'Bell', 'Bubble', 'Pick', 'Pop', 'Rust', 'Skeet', 'Neverlose', 'Minecraft'}, Default = 1, Multi = false, Text = 'Hit Sound Type'})
@@ -1390,39 +1361,12 @@ MiscSec4:AddToggle('hit_hitmarker', {Text = 'Hit Marker', Default = false}):AddC
 MiscSec4:AddToggle('hit_killsay', {Text = 'Kill Say', Default = false})
 MiscSec4:AddInput('killsay_msg', {Default = 'sit', Numeric = false, Finished = false, Text = 'Message', Placeholder = 'Message'})
 
-MiscSec5:AddButton('Crash Server', function() 
-    if not IsAlive(localPlayer) then
-        Library:Notify('Waiting until you respawn. . .');
-        repeat wait(1) until IsAlive(localPlayer)
-    end
-    Library:Notify('Crashing server. . .');
-    while true do
-        pcall(function()
-            runService.RenderStepped:Wait()
-            for i = 1,100,1 do
-                game:GetService("ReplicatedStorage").Events.DropMag:FireServer(localPlayer.Character.Gun.Mag)
-            end
-        end)
-    end
-end)
-
 MiscSec5:AddButton('Anti Blood Lag', function() 
     local senv = getsenv(localPlayer.PlayerGui.Client)senv.splatterBlood = function() end
 end)
 
---[[MiscSec6:AddToggle('mod_spread', {Text = 'No Spread', Default = false})
+MiscSec6:AddToggle('mod_spread', {Text = 'No Spread', Default = false})
 MiscSec6:AddToggle('mod_recoil', {Text = 'No Recoil', Default = false})
-Toggles.mod_recoil:OnChanged(function()
-    if Toggles.mod_recoil.Value == true then
-		runService:BindToRenderStep("NoRecoil", 100, function()
-			cbClient.resetaccuracy()
-			cbClient.RecoilX = 0
-			cbClient.RecoilY = 0
-		end)
-	elseif Toggles.mod_recoil.Value == false and NoRecoil then
-		runService:UnbindFromRenderStep("NoRecoil")
-	end
-end)]]
 --------------------------------------------------------------------------------------
 MenuGroup:AddButton('Unload', function() Library:Unload() end)
 MenuGroup:AddLabel('Menu bind'):AddKeyPicker('MenuKeybind', { Default = 'End', NoUI = true, Text = 'Menu keybind' })
@@ -1450,11 +1394,6 @@ Options.uinamechange:OnChanged(function()
     Window:SetWindowTitle(Options.uinamechange.Value)
 end)
 
-OthersSettings:AddSlider('sett_fpscap', {Text = 'FPS Cap', Default = 60, Min = 1, Max = 500, Rounding = 0, Compact = false})
-Options.sett_fpscap:OnChanged(function()
-    setfpscap(Options.sett_fpscap.Value)
-end)
-
 OthersSettings:AddDivider()
 
 OthersSettings:AddButton('Rejoin', function() 
@@ -1467,7 +1406,7 @@ OthersSettings:AddButton('Copy Game Invite', function()
     setclipboard("Roblox.GameLauncher.joinGameInstance("..game.PlaceId..", "..game.JobId.."')")
 end)
 ------------------------------------ HOOK ------------------------------------
---[[local BeamPart = Instance.new("Part", workspace)
+local BeamPart = Instance.new("Part", workspace)
 
 BeamPart.Name = "BeamPart"
 BeamPart.Transparency = 1
@@ -1534,87 +1473,95 @@ function CreateBulletImpact(pos)
 	BulletImpacts.Parent = currentCamera
 	wait(Options.bullets_impacttime.Value)
 	BulletImpacts:Destroy()
-end]]
-
---[[local hookJp = nil
+end
+-- // HOOKS :SUNGLASSES:
 local meta = getrawmetatable(game)
-setreadonly(meta, false)
-local oldNamecall = meta.__namecall
+local OldNameCall = nil
 local oldNewindex = meta.__newindex
 local oldIndex = meta.__index
-local oldNamecall = meta.__namecall
-
+local old = meta.__namecall
+hookfunc(getrenv().xpcall, function() end)
 setreadonly(meta, false)
+newindex = hookfunction(meta.__newindex, function(self, idx, val)
+    local method = getnamecallmethod()
+    if self.Name == "Crosshair" and idx == "Visible" and val == false and localPlayer.PlayerGui.GUI.Crosshairs.Scope.Visible == false and Toggles.cam_forcecross.Value == true then
+		val = true
+    end
+    return newindex(self,idx,val)
+end)
+
+meta.__index = newcclosure(function(self, key)
+    if key == "Value" then
+        if Toggles.tweaks_time.Value and self.Name == "BuyTime" then
+            return 5
+        end
+    end
+    return oldIndex(self, key)
+end)
 
 meta.__namecall = newcclosure(function(self, ...)
-    local method = getnamecallmethod()
-    local callingscript = getcallingscript()
-    local args = {...}
+	local args = {...}
 	
-	if not checkcaller() then
-        if method == "SetPrimaryPartCFrame" and self.Name == "Arms" and Toggles.vw_enabled.Value == true then
-			args[1] = args[1] * CFrame.new(Vec3(math.rad(Options.vw_x.Value-0), math.rad(Options.vw_y.Value-0), math.rad(Options.vw_z.Value-0)))
-		elseif method == "InvokeServer" and self.Name == "Moolah" then
-			return wait(99e99)
-		elseif self.Name == "BURNME" and Toggles.tweaks_fire.Value == true then
-            return
-		elseif self.Name == "FallDamage" and Toggles.tweaks_fall.Value == true then
-            return
-		elseif method == "Kick" then
-			return
-		elseif method == "FireServer" and self.Name == "ControlTurn" and SECHS == true then
-			return
-		end
-	end
-	return oldNamecall(self, unpack(args))
-end)
-meta.__index = newcclosure(function(self, idx)
-	if idx == "Value" then
-        if (self.Name == "Spread" or self.Parent.Name == "Spread") and Toggles.mod_spread.Value then
-			return 0
-		elseif (self.Name == "AccuracyDivisor" or self.Name == "AccuracyOffset") and Toggles.mod_spread.Value then
-			return 0.001
-		end
-	end
-    if idx == "Velocity" and self.Parent == localPlayer.Character and Toggles.cam_sway.Value then
-        return Vector3.zero
+    if getnamecallmethod() == "SetPrimaryPartCFrame" then
+        if self.Name == "Arms" and Toggles.vw_enabled.Value then
+            local vwarg = args[1]
+            vwarg = vwarg * CFrame.new(Vector3.new(math.rad(Options.vw_x.Value-180),math.rad(Options.vw_y.Value-180),math.rad(Options.vw_z.Value-180))) * CFrame.Angles(0, 0, math.rad(Options.vw_roll.Value-180))
+            return old(self, vwarg, select(2, ...))
+        end
     end
-    return oldIndex(self, idx)
-end)
-meta.__newindex = newcclosure(function(self,idx,val)
-    if self.Name == "Crosshair" and idx == "Visible" and val == false and localPlayer.PlayerGui.GUI.Crosshairs.Scope.Visible == false and Toggles.cam_forcecross.Value == true then
-        val = true
-	end
-    if idx == "JumpPower" and hookJp then
-        val = 26
-    end
-    return oldNewindex(self,idx,val)
-end)]]
-
--- hooks
---[[resume(create(function()
-    RenderStepped:Connect(function()
-        if Toggles.MousePosition.Value and Toggles.aim_Enabled.Value then
-            if getClosestPlayer() then 
-                local Root = getClosestPlayer().Parent.PrimaryPart or getClosestPlayer()
-                local RootToViewportPoint, IsOnScreen = WorldToViewportPoint(Camera, Root.Position);
-                -- using PrimaryPart instead because if your Target Part is "Random" it will flicker the square between the Target's Head and HumanoidRootPart (its annoying)
-                
-                mouse_box.Visible = IsOnScreen
-                mouse_box.Position = Vec2(RootToViewportPoint.X, RootToViewportPoint.Y)
-            else 
-                mouse_box.Visible = false 
-                mouse_box.Position = Vec2()
+    if not checkcaller() then
+        if getnamecallmethod() == "FindPartOnRayWithWhitelist" and not checkcaller() and cbClient.gun ~= "none" and cbClient.gun.Name ~= "C4" then 
+            if #args[2] == 1 and args[2][1].Name == "SpawnPoints" then 
+                local Team = localPlayer.Status.Team.Value 
+                if Toggles.tweaks_buy.Value then
+                    return Team == "T" and args[2][1].BuyArea or args[2][1].BuyArea2 
+                end
             end
         end
-        
-        if Toggles.Visible.Value then 
-            fov_circle.Visible = Toggles.Visible.Value
-            fov_circle.Color = Options.Color.Value
-            fov_circle.Position = getMousePosition()
+        if self.Name == "BURNME" and Toggles.tweaks_fire.Value then
+            return
+        elseif self.Name == "FallDamage" and Toggles.tweaks_fall.Value then
+            return
+        elseif getnamecallmethod() == "FireServer" and self.Name == "HitPart" then
+            spawn(function()
+                if Toggles.bullets_btenabled.Value and localPlayer.Character and currentCamera:FindFirstChild("Arms") then
+                    local gunflash = currentCamera.Arms:FindFirstChild("Flash")
+                    if gunflash then
+                        wait()
+                        createBeam(currentCamera.Arms:FindFirstChild("Flash").Position, mouse.Hit.p)
+                    end
+                end
+                if Toggles.bullets_hitenabled.Value then
+                    coroutine.wrap(function()
+					if players:GetPlayerFromCharacter(args[1].Parent) and players:GetPlayerFromCharacter(args[1].Parent).Team ~= localPlayer.Team then
+						for _,hitbox in pairs(args[1].Parent:GetChildren()) do
+							if hitbox:IsA("BasePart") or hitbox.Name == "Head" then
+								coroutine.wrap(function()
+									local part = Instance.new("Part")
+									part.CFrame = hitbox.CFrame
+									part.Anchored = true
+									part.CanCollide = false
+									part.Material = Enum.Material.ForceField
+									part.Color = Options.bullets_hitcolor.Value
+									part.Size = hitbox.Size
+									part.Parent = workspace.Debris
+									wait(Options.bullets_hittime.Value)
+									part:Destroy()
+								end)()
+							end
+						end
+					end
+                    end)()
+                end
+                if Toggles.bullets_impactenabled.Value then
+                    CreateBulletImpact(mouse.Hit.p)
+                end
+            end)
         end
-    end)
-end))]]
+    end
+	return old(self, ...)
+end)
+
 
 local oldNamecall
 oldNamecall = hookmetamethod(game, "__namecall", newcclosure(function(...)
@@ -1953,6 +1900,36 @@ local function Combat()
     as_fov_circleout2.Position = mousepos
 end
 
+local function Visuals()
+    if Toggles.wrl_ambient.Value then
+        lighting.Ambient = Options.wrl_ambient1.Value
+        lighting.OutdoorAmbient = Options.wrl_ambient2.Value
+    else
+        lighting.Ambient = C3(255, 255, 255)
+        lighting.OutdoorAmbient = C3(255, 255, 255)
+    end
+    
+    if Toggles.wrl_forcetime.Value then
+        lighting.TimeOfDay = Options.wrl_forcetimevalue.Value
+    else
+        lighting.TimeOfDay = 12
+    end
+    
+    if localPlayer.PlayerGui.GUI.Crosshairs.Scope.Visible == false then
+        if Toggles.cam_fovenabled.Value then
+            currentCamera.FieldOfView = Options.cam_fovvalue.Value
+        else
+            currentCamera.FieldOfView = 70
+		end
+	end
+    
+    local x,y,z = currentCamera.CFrame:ToEulerAnglesXYZ()
+	x,y,z = math.deg(x),math.deg(y),math.deg(z)
+	
+	Blur.Size = math.clamp((Vec3(x,y,z)-lv).Magnitude/2,2,10 + blurvalue)
+	lv = Vec3(x,y,z)
+end
+
 local function ESP()
     for i,v in pairs(esp.playerObjects) do
         if not esp.HasCharacter(i) then
@@ -2133,36 +2110,6 @@ local function ESP()
     end
 end
 
-local function Visuals()
-    if Toggles.wrl_ambient.Value then
-        lighting.Ambient = Options.wrl_ambient1.Value
-        lighting.OutdoorAmbient = Options.wrl_ambient2.Value
-    else
-        lighting.Ambient = C3(255, 255, 255)
-        lighting.OutdoorAmbient = C3(255, 255, 255)
-    end
-    
-    if Toggles.wrl_forcetime.Value then
-        lighting.TimeOfDay = Options.wrl_forcetimevalue.Value
-    else
-        lighting.TimeOfDay = 12
-    end
-    
-    if localPlayer.PlayerGui.GUI.Crosshairs.Scope.Visible == false then
-        if Toggles.cam_fovenabled.Value then
-            currentCamera.FieldOfView = Options.cam_fovvalue.Value
-        else
-            currentCamera.FieldOfView = 70
-		end
-	end
-    
-    local x,y,z = currentCamera.CFrame:ToEulerAnglesXYZ()
-	x,y,z = math.deg(x),math.deg(y),math.deg(z)
-	
-	Blur.Size = math.clamp((Vec3(x,y,z)-lv).Magnitude/2,2,10 + blurvalue)
-	lv = Vec3(x,y,z)
-end
-
 function Movement()
     if Toggles.mov_bhop.Value then
         if localPlayer.PlayerGui.GUI.Main.GlobalChat.Visible == false then
@@ -2307,6 +2254,23 @@ local function Misc()
             end
         end)
     end
+
+    if Toggles.mod_recoil.Value then
+        cbClient.RecoilX = 0;
+        cbClient.RecoilY = 0
+    end
+    
+    if Toggles.tweaks_duck.Value then
+        if cbClient.crouchcooldown ~= 0 then
+            cbClient.crouchcooldown = 0.7
+        end
+    end
+    
+    if Toggles.mod_spread.Value then
+        cbClient.accuracy_sd = 0.000
+    end
+
+    localPlayer.Cash.Value = Toggles.tweaks_cash.Value and 16000 or localPlayer.Cash.Value
 end
 
 runService.RenderStepped:Connect(function()
